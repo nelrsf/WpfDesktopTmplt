@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Blend for Visual Studio Version 17
 VisualStudioVersion = 17.12.35506.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDesktopTmplt", "WpfApp2\WpfDesktopTmplt.csproj", "{B7E76174-2600-438D-93E1-E91DB8F58B3C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WpfDesktopTmplt", "WpfDesktopTmplt\WpfDesktopTmplt.csproj", "{B7E76174-2600-438D-93E1-E91DB8F58B3C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

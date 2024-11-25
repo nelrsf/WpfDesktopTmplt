@@ -1,0 +1,53 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    
+    <DrawingImage x:Key="IconNew" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M23 18H20V15H18V18H15V20H18V23H20V20H23M6 2C4.89 2 4 2.9 4 4V20C4 21.11 4.89 22 6 22H13.81C13.45 21.38 13.2 20.7 13.08 20H6V4H13V9H18V13.08C18.33 13.03 18.67 13 19 13C19.34 13 19.67 13.03 20 13.08V8L14 2M8 12V14H16V12M8 16V18H13V16Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    
+    <DrawingImage x:Key="columns" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M4 5V18H21V5H4M14 7V16H11V7H14M6 7H9V16H6V7M19 16H16V7H19V16Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="folderOpen" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M6.1,10L4,18V8H21A2,2 0 0,0 19,6H12L10,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H19C19.9,20 20.7,19.4 20.9,18.5L23.2,10H6.1M19,18H6L7.6,12H20.6L19,18Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="grid" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M3 11H11V3H3M5 5H9V9H5M13 21H21V13H13M15 15H19V19H15M3 21H11V13H3M5 15H9V19H5M13 3V11H21V3M19 9H15V5H19Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="rows" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M6,11H10V9H14V11H18V4H6V11M18,13H6V20H18V13M6,2H18A2,2 0 0,1 20,4V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V4A2,2 0 0,1 6,2Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="fileTree" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M3,3H9V7H3V3M15,10H21V14H15V10M15,17H21V21H15V17M13,13H7V18H13V20H7L5,20V9H7V11H13V13Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+    <DrawingImage x:Key="cascade" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M21 16V6H7V16H21M21 4C21.53 4 22.04 4.21 22.41 4.59C22.79 4.96 23 5.47 23 6V16C23 16.53 22.79 17.04 22.41 17.41C22.04 17.79 21.53 18 21 18H7C5.89 18 5 17.1 5 16V6C5 4.89 5.89 4 7 4H21M3 20H18V22H3C2.47 22 1.96 21.79 1.59 21.41C1.21 21.04 1 20.53 1 20V9H3V20Z" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+    <DrawingImage x:Key="home" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+        <DrawingImage.Drawing>
+            <GeometryDrawing Brush="#575757" Geometry="M12 5.69L17 10.19V18H15V12H9V18H7V10.19L12 5.69M12 3L2 12H5V20H11V14H13V20H19V12H22" />
+        </DrawingImage.Drawing>
+    </DrawingImage>
+
+</ResourceDictionary>

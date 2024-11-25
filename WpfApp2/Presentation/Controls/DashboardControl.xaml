@@ -1,0 +1,152 @@
+﻿<UserControl x:Class="WpfDesktopTmplt.Presentation.Controls.DashboardControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:vm="clr-namespace:WpfDesktopTmplt.Presentation.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="20">
+                <!-- Fila de KPIs -->
+                <WrapPanel>
+                    <!-- KPI 1 -->
+                    <Border Width="220" Height="120" Margin="10" 
+                            Background="White" CornerRadius="8"
+                            BorderBrush="#E0E0E0" BorderThickness="1">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Ventas del Mes" 
+                                     Foreground="#666666"/>
+                            <TextBlock Text="$45,289" 
+                                     Grid.Row="1"
+                                     FontSize="24" 
+                                     FontWeight="SemiBold"
+                                     VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="2" 
+                                      Orientation="Horizontal">
+                                <Path Data="M1,5L5,1L9,5" 
+                                      Stroke="Green" 
+                                      StrokeThickness="2"
+                                      Width="10" 
+                                      Height="10"/>
+                                <TextBlock Text="+12.3% vs mes anterior" 
+                                         Foreground="Green"
+                                         Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- KPI 2 -->
+                    <Border Width="220" Height="120" Margin="10" 
+                            Background="White" CornerRadius="8"
+                            BorderBrush="#E0E0E0" BorderThickness="1">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Nuevos Clientes" 
+                                     Foreground="#666666"/>
+                            <TextBlock Text="183" 
+                                     Grid.Row="1"
+                                     FontSize="24" 
+                                     FontWeight="SemiBold"
+                                     VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="2" 
+                                      Orientation="Horizontal">
+                                <Path Data="M1,1L5,5L9,1" 
+                                      Stroke="Red" 
+                                      StrokeThickness="2"
+                                      Width="10" 
+                                      Height="10"/>
+                                <TextBlock Text="-5.2% vs mes anterior" 
+                                         Foreground="Red"
+                                         Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+
+                    <!-- KPI 3 -->
+                    <Border Width="220" Height="120" Margin="10" 
+                            Background="White" CornerRadius="8"
+                            BorderBrush="#E0E0E0" BorderThickness="1">
+                        <Grid Margin="15">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Text="Satisfacción Cliente" 
+                                     Foreground="#666666"/>
+                            <TextBlock Text="94.5%" 
+                                     Grid.Row="1"
+                                     FontSize="24" 
+                                     FontWeight="SemiBold"
+                                     VerticalAlignment="Center"/>
+                            <StackPanel Grid.Row="2" 
+                                      Orientation="Horizontal">
+                                <Path Data="M1,5L5,1L9,5" 
+                                      Stroke="Green" 
+                                      StrokeThickness="2"
+                                      Width="10" 
+                                      Height="10"/>
+                                <TextBlock Text="+2.1% vs mes anterior" 
+                                         Foreground="Green"
+                                         Margin="5,0,0,0"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </WrapPanel>
+
+                <!-- Tabla de Últimas Ventas -->
+                <Border Margin="10,20,10,10" 
+                        Background="White" 
+                        CornerRadius="8"
+                        BorderBrush="#E0E0E0" 
+                        BorderThickness="1">
+                    <DockPanel Margin="15">
+                        <TextBlock DockPanel.Dock="Top" 
+                                 Text="Últimas Ventas"
+                                 FontSize="16" 
+                                 FontWeight="SemiBold" 
+                                 Margin="0,0,0,10"/>
+
+                        <DataGrid ItemsSource="{Binding salesGrid}" 
+                                 AutoGenerateColumns="False"
+                                 IsReadOnly="True"
+                                 HeadersVisibility="Column"
+                                 GridLinesVisibility="None"
+                                 Background="Transparent"
+                                 BorderThickness="0"
+                                 MaxHeight="300">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Fecha" 
+                                                  Binding="{Binding Date}" 
+                                                  Width="120"/>
+                                <DataGridTextColumn Header="Cliente" 
+                                                  Binding="{Binding Customer}" 
+                                                  Width="200"/>
+                                <DataGridTextColumn Header="Producto" 
+                                                  Binding="{Binding Product}" 
+                                                  Width="200"/>
+                                <DataGridTextColumn Header="Monto" 
+                                                  Binding="{Binding Amount}" 
+                                                  Width="100"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </DockPanel>
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

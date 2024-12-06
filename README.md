@@ -142,7 +142,10 @@ public class CommandDictionary : ICommandDictionary
 
 ## 📦 Dependencies
 
-- **AvalonDock** (4.72.1) - Docking window framework
+This project uses the following third-party libraries:
+
+- **[AvalonDock](https://github.com/Dirkster99/AvalonDock)**  
+  Licensed under the Microsoft Public License (Ms-PL). See the [LICENSE](https://github.com/Dirkster99/AvalonDock/blob/master/LICENSE) file for details.
 - **Microsoft.Extensions.DependencyInjection** (8.0.1) - Dependency injection container
 
 ## 🤝 Contributing
@@ -178,7 +181,7 @@ Copyright © 2024 MSV Technology
 
 This software and associated documentation files are proprietary and protected by copyright law. All rights are reserved by MSV Technology.
 
-Permission is granted to view and fork this repository for personal evaluation and non-commercial learning purposes only. No part of this software may be reproduced, distributed, or transmitted in any form or by any means for commercial purposes without the prior written permission of MSV Technology.
+Permission is granted to view and fork this repository for personal evaluation and commercial purposes. No part of this software may be reproduced, distributed, or transmitted in any form or by any means for commercial purposes without the prior written permission of MSV Technology.
 
 For licensing inquiries or permission requests, please contact us
 

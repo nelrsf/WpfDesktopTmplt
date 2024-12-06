@@ -1,0 +1,85 @@
+﻿<UserControl x:Class="iPlanner.Presentation.Controls.RibbonControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:ribbon="clr-namespace:System.Windows.Controls.Ribbon;assembly=System.Windows.Controls.Ribbon"
+             xmlns:vm ="clr-namespace:iPlanner.Presentation.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="150" d:DesignWidth="800">
+
+      <ribbon:Ribbon Background="#FFF0F0F0">
+        <Ribbon.ApplicationMenu>
+            <RibbonApplicationMenu Visibility="Hidden" Width="0"/>
+        </Ribbon.ApplicationMenu>
+
+        
+        <ribbon:RibbonTab Header="Inicio">
+        
+            <ribbon:RibbonGroup Header="Archivo" >
+                <!-- Nuevo -->
+                <ribbon:RibbonButton Click="NewButton_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="IconNew"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Nuevo</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+
+                <!-- Abrir -->
+                <ribbon:RibbonButton Click="HomeButton_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="home"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Inicio</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+            </ribbon:RibbonGroup>
+        </ribbon:RibbonTab>
+
+        <ribbon:RibbonTab Header="Ver">
+            <ribbon:RibbonGroup Header="Ventana">
+                <!-- Panel Lateral -->
+                <ribbon:RibbonButton x:Name="SidebarToggle" Click="ToggleSideBar">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="fileTree"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Panel Lateral</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+            </ribbon:RibbonGroup>
+
+            <ribbon:RibbonGroup Header="Vista">
+                <!-- Botón Vertical -->
+                <ribbon:RibbonButton Click="ArrangeVertical_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="columns"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Vertical</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+
+                <!-- Botón Horizontal -->
+                <ribbon:RibbonButton Click="ArrangeHorizontal_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="rows"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Horizontal</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+
+                <!-- Botón Cascada -->
+                <ribbon:RibbonButton Click="ArrangeCascade_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="cascade"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Cascada</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+
+                <!-- Botón Cuadrícula -->
+                <ribbon:RibbonButton Click="ArrangeGrid_Click">
+                    <ribbon:RibbonButton.LargeImageSource>
+                        <StaticResource ResourceKey="grid"/>
+                    </ribbon:RibbonButton.LargeImageSource>
+                    <ribbon:RibbonButton.Label>Cuadrícula</ribbon:RibbonButton.Label>
+                </ribbon:RibbonButton>
+            </ribbon:RibbonGroup>
+        </ribbon:RibbonTab>
+
+    </ribbon:Ribbon>
+</UserControl>

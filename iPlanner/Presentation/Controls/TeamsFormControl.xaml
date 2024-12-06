@@ -1,0 +1,233 @@
+﻿<UserControl x:Class="iPlanner.Presentation.Controls.Teams.TeamFormControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:viewmodels="clr-namespace:iPlanner.Presentation.ViewModels" 
+             d:DataContext="{d:DesignInstance Type=viewmodels:TeamFormViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="600" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="ListViewButtonStyle" TargetType="Button">
+                <Setter Property="Width" Value="32"/>
+                <Setter Property="Height" Value="32"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="BorderThickness" Value="1"/>
+                <Setter Property="BorderBrush" Value="#E0E0E0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="4">
+                                    <ContentPresenter   HorizontalAlignment="Center" 
+                                                        VerticalAlignment="Center"/>
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#F0F0F0"/>
+                                    <Setter Property="BorderBrush" Value="#CCCCCC"/>
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter Property="Background" Value="#E5E5E5"/>
+                                </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
+        <Grid Margin="10" MinWidth="500">
+            <!-- Form Content -->
+            <StackPanel>
+                <!-- Team Information -->
+                <GroupBox Header="Información del Equipo" Margin="0,0,0,10">
+                    <StackPanel Margin="5">
+                        <!-- Team ID -->
+                        <Label Content="ID del Equipo" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Id, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"
+                                Height="25"/>
+
+                        <!-- Team Name -->
+                        <Label Content="Nombre del Equipo" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Name, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"
+                                Height="25"/>
+
+                        <!-- Team Description -->
+                        <Label Content="Descripción" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Description, UpdateSourceTrigger=PropertyChanged}"
+                                TextWrapping="Wrap"
+                                AcceptsReturn="True"
+                                Height="50"
+                                Margin="0,0,0,8"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Team Leader -->
+                <GroupBox Header="Líder del Equipo" Margin="0,0,0,10">
+                    <StackPanel Margin="5">
+                        <!-- Leader ID -->
+                        <Label Content="ID del Líder" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Leader.Id, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"
+                                Height="25"/>
+
+                        <!-- Leader Name -->
+                        <Label Content="Nombre del Líder" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Leader.Name, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"
+                                Height="25"/>
+
+                        <!-- Leader Position -->
+                        <Label Content="Cargo" Margin="0,0,0,2"/>
+                        <TextBox Text="{Binding Team.Leader.Position, UpdateSourceTrigger=PropertyChanged}"
+                                Margin="0,0,0,8"
+                                Height="25"/>
+                    </StackPanel>
+                </GroupBox>
+
+                <!-- Team Members -->
+                <GroupBox Header="Miembros del Equipo" Margin="0,0,0,10">
+                    <Grid Margin="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Toolbar -->
+                        <DockPanel LastChildFill="False" Margin="0,0,0,8">
+                            <TextBlock Text="Total: " 
+                            VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding Team.Members.Count}" 
+                                FontWeight="SemiBold" 
+                                VerticalAlignment="Center"/>
+
+                            <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+                                <Button Style="{StaticResource ListViewButtonStyle}"
+                                     Margin="0,0,8,0">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource thrash}" 
+                                        Width="16" 
+                                        Height="16"/>
+                                    </Button.Content>
+                                </Button>
+                                <Button Style="{StaticResource ListViewButtonStyle}"
+                                    Click="AddMember_Button_Click">
+                                    <Button.Content>
+                                        <Image Source="{StaticResource IconNew}" 
+                                        Width="16" 
+                                        Height="16"/>
+                                    </Button.Content>
+                                </Button>
+                            </StackPanel>
+                        </DockPanel>
+
+                        <!-- ListView de Miembros -->
+                        <ListView Grid.Row="1" 
+                                ItemsSource="{Binding Team.Members}" 
+                                BorderThickness="1"
+                                BorderBrush="#E0E0E0"
+                                Background="White">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Background="Transparent" 
+                                        Padding="8,4">
+                                        <DockPanel>
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="50"/>
+                                                    <ColumnDefinition Width="100"/>
+                                                    <ColumnDefinition Width="*"/>
+                                                    <ColumnDefinition Width="200"/>
+                                                </Grid.ColumnDefinitions>
+
+                                                <CheckBox></CheckBox>
+
+                                                <TextBox Text="{Binding Id}"
+                                                    VerticalAlignment="Center"
+                                                    IsReadOnly="True"/>
+                                                <TextBox Grid.Column="1" 
+                                                    Text="{Binding Name}" 
+                                                    VerticalAlignment="Center"/>
+                                                <TextBox Grid.Column="2" 
+                                                    Text="{Binding Position}" 
+                                                    VerticalAlignment="Center"/>
+                                            </Grid>
+                                        </DockPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <!-- Header Template -->
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Checked="RowCheckBox_Checked"
+                                                          Unchecked="RowCheckBox_Unchecked">
+                                                    
+                                                </CheckBox>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    
+                                    <GridViewColumn Header="ID" Width="100">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Background="Transparent" BorderThickness="0" Width="90" Text="{Binding Id, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    
+                                    <GridViewColumn Header="Nombre" Width="350">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Background="Transparent" BorderThickness="0" Width="330" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="Cargo" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBox Background="Transparent" BorderThickness="0" Width="130" Text="{Binding Position, UpdateSourceTrigger=PropertyChanged}" />
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </GroupBox>
+                
+                <!-- Action Buttons -->
+                <StackPanel Orientation="Horizontal" 
+                           HorizontalAlignment="Right"
+                           Margin="0,5,0,0">
+                    <Button Content="Cancelar"
+                            Command="{Binding CancelCommand}"
+                            Padding="15,5"
+                            Margin="0,0,8,0"/>
+                    <Button Content="{Binding SaveButtonText}"
+                            Click="SaveForm"
+                            Background="#007ACC"
+                            Foreground="White"
+                            Padding="15,5"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

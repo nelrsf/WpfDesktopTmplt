@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+	<Resource Include="Resources\**" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <Page Remove="Resources\Icons.xaml" />
+    <Page Remove="Resources\Styles\Toolbar.xaml" />
+  </ItemGroup>
+
+
+
+  <ItemGroup>
+    <PackageReference Include="Dirkster.AvalonDock" Version="4.72.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+
+
+
+
+  <ItemGroup>
+    <Resource Update="Resources\Icons.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
+    <Resource Update="Resources\Styles\Toolbar.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Toolbar.xaml</DependentUpon>
+    </Resource>
+    <Resource Update="Resources\Styles\Toolbar.xaml">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Toolbar.Designer.cs</LastGenOutput>
+    </Resource>
+  </ItemGroup>
+
+
+
+
+
+  <ItemGroup>
+    <Page Include="App.xaml" />
+  </ItemGroup>
+
+
+
+
+
+  <ItemGroup>
+    <ProjectReference Include="C:\Users\usuario\source\repos\LocationsTools\LocationsTools.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,5 @@
 ﻿using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.ViewModels;
+using iPlanner.Presentation.ViewModels.Layout;
 using System.Windows;
 
 namespace iPlanner

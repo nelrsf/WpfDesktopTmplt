@@ -4,10 +4,9 @@ namespace iPlanner.Core.Entities.Locations
 {
     public class LocationItem
     {
-        private bool _isSelected;
         public string _name { get; set; }
 
-        private int LocationId { get; set; }
+        public int LocationId { get; set; }
         public string Icon { get; set; }
 
 

@@ -1,24 +1,72 @@
-﻿namespace iPlanner.Core.Entities.Reports
+﻿using iPlanner.Core.Entities.Locations;
+using iPlanner.Core.Entities.Teams;
+using System.Collections.ObjectModel;
+
+namespace iPlanner.Core.Entities.Reports
 {
     public class Report
     {
-        public string? Team { get; set; }
-        public string? Leader { get; set; }
-        public List<Activity>? Activities { get; set; }
+        public string? ReportId { get; set; }
+        public Team? Team { get; set; }
+
+        private DateTime? _date;
+        public DateTime? Date 
+        { 
+            get
+            {
+                return _date;
+            }
+            set {  
+                _date = value;
+                UpdateScheduleByDate();
+            }
+        }
+
+        public TimeSpan? TimeInit { get; set; }
+
+        public TimeSpan? TimeEnd { get; set; }
+
+        public ObservableCollection<Activity>? Activities { get; set; }
+
+        public Report(){}
+
+        private void UpdateScheduleByDate() {
+            if (Date == null) return;
+            switch (Date.Value.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    TimeInit = TimeSpan.FromHours(8); 
+                    TimeEnd = TimeSpan.FromHours(17);
+                    break;
+                case DayOfWeek.Tuesday:
+                    TimeInit = TimeSpan.FromHours(8);
+                    TimeEnd = TimeSpan.FromHours(17);
+                    break;
+                case DayOfWeek.Wednesday:
+                    TimeInit = TimeSpan.FromHours(7); 
+                    TimeEnd = TimeSpan.FromHours(17); 
+                    break;
+                case DayOfWeek.Thursday:
+                    TimeInit = TimeSpan.FromHours(7); 
+                    TimeEnd = TimeSpan.FromHours(17); 
+                    break;
+                case DayOfWeek.Friday:
+                    TimeInit = TimeSpan.FromHours(7);
+                    TimeEnd = TimeSpan.FromHours(15);
+                    break;
+
+            } 
+        }
     }
 
     public class Activity
     {
-        public string? Date { get; set; }
+        public ObservableCollection<LocationItem> Locations { get; set; }
         public string? Description { get; set; }
-        public List<Worker>? Workers { get; set; }
-    }
+        public Activity() { 
+            Locations = new ObservableCollection<LocationItem>();
+        }
 
-    public class Worker
-    {
-        public string? Name { get; set; }
-        public string? Init { get; set; }
-        public string? End { get; set; }
     }
 
 }

@@ -3,7 +3,7 @@ using iPlanner.Core.Application.Interfaces;
 
 namespace iPlanner.Presentation.Commands
 {
-    internal class SelectTabCommand : ICommand
+    public class SelectTabCommand : ICommand
     {
         private LayoutDocument? _document;
         public LayoutDocument? Document

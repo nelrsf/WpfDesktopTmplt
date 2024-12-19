@@ -1,0 +1,229 @@
+﻿<UserControl x:Class="iPlanner.Presentation.Controls.ReportEditorControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:iPlanner.Presentation.Converters"
+             xmlns:common="clr-namespace:iPlanner.Presentation.Controls.Common"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1000"
+             Background="White">
+
+    <UserControl.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        <!-- Estilo para Cards -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#E0E0E0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="20"/>
+            <Setter Property="Margin" Value="0,0,0,20"/>
+            <Setter Property="Effect">
+                <Setter.Value>
+                    <DropShadowEffect BlurRadius="10" ShadowDepth="1" 
+                                    Opacity="0.1" Color="#000000"/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Estilo para Labels -->
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,8,0,8"/>
+            <Setter Property="Foreground" Value="#2D3748"/>
+        </Style>
+
+        <!-- Estilo para Inputs -->
+        <Style x:Key="InputStyle" TargetType="Control">
+            <Setter Property="Height" Value="28"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <!-- Estilo para Botón Principal -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#3182CE"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="24,12"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" 
+                                            VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
+                 VerticalScrollBarVisibility="Auto"
+                 Margin="20">
+        <StackPanel>
+            <!-- Header -->
+            <Border Style="{StaticResource CardStyle}">
+                <DockPanel>
+                    <StackPanel>
+                        <TextBlock Text="Nuevo Reporte" 
+                                 FontSize="24" 
+                                 FontWeight="Bold"
+                                 Foreground="#2D3748"/>
+                        <TextBlock Text="Complete los detalles del reporte"
+                                 Foreground="#718096"
+                                 Margin="0,8,0,0"/>
+                    </StackPanel>
+                </DockPanel>
+            </Border>
+
+            <!-- Información Principal -->
+            <Border Style="{StaticResource CardStyle}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Columna Izquierda -->
+                    <StackPanel Grid.Column="0">
+                        <TextBlock Text="Equipo" 
+                                 Style="{StaticResource LabelStyle}"/>
+                        <ComboBox Style="{StaticResource InputStyle}"
+                                ItemsSource="{Binding Teams}"
+                                SelectedItem="{Binding SelectedTeam}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Name}" Padding="8,4"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+
+
+                        <TextBlock Text="Fecha" 
+                                 Style="{StaticResource LabelStyle}"/>
+                        <DatePicker Style="{StaticResource InputStyle}"
+                                    SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                  SelectedDate="{Binding CurrentReport.Date}"/>
+                    </StackPanel>
+
+                    <!-- Columna Derecha -->
+                    <StackPanel Grid.Column="2">
+                        <TextBlock Text="Hora Inicio" 
+                                 Style="{StaticResource LabelStyle}"/>
+                        <common:TimePickerControl TimeValue="{Binding CurrentReport.TimeInit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  Style="{StaticResource InputStyle}">
+                            
+                        </common:TimePickerControl>
+
+
+                        <TextBlock Text="Hora Fin" 
+                                 Style="{StaticResource LabelStyle}"/>
+                        <common:TimePickerControl TimeValue="{Binding CurrentReport.TimeEnd}"
+                                                  Style="{StaticResource InputStyle}">
+
+                        </common:TimePickerControl>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <!-- Sección de Actividades -->
+            <Border Style="{StaticResource CardStyle}">
+                <StackPanel>
+                    <DockPanel Margin="0,0,0,16">
+                        <TextBlock Text="Actividades" 
+                                 Style="{StaticResource LabelStyle}"
+                                 FontSize="18"/>
+                        <Button Content="+ Agregar Actividad"
+                                Click="OnAddActivity"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                HorizontalAlignment="Right"/>
+                    </DockPanel>
+
+                    <ItemsControl ItemsSource="{Binding CurrentReport.Activities}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Border BorderBrush="#E2E8F0"
+                                        BorderThickness="1"
+                                        CornerRadius="6"
+                                        Padding="16"
+                                        Margin="0,0,0,16">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+
+                                        <TextBlock Text="Descripción" 
+                                                 Style="{StaticResource LabelStyle}"/>
+                                        <TextBox Grid.Row="1"
+                                                Text="{Binding Description}"
+                                                Height="80"
+                                                TextWrapping="Wrap"
+                                                AcceptsReturn="True"
+                                                Margin="0,0,0,16"/>
+
+                                        <Grid Grid.Row="2" AllowDrop="True"
+                                                           DragEnter="OnDragEnter"
+                                                           DragOver="OnDragOver"
+                                                           Drop="OnDrop" MinHeight="70">
+                                            <TextBlock Text="Ubicaciones Seleccionadas" 
+                                                     Style="{StaticResource LabelStyle}"/>
+                                            
+                                            <ItemsControl ItemsSource="{Binding Locations}"
+                                                            Margin="0,24,0,0">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Border Background="#EDF2F7"
+                                                                Padding="8,4"
+                                                                Margin="0,8,16,8"
+                                                                HorizontalAlignment="Left">
+                                                            <StackPanel Orientation="Horizontal">
+                                                                <TextBlock Text="{Binding Name}" 
+                                                                            VerticalAlignment="Center"/>
+                                                                <Button Content="×"
+                                                                        Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+                                                                        Margin="8,0,0,0"
+                                                                        Background="Transparent"
+                                                                        Click="OnDeleteLocation"
+                                                                        BorderThickness="0"/>
+                                                            </StackPanel>
+                                                        </Border>
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                                <ItemsControl.ItemsPanel>
+                                                    <ItemsPanelTemplate>
+                                                        <WrapPanel/>
+                                                    </ItemsPanelTemplate>
+                                                </ItemsControl.ItemsPanel>
+                                            </ItemsControl>
+                                        </Grid>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </StackPanel>
+            </Border>
+
+            <!-- Botones de Acción -->
+            <StackPanel Orientation="Horizontal" 
+                        HorizontalAlignment="Right" 
+                        Margin="0,20,0,0">
+                <Button Content="Cancelar"
+                        Command="{Binding CancelCommand}"
+                        Padding="24,12"
+                        Margin="0,0,16,0"/>
+                <Button Content="Guardar Reporte"
+                        Click="OnCreateReport"
+                        Style="{StaticResource PrimaryButtonStyle}"/>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

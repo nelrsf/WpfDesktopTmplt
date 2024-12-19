@@ -1,0 +1,77 @@
+<UserControl x:Class="iPlanner.Presentation.Controls.Sidebar.TeamsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+
+    <DockPanel>
+        <!-- Barra de herramientas -->
+        <ToolBar Style="{StaticResource ToolbarStyle}">
+            <TextBox Width="120"
+                     Height="24"
+                     Style="{StaticResource SearchBox}"
+                     Margin="2,0"/>
+            <Button Click="OnAddTeam"
+                    Width="24" Height="24"
+                    Margin="2,0"
+                    ToolTip="Nuevo equipo">
+                <Image Source="{StaticResource add-user}" Width="16" Height="16"/>
+            </Button>
+            <Button Click="OnEditTeam"
+                    Width="24" Height="24"
+                    Margin="2,0"
+                    ToolTip="Editar equipo">
+                <Image Source="{StaticResource pencil}" Width="16" Height="16"/>
+            </Button>
+            <Button Click="OnDeleteTeams"
+                    Width="24" Height="24"
+                    Margin="2,0"
+                    ToolTip="Eliminar equipo">
+                <Image Source="{StaticResource thrash}" Width="16" Height="16"/>
+            </Button>
+            <Separator/>
+            <Button Click="OnViewTeam"
+                    Width="24" Height="24"
+                    Margin="2,0"
+                    ToolTip="Ver detalles">
+                <Image Source="{StaticResource eye}" Width="16" Height="16"/>
+            </Button>
+        </ToolBar>
+
+        <!-- Lista de equipos -->
+        <ListView ItemsSource="{Binding Teams}"
+                  SelectedItem="{Binding SelectedTeams}"
+                  BorderThickness="0"
+                  SelectionMode="Multiple"
+                  SelectionChanged="ListView_SelectionChanged"
+                  Background="Transparent">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Text="{Binding Name}"
+                                 FontWeight="SemiBold"/>
+                        <TextBlock Text="{Binding Description}"
+                                 Foreground="#666666"
+                                 FontSize="12"/>
+                        <StackPanel Orientation="Horizontal"
+                                  Margin="0,5,0,0">
+                            <TextBlock Text="Líder: "
+                                     Foreground="#666666"/>
+                            <TextBlock Text="{Binding Leader.Name}"
+                                     Foreground="#666666"/>
+                            <TextBlock Text=" • "
+                                     Foreground="#666666"
+                                     Margin="5,0"/>
+                            <TextBlock Foreground="#666666">
+                                    <Run Text="{Binding Members.Count, Mode=OneWay}"/>
+                                    <Run Text=" miembros"/>
+                            </TextBlock>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </DockPanel>
+</UserControl>

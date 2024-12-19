@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
-    internal class AddMemberCommand : ICommand
+    public class AddMemberCommand : ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

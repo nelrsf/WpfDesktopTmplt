@@ -1,11 +1,12 @@
 ﻿using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.ViewModels;
+using iPlanner.Presentation.ViewModels.Layout;
 
 namespace iPlanner.Presentation.Commands
 {
     public class InsertNewViewCommand : ICommand
     {
         private string? _viewName;
+        public object? Content;
 
         public string? ViewName
         {
@@ -41,7 +42,11 @@ namespace iPlanner.Presentation.Commands
             MainWindowViewModel mainWindowViewModel = mainWindow.DataContext as MainWindowViewModel;
             if (mainWindowViewModel != null)
             {
-                mainWindowViewModel.AddView(_viewName);
+                if (Content == null)
+                {
+                    throw new InvalidOperationException("No se pudo cargar la vista");
+                }
+                mainWindowViewModel.AddView(Content, _viewName);
             }
 
         }

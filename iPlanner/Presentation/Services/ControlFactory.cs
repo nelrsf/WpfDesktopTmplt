@@ -1,30 +1,31 @@
 ﻿using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Controls.Teams;
+using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Services
 {
     public class ControlFactory
     {
-        public static string CALENDAR_CONTROL = "Calendar";
-        public static string DASHBOARD_CONTROL = "Dashboard";
-        public static string NOTIFICATIONS_CONTROL = "Notifications";
-        public static string HOME_CONTROL = "Home";
-        public static string REPORT_LIST_CONTROL = "Report List";
-        public static string TEAMS_FORM_CONTROL = "Teams Form";
-        public Type GetControl(string name)
+        public const string CALENDAR_CONTROL = "Calendar";
+        public const string DASHBOARD_CONTROL = "Dashboard";
+        public const string NOTIFICATIONS_CONTROL = "Notifications";
+        public const string HOME_CONTROL = "Home";
+        public const string REPORT_LIST_CONTROL = "Report List";
+        public const string TEAMS_FORM_CONTROL = "_teams Form";
+        public const string REPORTS_FORM = "Reports Form";
+
+        public UserControl GetControl(string name)
         {
-            if (name == CALENDAR_CONTROL)
-                return typeof(CalendarControl);
-            else if (name == DASHBOARD_CONTROL)
-                return typeof(DashboardControl);
-            else if (name == NOTIFICATIONS_CONTROL)
-                return typeof(NotificationsControl);
-            else if (name == REPORT_LIST_CONTROL)
-                return typeof(ReportListControl);
-            else if (name == TEAMS_FORM_CONTROL)
-                return typeof(TeamFormControl);
-            else
-                return typeof(WelcomeControl);
+            return name switch
+            {
+                CALENDAR_CONTROL => new CalendarControl(),
+                DASHBOARD_CONTROL => new DashboardControl(),
+                NOTIFICATIONS_CONTROL => new NotificationsControl(),
+                REPORT_LIST_CONTROL => new ReportListControl(),
+                TEAMS_FORM_CONTROL => new TeamFormControl(),
+                REPORTS_FORM => new ReportEditorControl(),
+                _ => new WelcomeControl()
+            };
         }
     }
 }

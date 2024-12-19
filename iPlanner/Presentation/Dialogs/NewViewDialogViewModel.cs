@@ -1,5 +1,6 @@
 ﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Services;
+using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Dialogs
@@ -17,10 +18,12 @@ namespace iPlanner.Presentation.Dialogs
     {
         public ObservableCollection<ViewOption> ViewOptions { get; set; }
         private IMediator mediator;
+        private ControlFactory controlFactory;
 
         public NewViewDialogViewModel()
         {
             mediator = AppServices.GetService<IMediator>();
+            controlFactory = new ControlFactory();
             ViewOptions = new ObservableCollection<ViewOption>
         {
             new ViewOption
@@ -50,7 +53,10 @@ namespace iPlanner.Presentation.Dialogs
         public void CreateNewView(string? viewName)
         {
             if (viewName == null) return;
-            mediator.Notify(this, CommandType.InsertNewView, viewName);
+            var content = controlFactory.GetControl(viewName);
+            if (content == null) return;
+            var message = new ViewMessage(viewName, content);
+            mediator.Notify(message);
         }
     }
 

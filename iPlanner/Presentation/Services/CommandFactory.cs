@@ -1,5 +1,6 @@
 ﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Commands.Window;
 using System.Collections;
@@ -17,9 +18,13 @@ namespace iPlanner.Presentation.Services
         SelectTab,
         ToggleSideBar,
         AddTeamMember,
-        SaveTeam,
-        DeleteTeam,
-        CloseTeamsForm
+        AddTeam,
+        DeleteTeams,
+        CloseForm,
+        SaveTeams,
+        RemoveLocationsFromReport,
+        AddLocationsToReport,
+        CreateReport
     }
 
     public class CommandFactory : ICommandFactory
@@ -46,9 +51,12 @@ namespace iPlanner.Presentation.Services
             dictionary.Add(CommandType.SelectTab, AppServices.GetService<SelectTabCommand>());
             dictionary.Add(CommandType.ToggleSideBar, AppServices.GetService<ToggleSideBarCommand>());
             dictionary.Add(CommandType.AddTeamMember, AppServices.GetService<AddMemberCommand>());
-            dictionary.Add(CommandType.SaveTeam, AppServices.GetService<SaveTeamsCommand>());
-            dictionary.Add(CommandType.DeleteTeam, AppServices.GetService<RemoveTeamsCommand>());
-            dictionary.Add(CommandType.CloseTeamsForm, AppServices.GetService<CloseTeamsFormCommand>());
+            dictionary.Add(CommandType.AddTeam, AppServices.GetService<AddTeamCommand>());
+            dictionary.Add(CommandType.DeleteTeams, AppServices.GetService<RemoveTeamsCommand>());
+            dictionary.Add(CommandType.CloseForm, AppServices.GetService<CloseFormCommand>());
+            dictionary.Add(CommandType.RemoveLocationsFromReport, AppServices.GetService<RemoveLocationReportCommand>());
+            dictionary.Add(CommandType.AddLocationsToReport, AppServices.GetService<AddLocationReportCommand>());
+            dictionary.Add(CommandType.CreateReport, AppServices.GetService<CreateReportCommand>());
         }
 
         public ICommand? GetCommand(CommandType commandType)

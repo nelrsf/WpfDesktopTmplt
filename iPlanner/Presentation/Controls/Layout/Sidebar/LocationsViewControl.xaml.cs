@@ -85,15 +85,20 @@ namespace iPlanner.Presentation.Controls.Sidebar
             _dragManager.OnMouseUp(sender, e);
         }
 
+        private void OnLocationCheckCahnged(CheckBox checkBox, Action<LocationItemDTO> action)
+        {
+            if (checkBox?.DataContext is LocationItemDTO locationItemDTO)
+            {
+                action.Invoke(locationItemDTO);
+            }
+        }
+
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             if (sender is CheckBox)
             {
                 CheckBox checkBox = sender as CheckBox;
-                if (checkBox.DataContext is LocationItemDTO locationItemDTO)
-                {
-                    _selectionManager.Add(locationItemDTO);
-                }
+                OnLocationCheckCahnged(checkBox, (LocationItemDTO l)=>_selectionManager.Add(l));
             }
         }
 
@@ -102,10 +107,7 @@ namespace iPlanner.Presentation.Controls.Sidebar
             if (sender is CheckBox)
             {
                 CheckBox checkBox = sender as CheckBox;
-                if (checkBox.DataContext is LocationItemDTO locationItemDTO)
-                {
-                    _selectionManager.Remove(locationItemDTO);
-                }
+                OnLocationCheckCahnged(checkBox, (LocationItemDTO l) => _selectionManager.Remove(l));
             }
         }
     }

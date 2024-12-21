@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Reports
 {
-    public class LocationsReportBase : ICommand
+    public class LocationsReportBase : ICommand<ReportMessage>
     {
         public event EventHandler? CanExecuteChanged;
 
@@ -13,22 +13,20 @@ namespace iPlanner.Presentation.Commands.Reports
         protected ActivityDTO? Activity;
         protected ICollection<LocationItemDTO>? Locations;
 
-        public virtual bool CanExecute(object? parameter)
+        public virtual bool CanExecute(ReportMessage? parameter)
         {
             return true;
         }
 
-        public virtual void Execute(object? parameter)
+        public virtual void Execute(ReportMessage? parameter)
         {
             ProccessMessage(parameter);
         }
 
-        private void ProccessMessage(object? parameter) {
+        private void ProccessMessage(ReportMessage? reportMessage)
+        {
 
-            if (!(parameter is ReportMessage)) 
-                throw new ArgumentNullException(nameof(parameter)); ;
-
-            ReportMessage reportMessage = (ReportMessage)parameter;
+            if (reportMessage == null) return;
 
             Report = reportMessage.Report;
             Activity = reportMessage.Activity;

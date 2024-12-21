@@ -3,7 +3,7 @@ using iPlanner.Presentation.ViewModels.Layout;
 
 namespace iPlanner.Presentation.Commands
 {
-    public class InsertNewViewCommand : ICommand
+    public class InsertNewViewCommand : ICommand<IMainWindow>
     {
         private string? _viewName;
         public object? Content;
@@ -27,19 +27,19 @@ namespace iPlanner.Presentation.Commands
 
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(IMainWindow? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(IMainWindow? mainWindow)
         {
-            if (!CanExecute(parameter)) return;
-            if (!(parameter is MainWindow)) return;
+            if (!CanExecute(mainWindow)) return;
+
             if (_viewName == null) return;
 
-            MainWindow mainWindow = (MainWindow)parameter;
-            MainWindowViewModel mainWindowViewModel = mainWindow.DataContext as MainWindowViewModel;
+
+            MainWindowViewModel mainWindowViewModel = ((MainWindow)mainWindow).DataContext as MainWindowViewModel;
             if (mainWindowViewModel != null)
             {
                 if (Content == null)

@@ -9,7 +9,8 @@ namespace iPlanner.Infrastructure.Reports
         private readonly FileService _fileService;
         private readonly string _reportsFilePath;
 
-        public FileReportsRepository(FileService fileService) {
+        public FileReportsRepository(FileService fileService)
+        {
             _fileService = fileService;
             _reportsFilePath = _fileService.GetDataFilePath("Reports.json");
             _fileService.EnsureDirectoryExists(_reportsFilePath);

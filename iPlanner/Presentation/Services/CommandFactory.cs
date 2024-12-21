@@ -1,9 +1,7 @@
 ﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
-using iPlanner.Presentation.Commands.Reports;
-using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Commands.Window;
-using System.Collections;
+using iPlanner.Presentation.Interfaces;
 
 namespace iPlanner.Presentation.Services
 {
@@ -27,45 +25,87 @@ namespace iPlanner.Presentation.Services
         CreateReport
     }
 
-    public class CommandFactory : ICommandFactory
+    public class CommandFactory : ICommandFactory<object>
     {
 
-        private IDictionary dictionary;
+        private Dictionary<Type, Func<ICommand<object>>> dictionary;
 
 
         public CommandFactory()
         {
-            dictionary = new Dictionary<CommandType, ICommand>();
+            dictionary = new Dictionary<Type, Func<ICommand<object>>>();
             initializeCommands();
         }
 
         private void initializeCommands()
         {
             dictionary.Clear();
-            dictionary.Add(CommandType.ArrangeVertical, AppServices.GetService<ArrangeVerticalCommand>());
-            dictionary.Add(CommandType.ArrangeHorizontal, AppServices.GetService <ArrangeHorizontalCommand>());
-            dictionary.Add(CommandType.ArrangeCascade, AppServices.GetService <ArrangeCascadeCommand>());
-            dictionary.Add(CommandType.ArrangeGrid, AppServices.GetService<ArrangeGridCommand>());
-            dictionary.Add(CommandType.OpenNewViewDialog, AppServices.GetService<OpenNewDialog>());
-            dictionary.Add(CommandType.InsertNewView, AppServices.GetService<InsertNewViewCommand>());
-            dictionary.Add(CommandType.SelectTab, AppServices.GetService<SelectTabCommand>());
-            dictionary.Add(CommandType.ToggleSideBar, AppServices.GetService<ToggleSideBarCommand>());
-            dictionary.Add(CommandType.AddTeamMember, AppServices.GetService<AddMemberCommand>());
-            dictionary.Add(CommandType.AddTeam, AppServices.GetService<AddTeamCommand>());
-            dictionary.Add(CommandType.DeleteTeams, AppServices.GetService<RemoveTeamsCommand>());
-            dictionary.Add(CommandType.CloseForm, AppServices.GetService<CloseFormCommand>());
-            dictionary.Add(CommandType.RemoveLocationsFromReport, AppServices.GetService<RemoveLocationReportCommand>());
-            dictionary.Add(CommandType.AddLocationsToReport, AppServices.GetService<AddLocationReportCommand>());
-            dictionary.Add(CommandType.CreateReport, AppServices.GetService<CreateReportCommand>());
+            dictionary.Add(typeof(ArrangeVerticalCommand), () => AppServices.GetService<ArrangeVerticalCommand>());
+            dictionary.Add(typeof(ArrangeHorizontalCommand), () => AppServices.GetService<ArrangeHorizontalCommand>());
+            dictionary.Add(typeof(ArrangeCascadeCommand), () => AppServices.GetService<ArrangeCascadeCommand>());
+            dictionary.Add(typeof(ArrangeGridCommand), () => AppServices.GetService<ArrangeGridCommand>());
+            dictionary.Add(typeof(OpenNewDialog), () => AppServices.GetService<OpenNewDialog>());
+            dictionary.Add(typeof(SelectTabCommand), () => AppServices.GetService<SelectTabCommand>());
+            //dictionary.Add(typeof(AddMemberCommand), () => AppServices.GetService<AddMemberCommand>());
+            //dictionary.Add(typeof(AddTeamCommand), () => AppServices.GetService<AddTeamCommand>());
+            //dictionary.Add(typeof(RemoveTeamsCommand), () => AppServices.GetService<RemoveTeamsCommand>());
+            //dictionary.Add(typeof(RemoveLocationReportCommand), () => AppServices.GetService<RemoveLocationReportCommand>());
+            //dictionary.Add(typeof(AddLocationReportCommand), () => AppServices.GetService<AddLocationReportCommand>());
+            //dictionary.Add(typeof(CreateReportCommand), () => AppServices.GetService<CreateReportCommand>());
         }
 
-        public ICommand? GetCommand(CommandType commandType)
+        public ICommand<object>? GetCommand(Type type)
         {
-            return dictionary[commandType] as ICommand;
+            return dictionary[type].Invoke();
         }
-
 
     }
 
+    public class CommandWindowFactory : ICommandFactory<IMainWindow>
+    {
+        private Dictionary<Type, Func<ICommand<IMainWindow>>> dictionary;
 
+
+        public CommandWindowFactory()
+        {
+            dictionary = new Dictionary<Type, Func<ICommand<IMainWindow>>>();
+            initializeCommands();
+        }
+
+        private void initializeCommands()
+        {
+            dictionary.Clear();
+            dictionary.Add(typeof(InsertNewViewCommand), () => AppServices.GetService<InsertNewViewCommand>());
+            dictionary.Add(typeof(ToggleSideBarCommand), () => AppServices.GetService<ToggleSideBarCommand>());
+
+        }
+        public ICommand<IMainWindow>? GetCommand(Type type)
+        {
+            return dictionary[type].Invoke();
+        }
+    }
+
+    public class ViewModelCommandFactory : ICommandFactory<IFormViewModel>
+    {
+        private Dictionary<Type, Func<ICommand<IFormViewModel>>> dictionary;
+
+
+        public ViewModelCommandFactory()
+        {
+            dictionary = new Dictionary<Type, Func<ICommand<IFormViewModel>>>();
+            initializeCommands();
+        }
+
+        public ICommand<IFormViewModel>? GetCommand(Type type)
+        {
+            return dictionary[type].Invoke();
+        }
+
+        private void initializeCommands()
+        {
+            dictionary.Clear();
+            dictionary.Add(typeof(CloseFormCommand), () => AppServices.GetService<CloseFormCommand>());
+        }
+
+    }
 }

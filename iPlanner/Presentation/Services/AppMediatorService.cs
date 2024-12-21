@@ -1,28 +1,24 @@
 ﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
-using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
 
 public class AppMediatorService : IMediator
 {
-    private readonly ICommandFactory _commandFactory;
     private IMainWindow? _window;
     private readonly Dictionary<Type, object> _handlers;
 
-    public AppMediatorService(ICommandFactory commandFactory)
+    public AppMediatorService()
     {
-        _commandFactory = commandFactory;
         _handlers = new Dictionary<Type, object>();
     }
 
     private void InitializeHandlers()
     {
-        // Creamos las instancias de los handlers
-        var viewHandler = new ViewMessageHandler(_commandFactory.GetCommand(CommandType.InsertNewView) as InsertNewViewCommand, _window);
-        var tabHandler = new TabMessageHandler(_commandFactory.GetCommand(CommandType.SelectTab) as SelectTabCommand, _window);
-        var teamHandler = new TeamMessageHandler(_commandFactory, _window);
-        var genericHandler = new CommandMessageHandler(_commandFactory, _window);
-        var reportHandler = new ReportMessageHandler(_commandFactory);
+        var viewHandler = new ViewMessageHandler(new InsertNewViewCommand(), _window);
+        var tabHandler = new TabMessageHandler(new SelectTabCommand(), _window);
+        var teamHandler = new TeamMessageHandler(_window);
+        var genericHandler = new CommandMessageHandler(_window);
+        var reportHandler = new ReportMessageHandler(_window);
 
         // Registramos los handlers
         RegisterHandler<ViewMessage>(viewHandler);
@@ -58,5 +54,4 @@ public class AppMediatorService : IMediator
         InitializeHandlers();
     }
 
-    public ICommandFactory GetDictionary() => _commandFactory;
 }

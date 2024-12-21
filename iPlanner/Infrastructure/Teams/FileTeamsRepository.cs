@@ -2,7 +2,6 @@
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Infrastructure.Common;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 
 namespace iPlanner.Infrastructure.Teams
 {
@@ -24,7 +23,8 @@ namespace iPlanner.Infrastructure.Teams
         }
 
 
-        private async void LoadTeams() { 
+        private async void LoadTeams()
+        {
             _teams = await GetTeams() ?? new ObservableCollection<TeamDTO>();
         }
 
@@ -36,7 +36,8 @@ namespace iPlanner.Infrastructure.Teams
                 throw new ArgumentNullException(nameof(_teams));
             }
 
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 team.Id = IdGenerator.GenerateUUID();
                 _teams.Add(team);
                 SaveTeams();
@@ -45,7 +46,8 @@ namespace iPlanner.Infrastructure.Teams
 
         public async Task DeleteTeams(ObservableCollection<TeamDTO> teamsToRemove)
         {
-            await Task.Run(() => {
+            await Task.Run(() =>
+            {
                 if (_teams == null)
                 {
                     throw new ArgumentNullException(nameof(_teams));

@@ -4,29 +4,28 @@ using System.Windows;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
-    public class AddTeamCommand : ICommand
+    public class AddTeamCommand : ICommand<TeamDTO>
     {
         public event EventHandler? CanExecuteChanged;
         private ITeamService _teamService;
 
-        public AddTeamCommand(ITeamService teamService) { 
+        public AddTeamCommand(ITeamService teamService)
+        {
             _teamService = teamService;
         }
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(TeamDTO? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(TeamDTO? team)
         {
-            if(parameter is TeamDTO)
-            {
-                TeamDTO team = (TeamDTO)parameter;
-                _teamService.AddTeam(team);
-                MessageBox.Show("Frente de trabajo agregado correctamente");
-                
-            }
+
+            _teamService.AddTeam(team);
+            MessageBox.Show("Frente de trabajo agregado correctamente");
+
+
         }
     }
 }

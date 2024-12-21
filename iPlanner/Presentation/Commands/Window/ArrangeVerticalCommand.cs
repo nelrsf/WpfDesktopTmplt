@@ -1,13 +1,9 @@
-﻿using System.Windows.Controls;
-using AvalonDock;
-using AvalonDock.Layout;
-using iPlanner.Presentation.ViewModels;
+﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands.Window.Base;
-using iPlanner.Core.Application.Interfaces;
 
 namespace iPlanner.Presentation.Commands.Window
 {
-    public class ArrangeVerticalCommand : ArrangeCommandBase, ICommand
+    public class ArrangeVerticalCommand : ArrangeCommandBase, ICommand<object>
     {
         public event EventHandler? CanExecuteChanged;
 

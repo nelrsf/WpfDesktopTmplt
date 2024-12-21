@@ -1,13 +1,13 @@
 ﻿namespace iPlanner.Core.Application.Interfaces
 {
-    public interface ICommand
+    public interface ICommand<T>
     {
         event EventHandler? CanExecuteChanged;
 
-        bool CanExecute(object? parameter);
+        bool CanExecute(T? parameter);
 
 
-        void Execute(object? parameter);
+        void Execute(T? parameter);
 
     }
 }

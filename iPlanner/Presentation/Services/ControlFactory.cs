@@ -1,31 +1,73 @@
 ﻿using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Controls.Teams;
+using iPlanner.Presentation.Interfaces;
 using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Services
 {
-    public class ControlFactory
+    public enum CustomControlType
     {
-        public const string CALENDAR_CONTROL = "Calendar";
-        public const string DASHBOARD_CONTROL = "Dashboard";
-        public const string NOTIFICATIONS_CONTROL = "Notifications";
-        public const string HOME_CONTROL = "Home";
-        public const string REPORT_LIST_CONTROL = "Report List";
-        public const string TEAMS_FORM_CONTROL = "_teams Form";
-        public const string REPORTS_FORM = "Reports Form";
+        CALENDAR_CONTROL,
+        DASHBOARD_CONTROL,
+        NOTIFICATIONS_CONTROL,
+        HOME_CONTROL,
+        REPORT_LIST_CONTROL,
+        TEAMS_FORM_CONTROL,
+        REPORTS_FORM
+    }
 
-        public UserControl GetControl(string name)
+    public class ControlFactory : IControlAbstractFactory
+    {
+
+        private Dictionary<Type, Func<UserControl>> CustomControlDictionary;
+
+        public ControlFactory()
         {
-            return name switch
-            {
-                CALENDAR_CONTROL => new CalendarControl(),
-                DASHBOARD_CONTROL => new DashboardControl(),
-                NOTIFICATIONS_CONTROL => new NotificationsControl(),
-                REPORT_LIST_CONTROL => new ReportListControl(),
-                TEAMS_FORM_CONTROL => new TeamFormControl(),
-                REPORTS_FORM => new ReportEditorControl(),
-                _ => new WelcomeControl()
-            };
+            InitializeCustomControls();
         }
+
+        private void InitializeCustomControls()
+        {
+            CustomControlDictionary = new Dictionary<Type, Func<UserControl>>();
+            CustomControlDictionary.Add(typeof(CalendarControl), () => new CalendarControl());
+            CustomControlDictionary.Add(typeof(NotificationsControl), () => new NotificationsControl());
+            CustomControlDictionary.Add(typeof(DashboardControl), () => new DashboardControl());
+            CustomControlDictionary.Add(typeof(WelcomeControl), () => new WelcomeControl());
+            CustomControlDictionary.Add(typeof(TeamFormControl), () => new TeamFormControl());
+            CustomControlDictionary.Add(typeof(ReportListControl), () => new ReportListControl());
+        }
+
+        public UserControl CreateControl(Type type)
+        {
+            return CustomControlDictionary[type].Invoke();
+        }
+
+        public IFormControl<Model> CreateFormControl<Model, Control>(Model entity, bool readonlyMode) where Model : class where Control : IFormControl<Model>, new()
+        {
+            IFormControl<Model> control = new Control();
+
+            if (readonlyMode)
+            {
+                control.ViewReport(entity);
+            }
+            else
+            {
+                control.EditReport(entity);
+            }
+
+            return control;
+
+        }
+
+        public IFormControl<Model> CreateFormControl<Model, Control>() where Model : class where Control : IFormControl<Model>, new()
+        {
+            IFormControl<Model> control = new Control();
+            control.CreateNewReport();
+
+            return control;
+
+        }
+
+
     }
 }

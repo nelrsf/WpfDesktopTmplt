@@ -1,25 +1,22 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
-    public class AddMemberCommand : ICommand
+    public class AddMemberCommand : ICommand<TeamDTO>
     {
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(TeamDTO? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(TeamDTO? team)
         {
-            if (!CanExecute(parameter)) return;
+            if (!CanExecute(team)) return;
 
-            if (!(parameter is TeamDTO)) return;
 
-            TeamDTO team = (TeamDTO)parameter;
             if (team == null) return;
 
 

@@ -1,9 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Controls;
-using iPlanner.Presentation.Dialogs;
-using iPlanner.Presentation.Services;
 
 namespace iPlanner.Presentation.Dialogs
 {
@@ -46,9 +42,8 @@ namespace iPlanner.Presentation.Dialogs
         {
             if (ViewTypeList.SelectedItem is ViewOption selectedItem)
             {
-                var viewName = selectedItem.Name;
-                _viewModel.CreateNewView(viewName);
-                if(_parentWindow != null) _parentWindow.Close();
+                _viewModel.CreateNewView(selectedItem);
+                if (_parentWindow != null) _parentWindow.Close();
             }
         }
 

@@ -1,5 +1,4 @@
-﻿using iPlanner.Core.Entities.Teams;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Application.DTO
 {
@@ -7,7 +6,8 @@ namespace iPlanner.Core.Application.DTO
     {
         public string? Id { get; set; }
         public string? Name { get; set; }
-        public TeamBaseDTO(string id, string name) {
+        public TeamBaseDTO(string id, string name)
+        {
             Id = id;
             Name = name;
         }

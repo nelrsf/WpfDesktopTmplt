@@ -4,25 +4,25 @@ using System.Windows;
 
 namespace iPlanner.Presentation.Commands.Reports
 {
-    internal class CreateReportCommand : ICommand
+    internal class CreateReportCommand : ICommand<ReportMessage>
     {
         public event EventHandler? CanExecuteChanged;
         private readonly IReportService _reportService;
 
-        public CreateReportCommand(IReportService reportService) { 
+        public CreateReportCommand(IReportService reportService)
+        {
             _reportService = reportService;
         }
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(ReportMessage? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(ReportMessage? reportMessage)
         {
-            if (parameter is ReportMessage reportMessage) {
-                _reportService.AddReportAsync(reportMessage.Report);
-                MessageBox.Show("Reporte agragado correctamente");
-            }
+            if (reportMessage == null) return;
+            _reportService.AddReportAsync(reportMessage.Report);
+            MessageBox.Show("Reporte agragado correctamente");
         }
     }
 }

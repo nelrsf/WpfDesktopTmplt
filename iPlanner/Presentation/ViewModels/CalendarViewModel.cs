@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.Services;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Services;
 
 namespace iPlanner.Presentation.ViewModels
 {

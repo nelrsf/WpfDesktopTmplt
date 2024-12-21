@@ -16,19 +16,20 @@ namespace iPlanner.Presentation.Services.MediatorMessages
         }
     }
 
-    public class ReportMessage : MessageBase { 
+    public class ReportMessage : MessageBase
+    {
 
         public ReportDTO Report { get; set; }
         public ActivityDTO Activity { get; set; }
-        public ICollection<LocationItemDTO> Locations {  get; set; }
+        public ICollection<LocationItemDTO> Locations { get; set; }
 
         public ReportMessage(CommandType commandType) : base(commandType) { }
     }
     public class CommandMessage
     {
-        public CommandType CommandType { get; }
+        public Type CommandType { get; }
 
-        public CommandMessage(CommandType commandType)
+        public CommandMessage(Type commandType)
         {
             CommandType = commandType;
         }

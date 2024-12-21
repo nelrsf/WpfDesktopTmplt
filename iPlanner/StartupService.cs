@@ -14,6 +14,7 @@ using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Commands.Window;
+using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services;
 using iPlanner.Presentation.ViewModels.Layout;
 using iPlanner.Presentation.ViewModels.Teams;
@@ -42,8 +43,9 @@ namespace iPlanner
             services.AddSingleton<AddLocationReportCommand>();
             services.AddSingleton<CreateReportCommand>();
 
-
-            services.AddSingleton<ICommandFactory, CommandFactory>();
+            //Factories and Mediator
+            //services.AddSingleton<ICommandFactory, CommandFactory>();
+            services.AddSingleton<IControlAbstractFactory, ControlFactory>();
             services.AddSingleton<IMediator, AppMediatorService>();
 
             //Repositories
@@ -55,7 +57,7 @@ namespace iPlanner
             services.AddSingleton<IMapper<ReportDTO, Report>, ReportMapper>();
             services.AddSingleton<IMapper<ActivityDTO, Activity>, ActivityMapper>();
             services.AddSingleton<IMapper<LocationItemDTO, LocationItem>, LocationItemMapper>();
-            services.AddSingleton<IMapper<TeamDTO,Team>, TeamMapper>();
+            services.AddSingleton<IMapper<TeamDTO, Team>, TeamMapper>();
             services.AddSingleton<IMapper<TeamMemberDTO, TeamMember>, TeamMemberMapper>();
 
 

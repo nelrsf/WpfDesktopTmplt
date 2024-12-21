@@ -1,10 +1,9 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
-using System.Windows.Forms;
 
 namespace iPlanner.Presentation.ViewModels.Reports
 {
@@ -15,6 +14,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
         private ObservableCollection<ReportDTO> _reports;
         private ReportDTO? _selectedReport;
         private readonly IMediator _mediatorService;
+        private readonly IControlAbstractFactory _controlAbstractFactory;
 
         public ObservableCollection<ReportDTO> Reports
         {
@@ -36,11 +36,12 @@ namespace iPlanner.Presentation.ViewModels.Reports
             }
         }
 
-        public ReportListViewModel(IReportService reportService, IMediator mediatorService)
+        public ReportListViewModel(IReportService reportService, IMediator mediatorService, IControlAbstractFactory abstractFactory)
         {
             _reportService = reportService;
             _reports = new ObservableCollection<ReportDTO>();
             _mediatorService = mediatorService;
+            _controlAbstractFactory = abstractFactory;
 
         }
 
@@ -61,17 +62,13 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
         internal void OpenCreateReportForm()
         {
-            string viewName = ControlFactory.REPORTS_FORM;
-            ControlFactory controlFactory = new ControlFactory();
-            var content = controlFactory.GetControl(viewName);
-            if (content is IFormControl<ReportDTO> formControl) {
-                formControl.CreateNewReport();
-            }
-            
+            string viewName = "Crear reporte";
+            IFormControl<ReportDTO> content = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
+            content.CreateNewReport();
             ViewMessage message = new ViewMessage(viewName, content);
             message.sender = this;
             _mediatorService.Notify(message);
-            
+
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using iPlanner.Core.Entities.Locations;
-using iPlanner.Core.Entities.Reports;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -118,18 +117,18 @@ namespace iPlanner.Core.Application.DTO
         {
             Locations = new ObservableCollection<LocationItemDTO>();
 
-/*            if (activity != null)
-            {
-                Description = activity.Description;
+            /*            if (activity != null)
+                        {
+                            Description = activity.Description;
 
-                if (activity.Locations != null)
-                {
-                    foreach (var location in activity.Locations)
-                    {
-                        Locations.Add(new LocationItemDTO(location));
-                    }
-                }
-            }*/
+                            if (activity.Locations != null)
+                            {
+                                foreach (var location in activity.Locations)
+                                {
+                                    Locations.Add(new LocationItemDTO(location));
+                                }
+                            }
+                        }*/
         }
 
 

@@ -1,9 +1,7 @@
-﻿using iPlanner.Presentation.Services;
-
-namespace iPlanner.Core.Application.Interfaces
+﻿namespace iPlanner.Core.Application.Interfaces
 {
-    public interface ICommandFactory
+    public interface ICommandFactory<Model>
     {
-        ICommand? GetCommand(CommandType commandType);
+        ICommand<Model>? GetCommand(Type type);
     }
 }

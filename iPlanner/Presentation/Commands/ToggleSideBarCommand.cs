@@ -1,38 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AvalonDock.Layout;
-using iPlanner;
+﻿using AvalonDock.Layout;
 using iPlanner.Core.Application.Interfaces;
 
 namespace iPlanner.Presentation.Commands
 {
-    internal class ToggleSideBarCommand : ICommand
+    internal class ToggleSideBarCommand : ICommand<IMainWindow>
     {
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(IMainWindow? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(IMainWindow? mainWindow)
         {
-            if (!CanExecute(parameter))
+            if (!CanExecute(mainWindow))
             {
                 return;
             }
 
-            if (!(parameter is MainWindow))
-            {
-                return;
-            }
 
-            MainWindow mainWindow = (MainWindow)parameter;
-
-            LayoutAnchorable explorerPanel = mainWindow.explorerPanel;
+            LayoutAnchorable explorerPanel = ((MainWindow)mainWindow).explorerPanel;
             if (explorerPanel != null)
             {
                 if (explorerPanel.IsHidden)

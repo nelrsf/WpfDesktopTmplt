@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Entities.Dashboard;
+using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Application.Services
 {

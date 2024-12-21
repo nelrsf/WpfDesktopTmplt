@@ -1,15 +1,16 @@
-﻿using iPlanner.Presentation.Controls;
-using iPlanner.Presentation.Controls.Sidebar;
-using AvalonDock;
+﻿using AvalonDock;
 using AvalonDock.Layout;
-using iPlanner.Presentation.Services;
+using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Controls;
+using iPlanner.Presentation.Controls.Sidebar;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
 
 namespace iPlanner.Presentation.ViewModels.Layout
 {
@@ -18,6 +19,8 @@ namespace iPlanner.Presentation.ViewModels.Layout
         public MainWindow? mainWindow;
 
         private IMediator? _mediator;
+
+        private IControlAbstractFactory _controlAbstractFactory;
         private LayoutAnchorablePane? SideBar { get; set; }
         private RadioButton? _lastCheckedButton = null;
         private LayoutAnchorable? _currentPanel { get; set; }
@@ -34,6 +37,7 @@ namespace iPlanner.Presentation.ViewModels.Layout
         public MainWindowViewModel()
         {
             _mediator = AppServices.GetService<IMediator>();
+            _controlAbstractFactory = AppServices.GetService<IControlAbstractFactory>();
             Documents = new ObservableCollection<LayoutDocument>();
             InitializeViews();
         }
@@ -61,8 +65,8 @@ namespace iPlanner.Presentation.ViewModels.Layout
         {
             LayoutDocument? home = new LayoutDocument
             {
-                Title = ControlFactory.HOME_CONTROL,
-                Content = Activator.CreateInstance(typeof(WelcomeControl)),
+                Title = "Bienvenido",
+                Content = _controlAbstractFactory.CreateControl(typeof(WelcomeControl)),
                 CanClose = true,
             };
             home.Closed += DeleteDocument;
@@ -71,18 +75,18 @@ namespace iPlanner.Presentation.ViewModels.Layout
             LayoutDocument? reportList = new LayoutDocument
             {
                 CanClose = true,
-                Title = ControlFactory.REPORT_LIST_CONTROL,
-                Content = Activator.CreateInstance(typeof(ReportListControl))
+                Title = "Reportes",
+                Content = _controlAbstractFactory.CreateControl(typeof(ReportListControl))
             };
             reportList.Closed += DeleteDocument;
             Documents.Add(reportList);
 
-            var report = new ReportEditorControl();
+            IFormControl<ReportDTO> report = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
             report.CreateNewReport();
             LayoutDocument? reportForm = new LayoutDocument
             {
                 CanClose = true,
-                Title = ControlFactory.REPORTS_FORM,
+                Title = "Crear reporte",
                 Content = report
             };
             reportForm.Closed += DeleteDocument;

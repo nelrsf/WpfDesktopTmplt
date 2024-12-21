@@ -10,13 +10,14 @@ namespace iPlanner.Core.Entities.Reports
         public Team? Team { get; set; }
 
         private DateTime? _date;
-        public DateTime? Date 
-        { 
+        public DateTime? Date
+        {
             get
             {
                 return _date;
             }
-            set {  
+            set
+            {
                 _date = value;
                 UpdateScheduleByDate();
             }
@@ -28,14 +29,15 @@ namespace iPlanner.Core.Entities.Reports
 
         public ObservableCollection<Activity>? Activities { get; set; }
 
-        public Report(){}
+        public Report() { }
 
-        private void UpdateScheduleByDate() {
+        private void UpdateScheduleByDate()
+        {
             if (Date == null) return;
             switch (Date.Value.DayOfWeek)
             {
                 case DayOfWeek.Monday:
-                    TimeInit = TimeSpan.FromHours(8); 
+                    TimeInit = TimeSpan.FromHours(8);
                     TimeEnd = TimeSpan.FromHours(17);
                     break;
                 case DayOfWeek.Tuesday:
@@ -43,19 +45,19 @@ namespace iPlanner.Core.Entities.Reports
                     TimeEnd = TimeSpan.FromHours(17);
                     break;
                 case DayOfWeek.Wednesday:
-                    TimeInit = TimeSpan.FromHours(7); 
-                    TimeEnd = TimeSpan.FromHours(17); 
+                    TimeInit = TimeSpan.FromHours(7);
+                    TimeEnd = TimeSpan.FromHours(17);
                     break;
                 case DayOfWeek.Thursday:
-                    TimeInit = TimeSpan.FromHours(7); 
-                    TimeEnd = TimeSpan.FromHours(17); 
+                    TimeInit = TimeSpan.FromHours(7);
+                    TimeEnd = TimeSpan.FromHours(17);
                     break;
                 case DayOfWeek.Friday:
                     TimeInit = TimeSpan.FromHours(7);
                     TimeEnd = TimeSpan.FromHours(15);
                     break;
 
-            } 
+            }
         }
     }
 
@@ -63,7 +65,8 @@ namespace iPlanner.Core.Entities.Reports
     {
         public ObservableCollection<LocationItem> Locations { get; set; }
         public string? Description { get; set; }
-        public Activity() { 
+        public Activity()
+        {
             Locations = new ObservableCollection<LocationItem>();
         }
 

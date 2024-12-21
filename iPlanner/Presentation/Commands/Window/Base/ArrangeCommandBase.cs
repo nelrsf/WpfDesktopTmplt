@@ -1,8 +1,7 @@
-﻿using iPlanner;
-using AvalonDock;
+﻿using AvalonDock;
 using AvalonDock.Layout;
-using System.Collections.ObjectModel;
 using iPlanner.Presentation.ViewModels.Layout;
+using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Window.Base
 {

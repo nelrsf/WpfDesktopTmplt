@@ -1,34 +1,29 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
-using iPlanner.Core.Entities.Teams;
-using iPlanner.Infrastructure.Teams;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
-    public class RemoveTeamsCommand : ICommand
+    public class RemoveTeamsCommand : ICommand<ObservableCollection<TeamDTO>>
     {
         public event EventHandler? CanExecuteChanged;
         private ITeamService _teamService;
 
-        public RemoveTeamsCommand(ITeamService teamService) {
+        public RemoveTeamsCommand(ITeamService teamService)
+        {
             _teamService = teamService;
         }
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute(ObservableCollection<TeamDTO>? parameter)
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute(ObservableCollection<TeamDTO>? teamDTOs)
         {
-            if (!CanExecute(parameter)) return;
+            if (!CanExecute(teamDTOs)) return;
+            _teamService.RemoveTeams(teamDTOs);
 
-            if(parameter is ObservableCollection<TeamDTO>)
-            {
-                ObservableCollection<TeamDTO> teamDTOs = (ObservableCollection<TeamDTO>)parameter;
-                _teamService.RemoveTeams(teamDTOs);
-            }
         }
     }
 }

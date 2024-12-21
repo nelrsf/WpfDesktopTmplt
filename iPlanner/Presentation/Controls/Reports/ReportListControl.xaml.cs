@@ -1,7 +1,7 @@
 ﻿
 
 using iPlanner.Core.Application.Interfaces;
-using iPlanner.Infrastructure.Reports;
+using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.ViewModels.Reports;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +20,8 @@ namespace iPlanner.Presentation.Controls
             InitializeComponent();
             IReportService reportService = AppServices.GetService<IReportService>();
             IMediator mediator = AppServices.GetService<IMediator>();
-            ReportListViewModel = new ReportListViewModel(reportService, mediator);
+            IControlAbstractFactory abstractFactory = AppServices.GetService<IControlAbstractFactory>();
+            ReportListViewModel = new ReportListViewModel(reportService, mediator, abstractFactory);
             DataContext = ReportListViewModel;
             Loaded += ReportListControl_Loaded;
         }
@@ -30,7 +31,8 @@ namespace iPlanner.Presentation.Controls
             await ReportListViewModel.LoadReportsAsync();
         }
 
-        public void OnCreateReport(object sender, EventArgs e) {
+        public void OnCreateReport(object sender, EventArgs e)
+        {
             ReportListViewModel.OpenCreateReportForm();
 
         }

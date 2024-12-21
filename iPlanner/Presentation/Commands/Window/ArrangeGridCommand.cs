@@ -1,14 +1,12 @@
-﻿using System.Collections.ObjectModel;
-using System.Windows.Controls;
-using AvalonDock;
-using AvalonDock.Layout;
-using iPlanner.Presentation.ViewModels;
-using iPlanner.Presentation.Commands.Window.Base;
+﻿using AvalonDock.Layout;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands.Window.Base;
+using System.Collections.ObjectModel;
+using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Commands.Window
 {
-    public class ArrangeGridCommand : ArrangeCommandBase, ICommand
+    public class ArrangeGridCommand : ArrangeCommandBase, ICommand<object>
     {
         public event EventHandler? CanExecuteChanged;
 
@@ -21,7 +19,7 @@ namespace iPlanner.Presentation.Commands.Window
                 return;
             }
 
-            if(parameter == null) return;
+            if (parameter == null) return;
 
             base.Execute(parameter);
         }

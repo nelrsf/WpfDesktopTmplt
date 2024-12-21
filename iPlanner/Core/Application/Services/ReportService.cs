@@ -41,7 +41,8 @@ namespace iPlanner.Core.Application.Services
             return new ReportDTO();
         }
 
-        public ReportDTO RefreshReportDate(ReportDTO dto) {
+        public ReportDTO RefreshReportDate(ReportDTO dto)
+        {
             Report report = _reportMapper.ToEntity(dto);
             report.Date = dto.Date;
             dto = _reportMapper.ToDTO(report);

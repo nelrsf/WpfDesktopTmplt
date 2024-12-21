@@ -1,7 +1,4 @@
-﻿using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
-using System.Collections.ObjectModel;
+﻿using iPlanner.Presentation.Services.MediatorMessages;
 
 namespace iPlanner.Presentation.Commands.Reports
 {
@@ -9,12 +6,12 @@ namespace iPlanner.Presentation.Commands.Reports
     {
         public event EventHandler? CanExecuteChanged;
 
-        public override bool CanExecute(object? parameter)
+        public override bool CanExecute(ReportMessage? parameter)
         {
             return true;
         }
 
-        public override void Execute(object? parameter)
+        public override void Execute(ReportMessage? parameter)
         {
             base.Execute(parameter);
             foreach (var location in Locations)

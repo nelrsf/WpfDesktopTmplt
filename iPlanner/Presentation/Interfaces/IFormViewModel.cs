@@ -2,7 +2,7 @@
 
 namespace iPlanner.Presentation.Interfaces
 {
-    internal interface IFormViewModel
+    public interface IFormViewModel
     {
         public UserControl GetUserControl();
     }

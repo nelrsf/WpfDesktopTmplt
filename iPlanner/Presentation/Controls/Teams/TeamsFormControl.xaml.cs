@@ -21,7 +21,8 @@ namespace iPlanner.Presentation.Controls.Teams
             _viewModel.AddMember();
         }
 
-        private void RowCheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e) {
+        private void RowCheckBox_Unchecked(object sender, System.Windows.RoutedEventArgs e)
+        {
             if (!(sender is CheckBox)) return;
 
             CheckBox checkBox = (CheckBox)sender;
@@ -35,10 +36,10 @@ namespace iPlanner.Presentation.Controls.Teams
         private void RowCheckBox_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
             if (!(sender is CheckBox)) return;
-            
+
             CheckBox checkBox = (CheckBox)sender;
-            
-            if(checkBox.IsChecked == true)
+
+            if (checkBox.IsChecked == true)
             {
                 _viewModel.AddSelectedMember((TeamMemberDTO)checkBox.DataContext);
             }

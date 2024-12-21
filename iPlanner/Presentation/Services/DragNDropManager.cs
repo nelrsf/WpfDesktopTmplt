@@ -1,5 +1,5 @@
-﻿using System.Windows.Input;
-using System.Windows;
+﻿using System.Windows;
+using System.Windows.Input;
 
 namespace iPlanner.Presentation.Services
 {
@@ -14,7 +14,7 @@ namespace iPlanner.Presentation.Services
             Data = data;
         }
     }
-    public class DragNDropManager <T>
+    public class DragNDropManager<T>
     {
         public Point? StartPoint { get; private set; }
         public FrameworkElement? DragElement { get; private set; }
@@ -43,17 +43,7 @@ namespace iPlanner.Presentation.Services
 
         public void HandleDragOver(object sender, DragEventArgs e)
         {
-            // Similar al DragEnter
-            Type expectedType = typeof(T);
-            if (e.Data.GetDataPresent(expectedType))
-            {
-                e.Effects = DragDropEffects.Copy;
-            }
-            else
-            {
-                e.Effects = DragDropEffects.None;
-            }
-            e.Handled = true;
+            HandleDragEnter(sender, e);
         }
 
         public void HandleDrop(object sender, DragEventArgs e)
@@ -81,12 +71,12 @@ namespace iPlanner.Presentation.Services
         {
             if (!isDragging && DragElement != null && DragElement.IsMouseCaptured)
             {
-                if (IsDragging(sender, e))
-                {
-                    isDragging = true;
-                    StartDrag();
-                    CleanUp();
-                }
+                if (!IsDragging(sender, e)) return;
+
+                isDragging = true;
+                StartDrag();
+                CleanUp();
+
             }
         }
 

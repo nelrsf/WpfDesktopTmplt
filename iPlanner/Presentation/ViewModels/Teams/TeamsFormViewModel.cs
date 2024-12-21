@@ -1,5 +1,6 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Controls.Teams;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services;
@@ -150,7 +151,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
 
         public void CloseForm()
         {
-            _appMediatorService.Notify(new CommandMessage(CommandType.CloseForm));
+            _appMediatorService.Notify(new CommandMessage(typeof(CloseFormCommand)));
         }
 
         public UserControl GetUserControl()

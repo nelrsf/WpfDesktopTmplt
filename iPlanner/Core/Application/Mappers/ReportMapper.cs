@@ -124,9 +124,10 @@ namespace iPlanner.Core.Application.Mappers
                 Date = entity.Date,
                 TimeEnd = entity.TimeEnd,
                 TimeInit = entity.TimeInit,
-             };
+            };
 
-            if (entity.Team != null) {
+            if (entity.Team != null)
+            {
                 dto.Team = _teamMapper.ToDTO(entity.Team);
             }
 
@@ -153,7 +154,8 @@ namespace iPlanner.Core.Application.Mappers
                 TimeEnd = dto.TimeEnd,
                 TimeInit = dto.TimeInit,
             };
-            if (dto.Team != null) {
+            if (dto.Team != null)
+            {
                 report.Team = _teamMapper.ToEntity(dto.Team);
             }
 

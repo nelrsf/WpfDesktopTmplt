@@ -1,23 +1,26 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Reports;
+using iPlanner.Presentation.Commands.Teams;
+using iPlanner.Presentation.Interfaces;
+using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Services.MediatorMessages
 {
 
     public class CommandMessageHandler : IMessageHandler<CommandMessage>
     {
-        private readonly ICommandFactory _commandFactory;
         private readonly IMainWindow _window;
 
-        public CommandMessageHandler(ICommandFactory commandFactory, IMainWindow window)
+        public CommandMessageHandler(IMainWindow window)
         {
-            _commandFactory = commandFactory;
             _window = window;
         }
 
         public void Handle(CommandMessage message)
         {
-            var command = _commandFactory.GetCommand(message.CommandType);
+            ICommand<object> command = (ICommand<object>)Activator.CreateInstance(message.CommandType);
             command?.Execute(_window);
         }
     }
@@ -63,20 +66,22 @@ namespace iPlanner.Presentation.Services.MediatorMessages
 
     public class TeamMessageHandler : IMessageHandler<TeamMessage>
     {
-        private readonly ICommand? _addTeamCommand;
-        private readonly ICommand? _addMemberCommand;
-        private readonly IWindowCommand? _closeFormCommand;
-        private readonly ICommand? _removeTeamsCommand;
+        private readonly ICommand<TeamDTO> _addTeamCommand;
+        private readonly ICommand<TeamDTO>? _addMemberCommand;
+        private readonly IWindowCommand<IFormViewModel>? _closeFormCommand;
+        private readonly ICommand<ObservableCollection<TeamDTO>>? _removeTeamsCommand;
         private readonly IMainWindow _window;
-        private readonly ICommandFactory _commandFactory;
+        private readonly ITeamService _teamService;
+        //private readonly ICommandFactory _commandFactory;
 
-        public TeamMessageHandler(ICommandFactory commandFactory, IMainWindow window)
+        public TeamMessageHandler(IMainWindow window)
         {
-            _commandFactory = commandFactory;
-            _addTeamCommand = _commandFactory.GetCommand(CommandType.AddTeam);
-            _addMemberCommand = _commandFactory.GetCommand(CommandType.AddTeamMember);
-            _removeTeamsCommand = _commandFactory.GetCommand(CommandType.DeleteTeams);
-            _closeFormCommand = (IWindowCommand)_commandFactory.GetCommand(CommandType.CloseForm);
+            //_commandFactory = commandFactory;
+            _teamService = AppServices.GetService<ITeamService>();
+            _addTeamCommand = new AddTeamCommand(_teamService);
+            _addMemberCommand = new AddMemberCommand();
+            _removeTeamsCommand = new RemoveTeamsCommand(_teamService);
+            _closeFormCommand = new CloseFormCommand();
             _window = window;
             _closeFormCommand.MainWindow = _window;
         }
@@ -88,7 +93,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
             {
                 case CommandType.AddTeam:
                     _addTeamCommand?.Execute(message.TeamToCreate);
-                    _closeFormCommand?.Execute(message.sender);
+                    _closeFormCommand?.Execute((IFormViewModel?)message.sender);
                     break;
                 case CommandType.AddTeamMember:
                     _addMemberCommand?.Execute(message.TeamToCreate);
@@ -103,20 +108,24 @@ namespace iPlanner.Presentation.Services.MediatorMessages
 
     public class ReportMessageHandler : IMessageHandler<ReportMessage>
     {
-        private ICommandFactory _commandFactory;
-        private ICommand? AddLocationsToReport;
-        private ICommand? RemoveLocationsFromReport;
-        private ICommand? CreateReportCommand;
-        private IWindowCommand? CloseFormCommand;
+        //private ICommandFactory _commandFactory;
+        private ICommand<ReportMessage>? AddLocationsToReport;
+        private ICommand<ReportMessage>? RemoveLocationsFromReport;
+        private ICommand<ReportMessage>? CreateReportCommand;
+        private IWindowCommand<IFormViewModel>? CloseFormCommand;
+        private IMainWindow _window;
+        private IReportService _reportService;
 
 
-        public ReportMessageHandler(ICommandFactory commandFactory)
+        public ReportMessageHandler(IMainWindow mainWindow)
         {
-            _commandFactory = commandFactory;
-            AddLocationsToReport = _commandFactory.GetCommand(CommandType.AddLocationsToReport);
-            RemoveLocationsFromReport = _commandFactory.GetCommand(CommandType.RemoveLocationsFromReport);
-            CreateReportCommand = _commandFactory?.GetCommand(CommandType.CreateReport);
-            CloseFormCommand = (IWindowCommand?)_commandFactory.GetCommand(CommandType.CloseForm);
+            _reportService = AppServices.GetService<IReportService>();
+            AddLocationsToReport = new AddLocationReportCommand();
+            RemoveLocationsFromReport = new RemoveLocationReportCommand();
+            CreateReportCommand = new CreateReportCommand(_reportService);
+            CloseFormCommand = new CloseFormCommand();
+            _window = mainWindow;
+            CloseFormCommand.MainWindow = mainWindow;
         }
         public void Handle(ReportMessage message)
         {
@@ -130,7 +139,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
                     break;
                 case CommandType.CreateReport:
                     CreateReportCommand?.Execute(message);
-                    CloseFormCommand?.Execute(message.sender);
+                    CloseFormCommand?.Execute((IFormViewModel?)message.sender);
                     break;
 
             }

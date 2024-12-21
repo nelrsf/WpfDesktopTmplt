@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-
-namespace iPlanner.Presentation.Interfaces
+﻿namespace iPlanner.Presentation.Interfaces
 {
     public interface IFormControl<T> where T : class
     {

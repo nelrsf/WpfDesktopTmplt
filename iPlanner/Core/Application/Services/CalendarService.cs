@@ -1,6 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Entities.Calendar;
+using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Application.Services
 {
@@ -73,7 +73,7 @@ namespace iPlanner.Core.Application.Services
 
         public ObservableCollection<EventItemDTO> GetUpcomingEvents()
         {
-            if(UpcomingEvents == null) return new ObservableCollection<EventItemDTO>();
+            if (UpcomingEvents == null) return new ObservableCollection<EventItemDTO>();
 
             return new ObservableCollection<EventItemDTO>(
                     UpcomingEvents.Select(item => new EventItemDTO(item))

@@ -102,7 +102,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
 
         public void AddTeam()
         {
-            _appMediatorService.Notify(new ViewMessage(ControlFactory.TEAMS_FORM_CONTROL, new TeamFormControl()));
+            _appMediatorService.Notify(new ViewMessage("Crear equipo", new TeamFormControl()));
         }
 
         public void EditTeam()

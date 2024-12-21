@@ -1,7 +1,7 @@
 ﻿namespace iPlanner.Core.Application.Interfaces
 {
 
-    public interface IMessageHandler<TMessage> 
+    public interface IMessageHandler<TMessage>
     {
         void Handle(TMessage message);
     }

@@ -1,6 +1,7 @@
-﻿using iPlanner.Presentation.Controls;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services;
+﻿using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Window;
+using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Services.MediatorMessages;
 
 namespace iPlanner.Presentation.ViewModels.Layout
@@ -17,37 +18,37 @@ namespace iPlanner.Presentation.ViewModels.Layout
 
         public void ArrangeVertical_Click(object sender, EventArgs e)
         {
-            _mediator.Notify(new CommandMessage(CommandType.ArrangeVertical));
+            _mediator.Notify(new CommandMessage(typeof(ArrangeVerticalCommand)));
         }
 
         public void ArrangeHorizontal_Click(object sender, EventArgs e)
         {
-            _mediator.Notify(new CommandMessage(CommandType.ArrangeHorizontal));
+            _mediator.Notify(new CommandMessage(typeof(ArrangeHorizontalCommand)));
         }
 
         public void ArrangeCascade_Click(object sender, EventArgs e)
         {
-            _mediator.Notify(new CommandMessage(CommandType.ArrangeCascade));
+            _mediator.Notify(new CommandMessage(typeof(ArrangeCascadeCommand)));
         }
 
         public void ArrangeGrid_Click(object sender, EventArgs e)
         {
-            _mediator.Notify(new CommandMessage(CommandType.ArrangeGrid));
+            _mediator.Notify(new CommandMessage(typeof(ArrangeGridCommand)));
         }
 
         internal void OpenNewViewDialog()
         {
-            _mediator.Notify(new CommandMessage(CommandType.OpenNewViewDialog));
+            _mediator.Notify(new CommandMessage(typeof(OpenNewDialog)));
         }
 
         internal void AddHomeTab()
         {
-            _mediator.Notify(new ViewMessage(ControlFactory.HOME_CONTROL, new WelcomeControl()));
+            _mediator.Notify(new ViewMessage("Bienvenido", new WelcomeControl()));
         }
 
         internal void ToggleSideBar()
         {
-            _mediator.Notify(new CommandMessage(CommandType.ToggleSideBar));
+            _mediator.Notify(new CommandMessage(typeof(ToggleSideBarCommand)));
         }
     }
 

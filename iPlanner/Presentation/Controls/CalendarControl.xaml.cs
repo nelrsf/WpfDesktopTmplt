@@ -1,9 +1,7 @@
-﻿using System.Collections.ObjectModel;
+﻿using iPlanner.Core.Application.Services;
+using iPlanner.Presentation.ViewModels;
 using System.Windows;
 using System.Windows.Controls;
-using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Services;
-using iPlanner.Presentation.ViewModels;
 
 namespace iPlanner.Presentation.Controls
 {

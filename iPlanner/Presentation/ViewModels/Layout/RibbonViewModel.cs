@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.AppMediator;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Window;
 using iPlanner.Presentation.Controls;
@@ -43,7 +43,7 @@ namespace iPlanner.Presentation.ViewModels.Layout
 
         internal void AddHomeTab()
         {
-            _mediator.Notify(new ViewMessage("Bienvenido", new WelcomeControl()));
+            _mediator.Notify(new ViewMessage(typeof(InsertNewViewCommand), "Bienvenido", new WelcomeControl()));
         }
 
         internal void ToggleSideBar()

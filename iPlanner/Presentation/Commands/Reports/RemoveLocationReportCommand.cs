@@ -7,14 +7,16 @@ namespace iPlanner.Presentation.Commands.Reports
     {
         public event EventHandler? CanExecuteChanged;
 
-        public override bool CanExecute(ReportMessage? parameter)
+        public override bool CanExecute()
         {
             return true;
         }
 
-        public override void Execute(ReportMessage? parameter)
+        public override void Execute()
         {
-            base.Execute(parameter);
+            base.Execute();
+            if(Locations==null) return;
+            if(Activity==null) return;
             List<LocationItemDTO> locationsToRemove = new List<LocationItemDTO>();
             foreach (LocationItemDTO location in Locations)
             {

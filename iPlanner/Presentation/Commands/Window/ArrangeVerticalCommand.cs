@@ -3,24 +3,13 @@ using iPlanner.Presentation.Commands.Window.Base;
 
 namespace iPlanner.Presentation.Commands.Window
 {
-    public class ArrangeVerticalCommand : ArrangeCommandBase, ICommand<object>
+    public class ArrangeVerticalCommand : ArrangeCommandBase, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute()
         {
             return true;
-        }
-
-        public override void Execute(object? parameter)
-        {
-            if (!CanExecute(parameter))
-            {
-                return;
-            }
-
-            base.Execute(parameter);
-
         }
 
     }

@@ -6,22 +6,11 @@ using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Commands.Window
 {
-    public class ArrangeHorizontalCommand : ArrangeCommandBase, ICommand<object>
+    public class ArrangeHorizontalCommand : ArrangeCommandBase, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter) => true;
-
-        public override void Execute(object? parameter)
-        {
-            if (!CanExecute(parameter))
-            {
-                return;
-            }
-
-            base.Execute(parameter);
-
-        }
+        public bool CanExecute() => true;
 
         public override LayoutPanel ArrangePanels(ObservableCollection<LayoutDocument> documents)
         {

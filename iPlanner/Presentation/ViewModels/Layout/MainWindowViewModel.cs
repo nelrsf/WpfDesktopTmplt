@@ -1,7 +1,8 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout;
+using iPlanner.Core.Application.AppMediator;
 using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Controls.Sidebar;
 using iPlanner.Presentation.Interfaces;
@@ -149,7 +150,7 @@ namespace iPlanner.Presentation.ViewModels.Layout
             newDocument.Closed += DeleteDocument;
             Documents.Add(newDocument);
             UpdateDockingManager();
-            _mediator.Notify(new TabMessage(newDocument));
+            _mediator?.Notify(new TabMessage(typeof(SelectTabCommand),newDocument));
         }
 
 

@@ -1,31 +1,33 @@
 ﻿using AvalonDock.Layout;
+using iPlanner.Core.Application.AppMediator.Base;
 using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.MediatorMessages;
 using iPlanner.Presentation.ViewModels.Layout;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Commands
 {
-    public class CloseFormCommand : IWindowCommand<IFormViewModel>
+    public class CloseFormCommand : CommandInputMessageBase<CloseFormMessage>, ICommand
     {
-        public IMainWindow? MainWindow { get; set; }
-
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(IFormViewModel? parameter)
+        public bool CanExecute()
         {
             return true;
         }
 
-        public void Execute(IFormViewModel? viewModel)
+        public void Execute()
         {
-            if (!CanExecute(viewModel)) return;
+            if (!CanExecute()) return;
 
-            if (viewModel == null) return;
 
-            UserControl userControl = viewModel.GetUserControl();
-            MainWindowViewModel mainWindowViewModel = (MainWindowViewModel)((MainWindow)MainWindow).DataContext;
+            if (message == null) return;
+
+            UserControl? userControl = message?.sender?.GetUserControl();
+            if (userControl == null) return;
+            MainWindowViewModel? mainWindowViewModel = (MainWindowViewModel)((MainWindow)message.window).DataContext;
+            if (mainWindowViewModel == null) return;
             ObservableCollection<LayoutDocument> documents = mainWindowViewModel.Documents;
             LayoutDocument layoutToRemove = null;
             foreach (LayoutDocument document in documents)

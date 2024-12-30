@@ -1,7 +1,7 @@
-﻿namespace iPlanner.Core.Application.Interfaces
+﻿/*namespace iPlanner.Core.Application.Interfaces
 {
-    interface IWindowCommand<T> : ICommand<T>
+    interface IWindowCommand
     {
         public IMainWindow? MainWindow { get; internal set; }
     }
-}
+}*/

@@ -116,19 +116,6 @@ namespace iPlanner.Core.Application.DTO
         public ActivityDTO()
         {
             Locations = new ObservableCollection<LocationItemDTO>();
-
-            /*            if (activity != null)
-                        {
-                            Description = activity.Description;
-
-                            if (activity.Locations != null)
-                            {
-                                foreach (var location in activity.Locations)
-                                {
-                                    Locations.Add(new LocationItemDTO(location));
-                                }
-                            }
-                        }*/
         }
 
 

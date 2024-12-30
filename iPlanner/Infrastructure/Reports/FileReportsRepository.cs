@@ -35,6 +35,7 @@ namespace iPlanner.Infrastructure.Reports
         public async Task AddReport(ReportDTO report)
         {
             var reports = await GetReports();
+            report.ReportId = IdGenerator.GenerateUUID();
             reports.Add(report);
             SaveReports(reports);
         }

@@ -62,19 +62,19 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" 
-                 VerticalScrollBarVisibility="Auto"
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" 
+                 VerticalScrollBarVisibility="Auto"                          
                  Margin="20">
         <StackPanel>
             <!-- Header -->
             <Border Style="{StaticResource CardStyle}">
                 <DockPanel>
                     <StackPanel>
-                        <TextBlock Text="Nuevo Reporte" 
+                        <TextBlock Text="{Binding HeaderText}"
                                  FontSize="24" 
                                  FontWeight="Bold"
                                  Foreground="#2D3748"/>
-                        <TextBlock Text="Complete los detalles del reporte"
+                        <TextBlock Text="{Binding SubheaderText}"
                                  Foreground="#718096"
                                  Margin="0,8,0,0"/>
                     </StackPanel>
@@ -96,7 +96,8 @@
                                  Style="{StaticResource LabelStyle}"/>
                         <ComboBox Style="{StaticResource InputStyle}"
                                 ItemsSource="{Binding Teams}"
-                                SelectedItem="{Binding SelectedTeam}">
+                                IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                SelectedItem="{Binding DataContext.SelectedTeam, RelativeSource={RelativeSource AncestorType=UserControl}}">
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding Name}" Padding="8,4"/>
@@ -109,6 +110,7 @@
                                  Style="{StaticResource LabelStyle}"/>
                         <DatePicker Style="{StaticResource InputStyle}"
                                     SelectedDateChanged="DatePicker_SelectedDateChanged"
+                                    IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                   SelectedDate="{Binding CurrentReport.Date}"/>
                     </StackPanel>
 
@@ -117,6 +119,7 @@
                         <TextBlock Text="Hora Inicio" 
                                  Style="{StaticResource LabelStyle}"/>
                         <common:TimePickerControl TimeValue="{Binding CurrentReport.TimeInit, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                   Style="{StaticResource InputStyle}">
                             
                         </common:TimePickerControl>
@@ -125,6 +128,7 @@
                         <TextBlock Text="Hora Fin" 
                                  Style="{StaticResource LabelStyle}"/>
                         <common:TimePickerControl TimeValue="{Binding CurrentReport.TimeEnd}"
+                                                  IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                   Style="{StaticResource InputStyle}">
 
                         </common:TimePickerControl>
@@ -139,8 +143,9 @@
                         <TextBlock Text="Actividades" 
                                  Style="{StaticResource LabelStyle}"
                                  FontSize="18"/>
-                        <Button Content="+ Agregar Actividad"
+                        <Button Content="Agregar Actividad"
                                 Click="OnAddActivity"
+                                Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Right"/>
                     </DockPanel>
@@ -165,8 +170,10 @@
                                         <TextBox Grid.Row="1"
                                                 Text="{Binding Description}"
                                                 Height="80"
-                                                TextWrapping="Wrap"
+                                                HorizontalAlignment="Stretch"
+                                                IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 AcceptsReturn="True"
+                                                TextWrapping="Wrap"
                                                 Margin="0,0,0,16"/>
 
                                         <Grid Grid.Row="2" AllowDrop="True"
@@ -192,6 +199,7 @@
                                                                         Margin="8,0,0,0"
                                                                         Background="Transparent"
                                                                         Click="OnDeleteLocation"
+                                                                        Visibility="{Binding DataContext.IsEditable, Converter={StaticResource BooleanToVisibilityConverter}, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                                         BorderThickness="0"/>
                                                             </StackPanel>
                                                         </Border>
@@ -217,11 +225,12 @@
                         HorizontalAlignment="Right" 
                         Margin="0,20,0,0">
                 <Button Content="Cancelar"
-                        Command="{Binding CancelCommand}"
+                        Click="OnCancelReport"
                         Padding="24,12"
                         Margin="0,0,16,0"/>
-                <Button Content="Guardar Reporte"
-                        Click="OnCreateReport"
+                <Button Content="{Binding SaveButtonText}"
+                        Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                        Click="OnSaveReport"
                         Style="{StaticResource PrimaryButtonStyle}"/>
             </StackPanel>
         </StackPanel>

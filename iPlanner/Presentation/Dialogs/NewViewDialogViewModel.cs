@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.AppMediator;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
@@ -11,8 +11,6 @@ namespace iPlanner.Presentation.Dialogs
         public string? IconPath { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
-
-        public string? Name { get; set; }
 
         public Type? Type { get; set; }
     }
@@ -60,7 +58,7 @@ namespace iPlanner.Presentation.Dialogs
             if (type == null) return;
             var content = controlFactory.CreateControl(type);
             if (content == null) return;
-            var message = new ViewMessage(viewOption.Name ?? "", content);
+            var message = new ViewMessage(type, viewOption.Title ?? "", content);
             mediator.Notify(message);
         }
     }

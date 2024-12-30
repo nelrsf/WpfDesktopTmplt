@@ -1,11 +1,13 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout;
+using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Presentation.Services.MediatorMessages;
 using iPlanner.Presentation.ViewModels.Layout;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Window.Base
 {
-    public class ArrangeCommandBase
+    public class ArrangeCommandBase : CommandInputMessageBase<CommandMessage>
     {
         public LayoutAnchorablePane GetSideBar(MainWindow window)
         {
@@ -48,14 +50,17 @@ namespace iPlanner.Presentation.Commands.Window.Base
         }
 
 
-        public virtual void Execute(object parameter)
+        public virtual void Execute()
         {
-            if (!(parameter is MainWindow))
+            if(message == null) return;
+
+            MainWindow? mainWindow = message.window as MainWindow;
+
+            if (mainWindow == null)
             {
                 return;
             }
 
-            MainWindow mainWindow = (MainWindow)parameter;
             DockingManager dockingManager = mainWindow.dockingManager;
 
             if (dockingManager == null)

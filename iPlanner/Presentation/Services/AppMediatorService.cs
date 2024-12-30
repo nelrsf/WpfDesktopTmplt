@@ -1,6 +1,9 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Services.MediatorMessages;
+using static iPlanner.Presentation.Services.MediatorMessages.CloseFormMessageHandler;
 
 public class AppMediatorService : IMediator
 {
@@ -14,11 +17,12 @@ public class AppMediatorService : IMediator
 
     private void InitializeHandlers()
     {
-        var viewHandler = new ViewMessageHandler(new InsertNewViewCommand(), _window);
-        var tabHandler = new TabMessageHandler(new SelectTabCommand(), _window);
-        var teamHandler = new TeamMessageHandler(_window);
-        var genericHandler = new CommandMessageHandler(_window);
-        var reportHandler = new ReportMessageHandler(_window);
+        var viewHandler = new ViewMessageHandler(new InsertNewViewCommand());
+        var tabHandler = new TabMessageHandler(new SelectTabCommand());
+        var teamHandler = new TeamMessageHandler();
+        var genericHandler = new CommandMessageHandler();
+        var reportHandler = new ReportMessageHandler();
+        var closeFormMessageHandler = new CloseFormMessageHandler(new CloseFormCommand());
 
         // Registramos los handlers
         RegisterHandler<ViewMessage>(viewHandler);
@@ -26,6 +30,7 @@ public class AppMediatorService : IMediator
         RegisterHandler<TeamMessage>(teamHandler);
         RegisterHandler<CommandMessage>(genericHandler);
         RegisterHandler<ReportMessage>(reportHandler);
+        RegisterHandler<CloseFormMessage>(closeFormMessageHandler);
     }
 
     public void RegisterHandler<TMessage>(IMessageHandler<TMessage> handler)
@@ -33,10 +38,12 @@ public class AppMediatorService : IMediator
         _handlers[typeof(TMessage)] = handler;
     }
 
-    public void Notify<TMessage>(TMessage message)
+    public void Notify<TMessage>(TMessage message) where TMessage : MessageBase
     {
         if (_window == null)
             throw new InvalidOperationException("Window is not initialized");
+
+        SetMainWindow(message);
 
         if (_handlers.TryGetValue(typeof(TMessage), out var handler))
         {
@@ -45,6 +52,18 @@ public class AppMediatorService : IMediator
         else
         {
             throw new InvalidOperationException($"No handler registered for message type {typeof(TMessage)}");
+        }
+    }
+
+    private void SetMainWindow(MessageBase message)
+    {
+        message.window = _window;
+        if (message.innerMessages != null && message.innerMessages.Count > 0)
+        {
+            foreach (MessageBase innerMsg in message.innerMessages)
+            {
+                SetMainWindow(innerMsg);
+            }
         }
     }
 

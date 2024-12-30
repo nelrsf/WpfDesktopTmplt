@@ -1,5 +1,7 @@
 ﻿
 
+using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.ViewModels.Reports;
@@ -35,6 +37,40 @@ namespace iPlanner.Presentation.Controls
         {
             ReportListViewModel.OpenCreateReportForm();
 
+        }
+
+        public void OnDeleteReport(object sender, EventArgs e)
+        {
+            if(sender is Button button && button.DataContext is ReportDTO report)
+            {
+                ReportListViewModel.DeleteReport(report);
+            }
+        }
+
+        public async void OnRefreshList(object sender, EventArgs e)
+        {
+            await ReportListViewModel.LoadReportsAsync();
+        }
+
+        public void OnReadReport(object sender, EventArgs e)
+        {
+            SetReportAction(sender, ReportListViewModel.ViewDetails);
+        }
+
+        public void OnEditReport(object sender, EventArgs e)
+        {
+            SetReportAction(sender, ReportListViewModel.EditReport);
+        }
+
+        private void SetReportAction(object sender, Action<ReportDTO> action)
+        {
+            if (sender is Button button && button.DataContext is ReportDTO report)
+            {
+                if (action != null)
+                {
+                    action.Invoke(report);
+                }
+            }
         }
     }
 

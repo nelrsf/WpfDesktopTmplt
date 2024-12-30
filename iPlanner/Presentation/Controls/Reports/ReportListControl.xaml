@@ -56,7 +56,7 @@
                         <Image Source="{StaticResource IconNew}" Width="16" Height="16"/>
                     </Button>
                     <Button Style="{StaticResource IconButtonStyle}" 
-                        Command="{Binding RefreshCommand}" 
+                        Click="OnRefreshList"
                         ToolTip="Actualizar">
                         <Image Source="{StaticResource refresh}" Width="16" Height="16"/>
                     </Button>
@@ -81,10 +81,14 @@
                                         <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
                                             <Image Source="{StaticResource employee}" Width="16" Height="16" Margin="0,0,8,0"/>
                                             <TextBlock Text="{Binding Team.Name}" FontWeight="SemiBold"/>
-                                        </StackPanel>
+                                    </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="{StaticResource pencil}" Width="12" Height="12" Margin="2,0,8,0"/>
-                                            <TextBlock Text="{Binding Leader.Name}" Foreground="#666"/>
+                                            <TextBlock Text="{Binding Team.Leader.Name}" Foreground="#666"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                        <Image Source="{StaticResource calendar}" Width="12" Height="12" Margin="2,0,8,0"/>
+                                        <TextBlock Text="{Binding Date, StringFormat={}{0:dd/MM/yyyy}}" Foreground="#666"/>
                                         </StackPanel>
                                     </StackPanel>
 
@@ -92,18 +96,12 @@
                                     <ItemsControl Grid.Column="1" ItemsSource="{Binding Activities}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Expander Margin="0,0,0,4">
-                                                    <Expander.Header>
-                                                        <StackPanel Orientation="Horizontal">
-                                                            <Image Source="{StaticResource calendar}" Width="14" Height="14" Margin="10,0,8,0"/>
-                                                            <TextBlock Text="{Binding Date}" FontWeight="Medium"/>
-                                                        </StackPanel>
-                                                    </Expander.Header>
-                                                    <TextBlock Text="{Binding Description}" 
+
+                                                <TextBlock Text="{Binding Description}" 
                                                          MaxWidth="500"
                                                          TextWrapping="Wrap" 
-                                                         Margin="22,8,0,0"/>
-                                                </Expander>
+                                                         Margin="0,8,0,0"/>
+
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
@@ -111,24 +109,18 @@
                                     <!-- Actions -->
                                     <StackPanel Grid.Column="2" Orientation="Horizontal">
                                         <Button Style="{StaticResource IconButtonStyle}"
-                                            Command="{Binding DataContext.ViewDetailsCommand, 
-                                                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding}"
+                                            Click="OnReadReport"
                                             ToolTip="Ver detalles">
                                             <Image Source="{StaticResource eye}" Width="16" Height="16"/>
                                         </Button>
                                         <Button Style="{StaticResource IconButtonStyle}"
-                                            Command="{Binding DataContext.EditCommand,
-                                                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding}"
+                                            Click="OnEditReport"
                                             ToolTip="Editar">
                                             <Image Source="{StaticResource pencil}" Width="16" Height="16"/>
                                         </Button>
                                         <Button Style="{StaticResource IconButtonStyle}"
-                                            Command="{Binding DataContext.DeleteCommand,
-                                                    RelativeSource={RelativeSource AncestorType=ItemsControl}}"
-                                            CommandParameter="{Binding}"
-                                            ToolTip="Eliminar">
+                                                    Click="OnDeleteReport"
+                                                    ToolTip="Eliminar">
                                             <Image Source="{StaticResource thrash}" Width="16" Height="16"/>
                                         </Button>
                                     </StackPanel>

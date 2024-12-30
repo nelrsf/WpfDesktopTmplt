@@ -1,4 +1,5 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services;
@@ -68,6 +69,7 @@ namespace iPlanner.Presentation.Controls
 
         private void OnDrop(object sender, DragEventArgs e)
         {
+            if (!ViewModel.IsEditable) return;
             dragNDropManager.HandleDrop(sender, e);
         }
 
@@ -124,9 +126,21 @@ namespace iPlanner.Presentation.Controls
             ViewModel.OnDateChanged(date);
         }
 
-        private void OnCreateReport(object sender, EventArgs e)
+        private void OnSaveReport(object sender, EventArgs e)
         {
-            ViewModel.CreateReport();
+            if (ViewModel.IsNewReport)
+            {
+                ViewModel.CreateReport();
+            }
+            else
+            {
+                ViewModel.EditReport();
+            }
+        }
+
+        private void OnCancelReport(object sender, EventArgs e)
+        {
+            ViewModel.CloseForm();
         }
     }
 }

@@ -1,8 +1,10 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -38,7 +40,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
             }
         }
 
-        public TeamDTO SelectedTeam
+        public TeamDTO? SelectedTeam
         {
             get => _selectedTeam;
             set
@@ -52,6 +54,15 @@ namespace iPlanner.Presentation.ViewModels.Reports
             }
         }
 
+        public bool IsNewReport
+        {
+            get => _isNewReport;
+            set
+            {
+                _isNewReport = value;
+                OnPropertyChanged();
+            }
+        }
         public bool IsEditable
         {
             get => _isEditable;
@@ -137,7 +148,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
             SaveButtonText = "Actualizar";
 
             CurrentReport = report;
-            SelectedTeam = report.Team;
+            //SelectedTeam = report.Team;
         }
 
         public void InitializeForView(ReportDTO report)
@@ -152,7 +163,15 @@ namespace iPlanner.Presentation.ViewModels.Reports
             SaveButtonText = string.Empty;
 
             CurrentReport = report;
-            SelectedTeam = report.Team;
+            //SelectedTeam = report.Team;
+        }
+
+        private void SelectCurrentTeam()
+        {
+            if (CurrentReport?.Team != null)
+            {
+                SelectedTeam = Teams.FirstOrDefault(t => t.Id == CurrentReport.Team.Id);
+            }
         }
 
         private async Task LoadTeamsAsync()
@@ -165,6 +184,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
                 {
                     Teams.Add(team);
                 }
+                SelectCurrentTeam();
             }
             catch (Exception ex)
             {
@@ -186,7 +206,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
         public void AddLocations(List<LocationItemDTO> locations, ActivityDTO activity)
         {
-            ReportMessage reportMessage = new ReportMessage(CommandType.AddLocationsToReport);
+            ReportMessage reportMessage = new ReportMessage(typeof(AddLocationReportCommand));
             reportMessage.Activity = activity;
             reportMessage.Locations = locations;
             reportMessage.Report = CurrentReport;
@@ -201,7 +221,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
         internal void DeleteLocation(ActivityDTO activity, List<LocationItemDTO> locations)
         {
-            ReportMessage reportMessage = new ReportMessage(CommandType.RemoveLocationsFromReport);
+            ReportMessage reportMessage = new ReportMessage(typeof(RemoveLocationReportCommand));
             reportMessage.Activity = activity;
             reportMessage.Locations = locations;
             reportMessage.Report = CurrentReport;
@@ -216,15 +236,36 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
         internal void CreateReport()
         {
-            ReportMessage reportMessage = new ReportMessage(CommandType.CreateReport);
+            ReportMessage reportMessage = new ReportMessage(typeof(CreateReportCommand));
             reportMessage.Report = CurrentReport;
             reportMessage.sender = this;
+            CloseFormMessage closeFormMessage = new CloseFormMessage();
+            closeFormMessage.sender = this;
+            reportMessage.innerMessages = new List<MessageBase> { closeFormMessage };
             _mediator.Notify(reportMessage);
         }
 
         public UserControl GetUserControl()
         {
             return _reportEditorControl;
+        }
+
+        internal void CloseForm()
+        {
+            CloseFormMessage closeFormMessage = new CloseFormMessage();
+            closeFormMessage.sender = this;
+            _mediator.Notify(closeFormMessage);
+        }
+
+        internal void EditReport()
+        {
+            ReportMessage reportMessage = new ReportMessage(typeof(UpdateReportCommand));
+            reportMessage.Report = CurrentReport;
+            reportMessage.sender = this;
+            CloseFormMessage closeFormMessage = new CloseFormMessage();
+            closeFormMessage.sender = this;
+            reportMessage.innerMessages = new List<MessageBase> { closeFormMessage };
+            _mediator.Notify(reportMessage);
         }
     }
 }

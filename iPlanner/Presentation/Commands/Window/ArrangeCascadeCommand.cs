@@ -5,23 +5,12 @@ using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Window
 {
-    public class ArrangeCascadeCommand : ArrangeCommandBase, ICommand<object>
+    public class ArrangeCascadeCommand : ArrangeCommandBase, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter) => true;
+        public bool CanExecute() => true;
 
-        public override void Execute(object? parameter)
-        {
-            if (!CanExecute(parameter))
-            {
-                return;
-            }
-
-            if (parameter == null) return;
-
-            base.Execute(parameter);
-        }
 
         public override LayoutPanel ArrangePanels(ObservableCollection<LayoutDocument> documents)
         {

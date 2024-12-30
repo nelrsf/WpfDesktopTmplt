@@ -3,22 +3,21 @@ using iPlanner.Presentation.Dialogs;
 
 namespace iPlanner.Presentation.Commands
 {
-    public class OpenNewDialog : ICommand<object>
+    public class OpenNewDialog : ICommand
     {
         public event EventHandler? CanExecuteChanged;
-        private IMediator _mediator;
 
         public OpenNewDialog()
         {
         }
-        public bool CanExecute(object? parameter)
+        public bool CanExecute()
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute()
         {
-            if (!CanExecute(parameter))
+            if (!CanExecute())
             {
                 return;
             }

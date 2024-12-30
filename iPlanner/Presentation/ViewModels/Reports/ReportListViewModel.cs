@@ -1,5 +1,8 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services.MediatorMessages;
@@ -45,14 +48,27 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
         }
 
-        private void ViewDetails(object parameter)
+        public void ViewDetails(ReportDTO report)
         {
-            if (parameter is ReportDTO report)
-            {
-                SelectedReport = report;
-                // Raise event or navigate to details
-            }
+            string viewName = "Detalles del reporte";
+            IFormControl<ReportDTO> content = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
+            content.ViewReport(report);
+            ViewMessage message = new ViewMessage(typeof(InsertNewViewCommand), viewName, content);
+            message.sender = this;
+            _mediatorService.Notify(message);
         }
+
+        public void EditReport(ReportDTO report)
+        {
+            string viewName = "Editar reporte";
+            IFormControl<ReportDTO> content = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
+            content.EditReport(report);
+            ViewMessage message = new ViewMessage(typeof(InsertNewViewCommand), viewName, content);
+            message.sender = this;
+            _mediatorService.Notify(message);
+        }
+
+
 
         public async Task LoadReportsAsync()
         {
@@ -65,10 +81,19 @@ namespace iPlanner.Presentation.ViewModels.Reports
             string viewName = "Crear reporte";
             IFormControl<ReportDTO> content = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
             content.CreateNewReport();
-            ViewMessage message = new ViewMessage(viewName, content);
+            ViewMessage message = new ViewMessage(typeof(InsertNewViewCommand), viewName, content);
             message.sender = this;
             _mediatorService.Notify(message);
 
+        }
+
+        internal void DeleteReport(ReportDTO report)
+        {
+            ReportMessage reportMessage = new ReportMessage(typeof(DeleteReportCommand));
+            reportMessage.Report = report;
+            reportMessage.sender = this;
+            _mediatorService.Notify(reportMessage);
+            
         }
     }
 }

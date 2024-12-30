@@ -6,14 +6,14 @@ namespace iPlanner.Presentation.Commands.Reports
     {
         public event EventHandler? CanExecuteChanged;
 
-        public override bool CanExecute(ReportMessage? parameter)
+        public override bool CanExecute()
         {
             return true;
         }
 
-        public override void Execute(ReportMessage? parameter)
+        public override void Execute()
         {
-            base.Execute(parameter);
+            base.Execute();
             foreach (var location in Locations)
             {
                 if (!Activity.Locations.Any(l => l.Id == location.Id) && location.Id > 0)

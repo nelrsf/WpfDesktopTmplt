@@ -3,7 +3,7 @@ using iPlanner.Core.Application.Interfaces;
 
 namespace iPlanner.Presentation.Commands
 {
-    public class SelectTabCommand : ICommand<object>
+    public class SelectTabCommand : ICommand
     {
         private LayoutDocument? _document;
         public LayoutDocument? Document
@@ -23,14 +23,14 @@ namespace iPlanner.Presentation.Commands
         }
         public event EventHandler? CanExecuteChanged;
 
-        public bool CanExecute(object? parameter)
+        public bool CanExecute()
         {
             return true;
         }
 
-        public void Execute(object? parameter)
+        public void Execute()
         {
-            if (!CanExecute(parameter))
+            if (!CanExecute())
             {
                 return;
             }

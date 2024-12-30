@@ -1,5 +1,8 @@
+using iPlanner.Core.Application.AppMediator;
 using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Controls.Teams;
 using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
@@ -102,7 +105,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
 
         public void AddTeam()
         {
-            _appMediatorService.Notify(new ViewMessage("Crear equipo", new TeamFormControl()));
+            _appMediatorService.Notify(new ViewMessage(typeof(InsertNewViewCommand), "Agregar Frente", new TeamFormControl()));
         }
 
         public void EditTeam()
@@ -117,7 +120,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
         {
             if (SelectedTeams != null)
             {
-                _appMediatorService.Notify(new TeamMessage(SelectedTeams, CommandType.DeleteTeams));
+                _appMediatorService.Notify(new TeamMessage(typeof(RemoveTeamsCommand), SelectedTeams));
             }
         }
 

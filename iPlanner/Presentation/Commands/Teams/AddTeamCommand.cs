@@ -1,10 +1,12 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Services.MediatorMessages;
 using System.Windows;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
-    public class AddTeamCommand : ICommand<TeamDTO>
+    public class AddTeamCommand : CommandInputMessageBase<TeamMessage>, ICommand
     {
         public event EventHandler? CanExecuteChanged;
         private ITeamService _teamService;
@@ -14,14 +16,21 @@ namespace iPlanner.Presentation.Commands.Teams
             _teamService = teamService;
         }
 
-        public bool CanExecute(TeamDTO? parameter)
+        public bool CanExecute()
         {
             return true;
         }
 
-        public void Execute(TeamDTO? team)
+        public void Execute()
         {
 
+            if (!CanExecute()) return;
+            if (message == null) return;
+            TeamDTO? team = message.TeamToCreate;
+            if (team == null)
+            {
+                throw new Exception("Team is null");
+            }
             _teamService.AddTeam(team);
             MessageBox.Show("Frente de trabajo agregado correctamente");
 

@@ -1,35 +1,34 @@
 ﻿using AvalonDock.Layout;
+using iPlanner.Core.Application.AppMediator.Base;
 using iPlanner.Core.Application.DTO;
+using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Interfaces;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Services.MediatorMessages
 {
-    public abstract class MessageBase
+    public class CloseFormMessage : MessageBase
     {
-        public object? sender;
+        public new IFormViewModel? sender { get; set; }
 
-        public CommandType CommandType { get; }
-
-        protected MessageBase(CommandType commandType)
+        public CloseFormMessage() : base(typeof(CloseFormCommand))
         {
-            CommandType = commandType;
         }
     }
-
     public class ReportMessage : MessageBase
     {
 
-        public ReportDTO Report { get; set; }
-        public ActivityDTO Activity { get; set; }
-        public ICollection<LocationItemDTO> Locations { get; set; }
+        public ReportDTO? Report { get; set; }
+        public ActivityDTO? Activity { get; set; }
+        public ICollection<LocationItemDTO>? Locations { get; set; }
 
-        public ReportMessage(CommandType commandType) : base(commandType) { }
+        public ReportMessage(Type commandType) : base(commandType) { }
     }
-    public class CommandMessage
+    public class CommandMessage : MessageBase
     {
-        public Type CommandType { get; }
+        public new Type CommandType { get; }
 
-        public CommandMessage(Type commandType)
+        public CommandMessage(Type commandType) : base(commandType)
         {
             CommandType = commandType;
         }
@@ -37,9 +36,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
 
     public class OpenViewMessage : MessageBase
     {
-        public CommandType CommandType { get; }
-
-        public OpenViewMessage(CommandType commandType, string viewName) : base(commandType) { }
+        public OpenViewMessage(Type commandType, string viewName) : base(commandType) { }
 
     }
 
@@ -49,7 +46,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
         public string ViewName { get; }
         public object Content;
 
-        public ViewMessage(string viewName, object content) : base(CommandType.InsertNewView)
+        public ViewMessage(Type commandType, string viewName, object content) : base(commandType)
         {
             ViewName = viewName;
             Content = content;
@@ -60,7 +57,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
     {
         public LayoutDocument Document { get; }
 
-        public TabMessage(LayoutDocument document) : base(CommandType.SelectTab)
+        public TabMessage(Type commandType, LayoutDocument document) : base(commandType)
         {
             Document = document;
         }
@@ -71,12 +68,13 @@ namespace iPlanner.Presentation.Services.MediatorMessages
         public TeamDTO? TeamToCreate { get; }
         public ObservableCollection<TeamDTO>? TeamsToRemove { get; }
 
-        public TeamMessage(TeamDTO team, CommandType commandType) : base(commandType)
+
+        public TeamMessage(Type commandType, TeamDTO team) : base(commandType)
         {
             TeamToCreate = team;
         }
 
-        public TeamMessage(ObservableCollection<TeamDTO> temsToDelete, CommandType commandType) : base(commandType)
+        public TeamMessage(Type commandType, ObservableCollection<TeamDTO> temsToDelete) : base(commandType)
         {
             TeamsToRemove = temsToDelete;
         }

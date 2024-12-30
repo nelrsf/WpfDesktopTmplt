@@ -1,11 +1,12 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Reports
 {
-    public class LocationsReportBase : ICommand<ReportMessage>
+    public class LocationsReportBase : CommandInputMessageBase<ReportMessage>, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 
@@ -13,14 +14,14 @@ namespace iPlanner.Presentation.Commands.Reports
         protected ActivityDTO? Activity;
         protected ICollection<LocationItemDTO>? Locations;
 
-        public virtual bool CanExecute(ReportMessage? parameter)
+        public virtual bool CanExecute()
         {
             return true;
         }
 
-        public virtual void Execute(ReportMessage? parameter)
+        public virtual void Execute()
         {
-            ProccessMessage(parameter);
+            ProccessMessage(message);
         }
 
         private void ProccessMessage(ReportMessage? reportMessage)

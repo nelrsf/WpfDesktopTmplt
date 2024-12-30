@@ -1,151 +1,194 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.AppMediator.Base;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Commands.Teams;
-using iPlanner.Presentation.Interfaces;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Services.MediatorMessages
 {
-
-    public class CommandMessageHandler : IMessageHandler<CommandMessage>
+    public class CloseFormMessageHandler : IMessageHandler<CloseFormMessage>
     {
-        private readonly IMainWindow _window;
-
-        public CommandMessageHandler(IMainWindow window)
-        {
-            _window = window;
-        }
-
-        public void Handle(CommandMessage message)
-        {
-            ICommand<object> command = (ICommand<object>)Activator.CreateInstance(message.CommandType);
-            command?.Execute(_window);
-        }
-    }
-
-    public class ViewMessageHandler : IMessageHandler<ViewMessage>
-    {
-        private readonly InsertNewViewCommand _command;
-        private readonly IMainWindow _window;
-
-
-        public ViewMessageHandler(InsertNewViewCommand command, IMainWindow window)
+        private readonly CloseFormCommand _command;
+        public CloseFormMessageHandler(CloseFormCommand command)
         {
             _command = command;
-            _window = window;
+        }
+        public void Handle(CloseFormMessage message)
+        {
+            _command.SetMessage(message);
+            _command.Execute();
         }
 
-        public void Handle(ViewMessage message)
+        public void Handle(MessageBase message)
         {
-            _command.ViewName = message.ViewName;
-            _command.Content = message.Content;
-            _command.Execute(_window);
-        }
-    }
-
-
-    public class TabMessageHandler : IMessageHandler<TabMessage>
-    {
-        private readonly SelectTabCommand _command;
-        private readonly IMainWindow _window;
-
-        public TabMessageHandler(SelectTabCommand command, IMainWindow window)
-        {
-            _command = command;
-            _window = window;
-        }
-
-        public void Handle(TabMessage message)
-        {
-            _command.Document = message.Document;
-            _command.Execute(_window);
-        }
-    }
-
-    public class TeamMessageHandler : IMessageHandler<TeamMessage>
-    {
-        private readonly ICommand<TeamDTO> _addTeamCommand;
-        private readonly ICommand<TeamDTO>? _addMemberCommand;
-        private readonly IWindowCommand<IFormViewModel>? _closeFormCommand;
-        private readonly ICommand<ObservableCollection<TeamDTO>>? _removeTeamsCommand;
-        private readonly IMainWindow _window;
-        private readonly ITeamService _teamService;
-        //private readonly ICommandFactory _commandFactory;
-
-        public TeamMessageHandler(IMainWindow window)
-        {
-            //_commandFactory = commandFactory;
-            _teamService = AppServices.GetService<ITeamService>();
-            _addTeamCommand = new AddTeamCommand(_teamService);
-            _addMemberCommand = new AddMemberCommand();
-            _removeTeamsCommand = new RemoveTeamsCommand(_teamService);
-            _closeFormCommand = new CloseFormCommand();
-            _window = window;
-            _closeFormCommand.MainWindow = _window;
-        }
-
-
-        public void Handle(TeamMessage message)
-        {
-            switch (message.CommandType)
+            CloseFormMessage? closeFormMessage = message.innerMessages.OfType<CloseFormMessage>().FirstOrDefault();
+            if (closeFormMessage != null)
             {
-                case CommandType.AddTeam:
-                    _addTeamCommand?.Execute(message.TeamToCreate);
-                    _closeFormCommand?.Execute((IFormViewModel?)message.sender);
-                    break;
-                case CommandType.AddTeamMember:
-                    _addMemberCommand?.Execute(message.TeamToCreate);
-                    break;
-                case CommandType.DeleteTeams:
-                    _removeTeamsCommand?.Execute(message.TeamsToRemove);
-                    break;
+                Handle(closeFormMessage);
+            }
+        }
+        public class CommandMessageHandler : IMessageHandler<CommandMessage>
+        {
+            public CommandMessageHandler()
+            {
+            }
+
+            public void Handle(CommandMessage message)
+            {
+                if (message.CommandType == null)
+                    throw new ArgumentNullException(nameof(message.CommandType));
+
+                ICommand? command = Activator.CreateInstance(message.CommandType) as ICommand;
+
+                if (command == null)
+                    throw new InvalidOperationException($"No se pudo crear una instancia de ICommand desde {message.CommandType}");
+
+                if (command is CommandInputMessageBase<CommandMessage>)
+                {
+                    ((CommandInputMessageBase<CommandMessage>)command).SetMessage(message);
+                }
+
+                command.Execute();
+            }
+        }
+
+        public class ViewMessageHandler : IMessageHandler<ViewMessage>
+        {
+            private readonly InsertNewViewCommand _command;
+            private readonly IMainWindow? _window;
+
+
+            public ViewMessageHandler(InsertNewViewCommand command)
+            {
+                _command = command;
+            }
+
+            public void Handle(ViewMessage message)
+            {
+                _command.SetMessage(message);
+                _command.Execute();
+            }
+        }
+
+
+        public class TabMessageHandler : IMessageHandler<TabMessage>
+        {
+            private readonly SelectTabCommand _command;
+
+            public TabMessageHandler(SelectTabCommand command)
+            {
+                _command = command;
+            }
+
+            public void Handle(TabMessage message)
+            {
+                _command.Document = message.Document;
+                _command.Execute();
+            }
+        }
+
+        public class TeamMessageHandler : IMessageHandler<TeamMessage>
+        {
+            private readonly AddTeamCommand _addTeamCommand;
+            private readonly AddMemberCommand _addMemberCommand;
+            private readonly CloseFormCommand _closeFormCommand;
+            private readonly CloseFormMessageHandler _closeFormMessageHandler;
+            private readonly RemoveTeamsCommand _removeTeamsCommand;
+            private readonly ITeamService _teamService;
+
+            public TeamMessageHandler()
+            {
+                _teamService = AppServices.GetService<ITeamService>();
+                _addTeamCommand = new AddTeamCommand(_teamService);
+                _addMemberCommand = new AddMemberCommand();
+                _removeTeamsCommand = new RemoveTeamsCommand(_teamService);
+                _closeFormCommand = new CloseFormCommand();
+                _closeFormMessageHandler = new CloseFormMessageHandler(_closeFormCommand);
+            }
+
+            public void Handle(TeamMessage message)
+            {
+                if (message.CommandType == typeof(AddTeamCommand))
+                {
+                    _addTeamCommand.SetMessage(message);
+                    _addTeamCommand.Execute();
+                    _closeFormMessageHandler.Handle(message);
+                }
+                else if (message.CommandType == typeof(AddMemberCommand))
+                {
+                    _addMemberCommand.SetMessage(message);
+                    _addMemberCommand?.Execute();
+                }
+                else if (message.CommandType == typeof(RemoveTeamsCommand))
+                {
+                    _removeTeamsCommand.SetMessage(message);
+                    _removeTeamsCommand?.Execute();
+                }
+
+            }
+        }
+
+
+        public class ReportMessageHandler : IMessageHandler<ReportMessage>
+        {
+            private AddLocationReportCommand AddLocationsToReport;
+            private RemoveLocationReportCommand RemoveLocationsFromReport;
+            private CreateReportCommand CreateReportCommand;
+            private UpdateReportCommand UpdateReportCommand;
+            private CloseFormCommand CloseFormCommand;
+            private DeleteReportCommand DeleteReportCommand;
+            private CloseFormMessageHandler CloseFormMessageHandler;
+            private IReportService _reportService;
+
+
+            public ReportMessageHandler()
+            {
+                _reportService = AppServices.GetService<IReportService>();
+                AddLocationsToReport = new AddLocationReportCommand();
+                RemoveLocationsFromReport = new RemoveLocationReportCommand();
+                CreateReportCommand = new CreateReportCommand(_reportService);
+                UpdateReportCommand = new UpdateReportCommand(_reportService);
+                DeleteReportCommand = new DeleteReportCommand(_reportService);
+                CloseFormCommand = new CloseFormCommand();
+                CloseFormMessageHandler = new CloseFormMessageHandler(CloseFormCommand);
+
+            }
+
+            public void Handle(ReportMessage message)
+            {
+
+                if (message.CommandType == typeof(AddLocationReportCommand))
+                {
+                    AddLocationsToReport.SetMessage(message);
+                    AddLocationsToReport.Execute();
+                }
+                else if (message.CommandType == typeof(RemoveLocationReportCommand))
+                {
+                    RemoveLocationsFromReport.SetMessage(message);
+                    RemoveLocationsFromReport.Execute();
+                }
+                else if (message.CommandType == typeof(CreateReportCommand))
+                {
+                    CreateReportCommand.SetMessage(message);
+                    CreateReportCommand.Execute();
+                    CloseFormMessageHandler.Handle(message);
+                }
+                else if (message.CommandType == typeof(DeleteReportCommand))
+                {
+                    DeleteReportCommand = new DeleteReportCommand(_reportService);
+                    DeleteReportCommand.SetMessage(message);
+                    DeleteReportCommand.Execute();
+
+                } else if (message.CommandType == typeof(UpdateReportCommand))
+                {
+                    UpdateReportCommand = new UpdateReportCommand(_reportService);
+                    UpdateReportCommand.SetMessage(message);
+                    UpdateReportCommand.Execute();
+                    CloseFormMessageHandler.Handle(message);
+                }
             }
         }
     }
-
-
-    public class ReportMessageHandler : IMessageHandler<ReportMessage>
-    {
-        //private ICommandFactory _commandFactory;
-        private ICommand<ReportMessage>? AddLocationsToReport;
-        private ICommand<ReportMessage>? RemoveLocationsFromReport;
-        private ICommand<ReportMessage>? CreateReportCommand;
-        private IWindowCommand<IFormViewModel>? CloseFormCommand;
-        private IMainWindow _window;
-        private IReportService _reportService;
-
-
-        public ReportMessageHandler(IMainWindow mainWindow)
-        {
-            _reportService = AppServices.GetService<IReportService>();
-            AddLocationsToReport = new AddLocationReportCommand();
-            RemoveLocationsFromReport = new RemoveLocationReportCommand();
-            CreateReportCommand = new CreateReportCommand(_reportService);
-            CloseFormCommand = new CloseFormCommand();
-            _window = mainWindow;
-            CloseFormCommand.MainWindow = mainWindow;
-        }
-        public void Handle(ReportMessage message)
-        {
-            switch (message.CommandType)
-            {
-                case CommandType.AddLocationsToReport:
-                    AddLocationsToReport?.Execute(message);
-                    break;
-                case CommandType.RemoveLocationsFromReport:
-                    RemoveLocationsFromReport?.Execute(message);
-                    break;
-                case CommandType.CreateReport:
-                    CreateReportCommand?.Execute(message);
-                    CloseFormCommand?.Execute((IFormViewModel?)message.sender);
-                    break;
-
-            }
-
-        }
-    }
-
 
 }

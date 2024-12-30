@@ -1,9 +1,10 @@
-﻿using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.AppMediator;
+using iPlanner.Core.Application.AppMediator.Base;
+using iPlanner.Core.Application.DTO;
 using iPlanner.Presentation.Commands;
+using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Controls.Teams;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services;
 using iPlanner.Presentation.Services.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -135,7 +136,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
         internal void AddMember()
         {
             if (Team == null) return;
-            _appMediatorService.Notify(new TeamMessage(Team, CommandType.AddTeamMember));
+            _appMediatorService.Notify(new TeamMessage(typeof(AddMemberCommand), Team));
         }
 
         public void SaveForm()
@@ -143,15 +144,20 @@ namespace iPlanner.Presentation.ViewModels.Teams
             if (Team == null) return;
             if (_mode == FormMode.Create)
             {
-                TeamMessage teamMessage = new TeamMessage(Team, CommandType.AddTeam);
+                TeamMessage teamMessage = new TeamMessage(typeof(AddTeamCommand), Team);
                 teamMessage.sender = this;
+                CloseFormMessage closeFormMessage = new CloseFormMessage();
+                closeFormMessage.sender = this;
+                teamMessage.innerMessages = new List<MessageBase> { closeFormMessage };
                 _appMediatorService.Notify(teamMessage);
             }
         }
 
         public void CloseForm()
         {
-            _appMediatorService.Notify(new CommandMessage(typeof(CloseFormCommand)));
+            CloseFormMessage closeFormMessage = new CloseFormMessage();
+            closeFormMessage.sender = this;
+            _appMediatorService.Notify(closeFormMessage);
         }
 
         public UserControl GetUserControl()

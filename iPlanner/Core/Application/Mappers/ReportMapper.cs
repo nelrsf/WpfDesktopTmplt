@@ -3,7 +3,6 @@ using iPlanner.Core.Application.Interfaces;
 using iPlanner.Core.Entities.Locations;
 using iPlanner.Core.Entities.Reports;
 using iPlanner.Core.Entities.Teams;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Application.Mappers
 {
@@ -19,11 +18,11 @@ namespace iPlanner.Core.Application.Mappers
 
             if (entity.Children == null || entity.Children?.Count == 0)
             {
-                dto.Children = new ObservableCollection<LocationItemDTO>();
+                dto.Children = new List<LocationItemDTO>();
             }
             else
             {
-                dto.Children = new ObservableCollection<LocationItemDTO>(
+                dto.Children = new List<LocationItemDTO>(
                         entity.Children.Select(l => ToDTO(l))
                     );
             }
@@ -35,11 +34,11 @@ namespace iPlanner.Core.Application.Mappers
             LocationItem entity = new LocationItem(dto.Id, dto.Name, dto.Icon);
             if (dto.Children == null || dto.Children?.Count == 0)
             {
-                entity.Children = new ObservableCollection<LocationItem>();
+                entity.Children = new List<LocationItem>();
             }
             else
             {
-                entity.Children = new ObservableCollection<LocationItem>(
+                entity.Children = new List<LocationItem>(
                         dto.Children.Select(l => ToEntity(l))
                     );
             }
@@ -67,11 +66,11 @@ namespace iPlanner.Core.Application.Mappers
 
             if (dto.Locations == null)
             {
-                dto.Locations = new ObservableCollection<LocationItemDTO>();
+                dto.Locations = new List<LocationItemDTO>();
             }
             else
             {
-                dto.Locations = new ObservableCollection<LocationItemDTO>(
+                dto.Locations = new List<LocationItemDTO>(
                     entity.Locations.Select(l => _locationMapper.ToDTO(l))
                     );
             }
@@ -90,11 +89,11 @@ namespace iPlanner.Core.Application.Mappers
             };
             if (dto.Locations == null)
             {
-                entity.Locations = new ObservableCollection<LocationItem>();
+                entity.Locations = new List<LocationItem>();
             }
             else
             {
-                entity.Locations = new ObservableCollection<LocationItem>(
+                entity.Locations = new List<LocationItem>(
                         dto.Locations.Select(l => _locationMapper.ToEntity(l))
                     );
             }
@@ -133,11 +132,11 @@ namespace iPlanner.Core.Application.Mappers
 
             if (entity.Activities == null)
             {
-                dto.Activities = new ObservableCollection<ActivityDTO>();
+                dto.Activities = new List<ActivityDTO>();
             }
             else
             {
-                dto.Activities = new ObservableCollection<ActivityDTO>(
+                dto.Activities = new List<ActivityDTO>(
                         entity.Activities.Select(a => _activityMapper.ToDTO(a))
                     );
             }
@@ -161,11 +160,11 @@ namespace iPlanner.Core.Application.Mappers
 
             if (dto.Activities == null)
             {
-                report.Activities = new ObservableCollection<Activity>();
+                report.Activities = new List<Activity>();
             }
             else
             {
-                report.Activities = new ObservableCollection<Activity>(
+                report.Activities = new List<Activity>(
                     dto.Activities.Select(a => _activityMapper.ToEntity(a))
                 );
             }

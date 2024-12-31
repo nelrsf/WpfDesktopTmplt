@@ -1,5 +1,3 @@
-using System.Collections.ObjectModel;
-
 namespace iPlanner.Core.Entities.Teams
 {
     public class TeamBase
@@ -17,11 +15,11 @@ namespace iPlanner.Core.Entities.Teams
     {
         public string? Description { get; set; }
         public TeamMember? Leader { get; set; }
-        public ObservableCollection<TeamMember>? Members { get; set; }
+        public ICollection<TeamMember>? Members { get; set; }
 
         public Team()
         {
-            Members = new ObservableCollection<TeamMember>();
+            Members = new List<TeamMember>();
         }
     }
 }

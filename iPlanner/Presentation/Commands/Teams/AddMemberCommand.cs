@@ -1,7 +1,8 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.DTO;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
+using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Teams
 {
@@ -25,8 +26,13 @@ namespace iPlanner.Presentation.Commands.Teams
 
             if (team == null) return;
 
-
-            team?.Members?.Insert(0, new TeamMemberDTO("", ""));
+            if(team.Members is ObservableCollection<TeamMemberDTO> members)
+            {
+                members.Insert(0, new TeamMemberDTO("", ""));
+            } else
+            {
+                team.Members?.Add(new TeamMemberDTO("", ""));
+            }
 
         }
     }

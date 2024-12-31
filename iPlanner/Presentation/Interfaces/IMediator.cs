@@ -1,7 +1,7 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
 
-namespace iPlanner.Core.Application.AppMediator
+namespace iPlanner.Presentation.Interfaces
 {
 
     public interface IMessageHandler<TMessage>

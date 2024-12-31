@@ -1,8 +1,8 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Presentation.Commands;
+﻿using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Window;
 using iPlanner.Presentation.Controls;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 
 namespace iPlanner.Presentation.ViewModels.Layout
 {

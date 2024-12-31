@@ -1,7 +1,8 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Windows;
 
 namespace iPlanner.Presentation.Commands.Teams
@@ -31,10 +32,15 @@ namespace iPlanner.Presentation.Commands.Teams
             {
                 throw new Exception("Team is null");
             }
-            _teamService.AddTeam(team);
-            MessageBox.Show("Frente de trabajo agregado correctamente");
-
-
+            try
+            {
+                _teamService.AddTeam(team);
+                NotifyMessage(true);
+            }
+            catch (Exception e)
+            {
+                NotifyMessage(false);
+            }
         }
     }
 }

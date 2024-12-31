@@ -1,11 +1,10 @@
-using iPlanner.Core.Application.AppMediator;
 using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Controls.Teams;
-using iPlanner.Presentation.Services;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -65,7 +64,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
             SelectedTeams = new ObservableCollection<TeamDTO>();
             Teams = new ObservableCollection<TeamDTO>();
             _teamsService = teamsService;
-            _teamsService.PropertyChanged += _teamsService_PropertyChanged;
+            //_teamsService.PropertyChanged += _teamsService_PropertyChanged;
             _appMediatorService = mediator;
             LoadData();
         }
@@ -77,7 +76,20 @@ namespace iPlanner.Presentation.ViewModels.Teams
 
         private async void LoadData()
         {
-            Teams = await _teamsService.GetAll();
+            if (Teams == null)
+            {
+                Teams = await _teamsService.GetAll() as ObservableCollection<TeamDTO> ?? new ObservableCollection<TeamDTO>();
+            }
+            else
+            {
+                Teams.Clear();
+                var teams = await _teamsService.GetAll();
+                foreach (var team in teams)
+                {
+                    Teams.Add(team);
+                }
+            }
+            OnPropertyChanged(nameof(Teams));
         }
 
         private void FilterTeams()
@@ -103,9 +115,26 @@ namespace iPlanner.Presentation.ViewModels.Teams
             }
         }
 
-        public void AddTeam()
+        public async void AddTeam()
         {
-            _appMediatorService.Notify(new ViewMessage(typeof(InsertNewViewCommand), "Agregar Frente", new TeamFormControl()));
+            TeamFormControl teamFormControl = new TeamFormControl();
+            TaskCompletionSource<bool> taskCompletion = teamFormControl.ViewModel.TaskCompletionSource;
+            ViewMessage message = new(typeof(InsertNewViewCommand), "Agregar Frente", teamFormControl);
+            _appMediatorService.Notify(message);
+            Task<bool> task = taskCompletion.Task;
+            try
+            {
+                bool result = await task;
+                if (result)
+                {
+                    LoadData();
+                    MessageBox.Show("Equipo agregado correctamente");
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Error al agregar el equipo");
+            }
         }
 
         public void EditTeam()
@@ -116,11 +145,29 @@ namespace iPlanner.Presentation.ViewModels.Teams
             }
         }
 
-        public void DeleteTeams()
+        public async void DeleteTeams()
         {
+            MessageBoxResult ConfirmResult = MessageBox.Show("¿Está seguro de que desea eliminar los equipos seleccionados?", "Confirmar eliminación", MessageBoxButton.YesNo);
+            if (ConfirmResult == MessageBoxResult.No) return;
             if (SelectedTeams != null)
             {
-                _appMediatorService.Notify(new TeamMessage(typeof(RemoveTeamsCommand), SelectedTeams));
+                TeamMessage message = new(typeof(RemoveTeamsCommand), SelectedTeams);
+                message.TaskCompletionSource = new TaskCompletionSource<bool>();
+                _appMediatorService.Notify(message);
+                Task<bool> task = message.TaskCompletionSource.Task;
+                try
+                {
+                    bool result = await task;
+                    if (result)
+                    {
+                        LoadData();
+                        MessageBox.Show("Equipos eliminados correctamente");
+                    }
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Error al eliminar los equipos");
+                }
             }
         }
 

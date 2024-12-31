@@ -1,6 +1,4 @@
-﻿using iPlanner.Presentation.Services.MediatorMessages;
-
-namespace iPlanner.Presentation.Commands.Reports
+﻿namespace iPlanner.Presentation.Commands.Reports
 {
     public class AddLocationReportCommand : LocationsReportBase
     {
@@ -21,6 +19,7 @@ namespace iPlanner.Presentation.Commands.Reports
                     Activity.Locations.Add(location);
                 }
             }
+            message.TaskCompletionSource?.SetResult(true);
         }
     }
 }

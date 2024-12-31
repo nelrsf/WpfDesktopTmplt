@@ -1,18 +1,16 @@
 ﻿using iPlanner.Core.Entities.Locations;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+
 
 namespace iPlanner.Core.Application.DTO
 {
-    public class ReportDTO : INotifyPropertyChanged
+    public class ReportDTO
     {
         private string _reportId;
         private TeamDTO _team;
         private DateTime? _date;
         private TimeSpan? _timeInit;
         private TimeSpan? _timeEnd;
-        private ObservableCollection<ActivityDTO> _activities;
+        private ICollection<ActivityDTO>? _activities;
 
         public string ReportId
         {
@@ -20,7 +18,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _reportId = value;
-                OnPropertyChanged();
             }
         }
 
@@ -30,7 +27,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _team = value;
-                OnPropertyChanged();
             }
         }
 
@@ -40,7 +36,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _date = value;
-                OnPropertyChanged();
             }
         }
 
@@ -50,7 +45,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _timeInit = value;
-                OnPropertyChanged();
             }
         }
 
@@ -60,46 +54,32 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _timeEnd = value;
-                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<ActivityDTO> Activities
+        public ICollection<ActivityDTO> Activities
         {
             get => _activities;
             set
             {
                 _activities = value;
-                OnPropertyChanged();
             }
         }
 
 
-        public ReportDTO()
-        {
-            Activities = new ObservableCollection<ActivityDTO>();
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class ActivityDTO : INotifyPropertyChanged
+    public class ActivityDTO
     {
-        private ObservableCollection<LocationItemDTO> _locations;
+        private ICollection<LocationItemDTO> _locations;
         private string _description;
 
-        public ObservableCollection<LocationItemDTO> Locations
+        public ICollection<LocationItemDTO> Locations
         {
             get => _locations;
             set
             {
                 _locations = value;
-                OnPropertyChanged();
             }
         }
 
@@ -109,30 +89,22 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _description = value;
-                OnPropertyChanged();
             }
         }
 
         public ActivityDTO()
         {
-            Locations = new ObservableCollection<LocationItemDTO>();
+            Locations = new List<LocationItemDTO>();
         }
 
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
-    public class LocationItemDTO : INotifyPropertyChanged
+    public class LocationItemDTO
     {
         private int _id;
         private string _name;
         private string _icon;
-        private ObservableCollection<LocationItemDTO> _children;
+        private ICollection<LocationItemDTO> _children;
 
         public int Id
         {
@@ -140,7 +112,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _id = value;
-                OnPropertyChanged();
             }
         }
 
@@ -150,7 +121,6 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _name = value;
-                OnPropertyChanged();
             }
         }
 
@@ -160,23 +130,21 @@ namespace iPlanner.Core.Application.DTO
             set
             {
                 _icon = value;
-                OnPropertyChanged();
             }
         }
 
-        public ObservableCollection<LocationItemDTO> Children
+        public ICollection<LocationItemDTO> Children
         {
             get => _children;
             set
             {
                 _children = value;
-                OnPropertyChanged();
             }
         }
 
         public LocationItemDTO(LocationItem location)
         {
-            Children = new ObservableCollection<LocationItemDTO>();
+            Children = new List<LocationItemDTO>();
 
             if (location != null)
             {
@@ -199,19 +167,13 @@ namespace iPlanner.Core.Application.DTO
             Id = id;
             Name = name;
             Icon = icon;
-            Children = new ObservableCollection<LocationItemDTO>();
+            Children = new List<LocationItemDTO>();
         }
 
         public LocationItemDTO()
         {
-            Children = new ObservableCollection<LocationItemDTO>();
+            Children = new List<LocationItemDTO>();
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

@@ -1,11 +1,11 @@
 ﻿using AvalonDock.Layout;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 
 namespace iPlanner.Presentation.Commands
 {
-    internal class ToggleSideBarCommand : CommandInputMessageBase<ViewMessage>, ICommand
+    internal class ToggleSideBarCommand : CommandInputMessageBase<CommandMessage>, ICommand
     {
         public event EventHandler? CanExecuteChanged;
 

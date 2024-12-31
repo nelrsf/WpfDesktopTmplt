@@ -1,7 +1,8 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Commands.Teams
@@ -26,8 +27,16 @@ namespace iPlanner.Presentation.Commands.Teams
             if (!CanExecute()) return;
             ObservableCollection<TeamDTO>? teamDTOs = message?.TeamsToRemove;
             if (teamDTOs == null) return;
-            _teamService.RemoveTeams(teamDTOs);
 
+            try
+            {
+                _teamService.RemoveTeams(teamDTOs);
+                NotifyMessage(true);
+            }
+            catch (System.Exception e)
+            {
+                NotifyMessage(false);
+            }
         }
     }
 }

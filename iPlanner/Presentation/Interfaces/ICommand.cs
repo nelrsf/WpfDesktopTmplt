@@ -1,4 +1,4 @@
-﻿namespace iPlanner.Core.Application.Interfaces
+﻿namespace iPlanner.Presentation.Interfaces
 {
     public interface ICommand
     {

@@ -1,6 +1,6 @@
 ﻿using iPlanner.Core.Application.Interfaces;
 
-namespace iPlanner.Core.Application.AppMediator.Base
+namespace iPlanner.Presentation.Services.AppMediator.Base
 {
     public abstract class MessageBase
     {
@@ -8,7 +8,7 @@ namespace iPlanner.Core.Application.AppMediator.Base
         public Type CommandType { get; set; }
         public IMainWindow? window { get; set; }
 
-        public ICollection<MessageBase> innerMessages { get; set; }
+        public ICollection<MessageBase>? innerMessages { get; set; }
 
         protected MessageBase(Type commandType)
         {

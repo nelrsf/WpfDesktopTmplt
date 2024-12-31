@@ -1,9 +1,9 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
-using iPlanner.Presentation.Services.MediatorMessages;
-using static iPlanner.Presentation.Services.MediatorMessages.CloseFormMessageHandler;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
+using static iPlanner.Presentation.Services.AppMediator.MediatorMessages.CloseFormMessageHandler;
 
 public class AppMediatorService : IMediator
 {

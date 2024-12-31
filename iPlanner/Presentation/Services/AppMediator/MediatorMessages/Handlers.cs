@@ -1,11 +1,11 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Commands.Teams;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
 
-namespace iPlanner.Presentation.Services.MediatorMessages
+namespace iPlanner.Presentation.Services.AppMediator.MediatorMessages
 {
     public class CloseFormMessageHandler : IMessageHandler<CloseFormMessage>
     {
@@ -22,7 +22,7 @@ namespace iPlanner.Presentation.Services.MediatorMessages
 
         public void Handle(MessageBase message)
         {
-            CloseFormMessage? closeFormMessage = message.innerMessages.OfType<CloseFormMessage>().FirstOrDefault();
+            CloseFormMessage? closeFormMessage = message.innerMessages?.OfType<CloseFormMessage>().FirstOrDefault();
             if (closeFormMessage != null)
             {
                 Handle(closeFormMessage);
@@ -180,7 +180,8 @@ namespace iPlanner.Presentation.Services.MediatorMessages
                     DeleteReportCommand.SetMessage(message);
                     DeleteReportCommand.Execute();
 
-                } else if (message.CommandType == typeof(UpdateReportCommand))
+                }
+                else if (message.CommandType == typeof(UpdateReportCommand))
                 {
                     UpdateReportCommand = new UpdateReportCommand(_reportService);
                     UpdateReportCommand.SetMessage(message);

@@ -8,6 +8,16 @@ namespace iPlanner.Presentation.Controls.Teams
     {
         private TeamFormViewModel _viewModel;
 
+        public TeamFormViewModel ViewModel
+        {
+            get => _viewModel;
+            set
+            {
+                _viewModel = value;
+                this.DataContext = _viewModel;
+            }
+        }
+
         public TeamFormControl()
         {
             InitializeComponent();

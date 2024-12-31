@@ -150,7 +150,8 @@
                                 HorizontalAlignment="Right"/>
                     </DockPanel>
 
-                    <ItemsControl ItemsSource="{Binding CurrentReport.Activities}">
+                    <ItemsControl ItemsSource="{Binding CurrentReport.Activities, UpdateSourceTrigger=PropertyChanged}">
+
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Border BorderBrush="#E2E8F0"
@@ -183,7 +184,7 @@
                                             <TextBlock Text="Ubicaciones Seleccionadas" 
                                                      Style="{StaticResource LabelStyle}"/>
                                             
-                                            <ItemsControl ItemsSource="{Binding Locations}"
+                                            <ItemsControl ItemsSource="{Binding Locations, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                                                             Margin="0,24,0,0">
                                                 <ItemsControl.ItemTemplate>
                                                     <DataTemplate>

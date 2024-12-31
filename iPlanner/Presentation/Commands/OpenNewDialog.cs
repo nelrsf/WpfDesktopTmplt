@@ -1,5 +1,5 @@
-﻿using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Dialogs;
+﻿using iPlanner.Presentation.Dialogs;
+using iPlanner.Presentation.Interfaces;
 
 namespace iPlanner.Presentation.Commands
 {

@@ -9,7 +9,7 @@ namespace iPlanner.Infrastructure.Teams
     {
         private FileService _fileService;
         private readonly string _teamsFilePath;
-        private ObservableCollection<TeamDTO>? _teams;
+        private ICollection<TeamDTO>? _teams;
 
 
 
@@ -25,7 +25,7 @@ namespace iPlanner.Infrastructure.Teams
 
         private async void LoadTeams()
         {
-            _teams = await GetTeams() ?? new ObservableCollection<TeamDTO>();
+            _teams = await GetTeams() ?? new List<TeamDTO>();
         }
 
 
@@ -44,7 +44,7 @@ namespace iPlanner.Infrastructure.Teams
             });
         }
 
-        public async Task DeleteTeams(ObservableCollection<TeamDTO> teamsToRemove)
+        public async Task DeleteTeams(ICollection<TeamDTO> teamsToRemove)
         {
             await Task.Run(() =>
             {
@@ -73,7 +73,7 @@ namespace iPlanner.Infrastructure.Teams
             });
         }
 
-        public async Task<ObservableCollection<TeamDTO>> GetTeams()
+        public async Task<ICollection<TeamDTO>> GetTeams()
         {
             try
             {

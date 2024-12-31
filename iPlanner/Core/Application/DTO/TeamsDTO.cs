@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace iPlanner.Core.Application.DTO
+﻿namespace iPlanner.Core.Application.DTO
 {
     public class TeamBaseDTO
     {
@@ -28,11 +26,11 @@ namespace iPlanner.Core.Application.DTO
 
         public string? Description { get; set; }
         public TeamMemberDTO? Leader { get; set; }
-        public ObservableCollection<TeamMemberDTO>? Members { get; set; }
+        public ICollection<TeamMemberDTO>? Members { get; set; }
 
         public TeamDTO(string id, string name) : base(id, name)
         {
-            Members = new ObservableCollection<TeamMemberDTO>();
+            Members = new List<TeamMemberDTO>();
         }
 
     }

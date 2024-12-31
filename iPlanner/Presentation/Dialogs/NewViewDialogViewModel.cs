@@ -1,7 +1,7 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Presentation.Controls;
+﻿using iPlanner.Presentation.Controls;
+using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 
 namespace iPlanner.Presentation.Dialogs

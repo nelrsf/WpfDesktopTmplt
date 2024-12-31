@@ -1,12 +1,10 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout;
-using iPlanner.Core.Application.AppMediator;
-using iPlanner.Core.Application.DTO;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Controls.Sidebar;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -81,18 +79,6 @@ namespace iPlanner.Presentation.ViewModels.Layout
             };
             reportList.Closed += DeleteDocument;
             Documents.Add(reportList);
-
-            IFormControl<ReportDTO> report = _controlAbstractFactory.CreateFormControl<ReportDTO, ReportEditorControl>();
-            report.CreateNewReport();
-            LayoutDocument? reportForm = new LayoutDocument
-            {
-                CanClose = true,
-                Title = "Crear reporte",
-                Content = report
-            };
-            reportForm.Closed += DeleteDocument;
-            Documents.Add(reportForm);
-
         }
 
 
@@ -150,7 +136,7 @@ namespace iPlanner.Presentation.ViewModels.Layout
             newDocument.Closed += DeleteDocument;
             Documents.Add(newDocument);
             UpdateDockingManager();
-            _mediator?.Notify(new TabMessage(typeof(SelectTabCommand),newDocument));
+            _mediator?.Notify(new TabMessage(typeof(SelectTabCommand), newDocument));
         }
 
 

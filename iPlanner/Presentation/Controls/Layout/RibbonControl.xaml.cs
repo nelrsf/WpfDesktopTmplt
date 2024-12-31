@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.AppMediator;
+﻿using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.ViewModels.Layout;
 using System.Windows;
 using System.Windows.Controls;

@@ -1,5 +1,5 @@
 ﻿using AvalonDock.Layout;
-using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Interfaces;
 
 namespace iPlanner.Presentation.Commands
 {

@@ -1,7 +1,6 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Core.Entities.Teams;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Application.Mappers
 {
@@ -44,11 +43,11 @@ namespace iPlanner.Core.Application.Mappers
             dto.Description = entity.Description;
             if (entity.Members == null)
             {
-                dto.Members = new ObservableCollection<TeamMemberDTO>();
+                dto.Members = new List<TeamMemberDTO>();
             }
             else
             {
-                dto.Members = new ObservableCollection<TeamMemberDTO>(
+                dto.Members = new List<TeamMemberDTO>(
                         entity.Members.Select(tm => _teamMemberMapper.ToDTO(tm))
                     );
             }
@@ -73,11 +72,11 @@ namespace iPlanner.Core.Application.Mappers
 
             if (dto.Members == null)
             {
-                entity.Members = new ObservableCollection<TeamMember>();
+                entity.Members = new List<TeamMember>();
             }
             else
             {
-                entity.Members = new ObservableCollection<TeamMember>(
+                entity.Members = new List<TeamMember>(
                         dto.Members.Select(tm => _teamMemberMapper.ToEntity(tm))
                     );
             }

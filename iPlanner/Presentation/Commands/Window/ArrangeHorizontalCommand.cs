@@ -1,6 +1,6 @@
 ﻿using AvalonDock.Layout;
-using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands.Window.Base;
+using iPlanner.Presentation.Interfaces;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 

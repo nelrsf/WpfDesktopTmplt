@@ -1,6 +1,7 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+﻿using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Windows;
 
 namespace iPlanner.Presentation.Commands.Reports
@@ -27,9 +28,17 @@ namespace iPlanner.Presentation.Commands.Reports
 
             if (message.Report == null) return;
 
-            _reportService.UpdateReportAsync(message.Report);
+            try
+            {
+                _reportService.UpdateReportAsync(message.Report);
 
-            MessageBox.Show("Reporte actualizad correctamente", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show("Reporte actualizado correctamente", "Exito", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch
+            {
+                MessageBox.Show("Error al actualizar el reporte", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
     }
 }

@@ -1,18 +1,17 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.DTO;
-using iPlanner.Presentation.Commands;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Controls.Teams;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace iPlanner.Presentation.ViewModels.Teams
 {
-    public class TeamFormViewModel : INotifyPropertyChanged, IFormViewModel
+    public class TeamFormViewModel : INotifyPropertyChanged, IFormViewModel, INotification
     {
         private IMediator _appMediatorService;
         private TeamDTO? _team;
@@ -72,10 +71,13 @@ namespace iPlanner.Presentation.ViewModels.Teams
             }
         }
 
+        public TaskCompletionSource<bool> TaskCompletionSource { get; set; }
+
         public TeamFormViewModel(FormMode mode = FormMode.Create)
         {
             _appMediatorService = AppServices.GetService<IMediator>();
             SelectedMembers = new List<TeamMemberDTO>();
+            TaskCompletionSource = new TaskCompletionSource<bool>();
             SetMode(mode);
             InitializeTeam();
         }
@@ -136,7 +138,8 @@ namespace iPlanner.Presentation.ViewModels.Teams
         internal void AddMember()
         {
             if (Team == null) return;
-            _appMediatorService.Notify(new TeamMessage(typeof(AddMemberCommand), Team));
+            TeamMessage teamMessage = new TeamMessage(typeof(AddMemberCommand), Team);
+            _appMediatorService.Notify(teamMessage);
         }
 
         public void SaveForm()
@@ -149,7 +152,9 @@ namespace iPlanner.Presentation.ViewModels.Teams
                 CloseFormMessage closeFormMessage = new CloseFormMessage();
                 closeFormMessage.sender = this;
                 teamMessage.innerMessages = new List<MessageBase> { closeFormMessage };
+                teamMessage.TaskCompletionSource = TaskCompletionSource;
                 _appMediatorService.Notify(teamMessage);
+                
             }
         }
 
@@ -160,7 +165,7 @@ namespace iPlanner.Presentation.ViewModels.Teams
             _appMediatorService.Notify(closeFormMessage);
         }
 
-        public UserControl GetUserControl()
+        public UserControl? GetUserControl()
         {
             return TeamsFormControl;
         }

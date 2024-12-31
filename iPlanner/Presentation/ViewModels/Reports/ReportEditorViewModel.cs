@@ -1,14 +1,14 @@
-﻿using iPlanner.Core.Application.AppMediator;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 
 
@@ -202,15 +202,33 @@ namespace iPlanner.Presentation.ViewModels.Reports
             ActivityDTO activityDTO = new ActivityDTO();
             CurrentReport.Activities.Add(activityDTO);
             OnPropertyChanged(nameof(CurrentReport));
+            OnPropertyChanged($"{nameof(CurrentReport)}.{nameof(CurrentReport.Activities)}");
         }
 
-        public void AddLocations(List<LocationItemDTO> locations, ActivityDTO activity)
+        public async void AddLocations(List<LocationItemDTO> locations, ActivityDTO activity)
         {
             ReportMessage reportMessage = new ReportMessage(typeof(AddLocationReportCommand));
+            reportMessage.TaskCompletionSource = new TaskCompletionSource<bool>();
             reportMessage.Activity = activity;
             reportMessage.Locations = locations;
             reportMessage.Report = CurrentReport;
             _mediator.Notify(reportMessage);
+            Task<bool> task = reportMessage.TaskCompletionSource.Task;
+            try
+            {
+                bool result = await task;
+                if (result)
+                {
+                    var updatedReport = CurrentReport;
+                    CurrentReport = null;
+                    CurrentReport = updatedReport;
+
+                    OnPropertyChanged($"{nameof(CurrentReport)}.{nameof(CurrentReport.Activities)}");
+                }
+            } catch
+            {
+                MessageBox.Show("Error al agregar ubicaciones al reporte", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
 
@@ -219,17 +237,38 @@ namespace iPlanner.Presentation.ViewModels.Reports
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        internal void DeleteLocation(ActivityDTO activity, List<LocationItemDTO> locations)
+        public async void DeleteLocation(ActivityDTO activity, List<LocationItemDTO> locations)
         {
             ReportMessage reportMessage = new ReportMessage(typeof(RemoveLocationReportCommand));
             reportMessage.Activity = activity;
             reportMessage.Locations = locations;
             reportMessage.Report = CurrentReport;
+            reportMessage.TaskCompletionSource = new TaskCompletionSource<bool>();
             _mediator.Notify(reportMessage);
+            Task<bool> task = reportMessage.TaskCompletionSource.Task;
+            try
+            {
+                bool result = await task;
+                if (result)
+                {
+                    var updatedReport = CurrentReport;
+                    CurrentReport = null;
+                    CurrentReport = updatedReport;
+                    OnPropertyChanged($"{nameof(CurrentReport)}.{nameof(CurrentReport.Activities)}");
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Error al eliminar ubicaciones del reporte", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         internal void OnDateChanged(DateTime? displayDate)
         {
+            if(CurrentReport == null)
+            {
+                return;
+            }
             CurrentReport.Date = displayDate;
             CurrentReport = _reportService.RefreshReportDate(CurrentReport);
         }

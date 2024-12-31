@@ -1,7 +1,7 @@
 ﻿using AvalonDock;
 using AvalonDock.Layout;
-using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Presentation.Services.MediatorMessages;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using iPlanner.Presentation.ViewModels.Layout;
 using System.Collections.ObjectModel;
 

@@ -4,6 +4,6 @@ namespace iPlanner.Presentation.Interfaces
 {
     public interface IFormViewModel
     {
-        public UserControl GetUserControl();
+        public UserControl? GetUserControl();
     }
 }

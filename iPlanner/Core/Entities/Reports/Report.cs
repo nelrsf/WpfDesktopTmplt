@@ -1,6 +1,5 @@
 ﻿using iPlanner.Core.Entities.Locations;
 using iPlanner.Core.Entities.Teams;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Core.Entities.Reports
 {
@@ -27,7 +26,7 @@ namespace iPlanner.Core.Entities.Reports
 
         public TimeSpan? TimeEnd { get; set; }
 
-        public ObservableCollection<Activity>? Activities { get; set; }
+        public ICollection<Activity>? Activities { get; set; }
 
         public Report() { }
 
@@ -63,11 +62,11 @@ namespace iPlanner.Core.Entities.Reports
 
     public class Activity
     {
-        public ObservableCollection<LocationItem> Locations { get; set; }
+        public ICollection<LocationItem> Locations { get; set; }
         public string? Description { get; set; }
         public Activity()
         {
-            Locations = new ObservableCollection<LocationItem>();
+            Locations = new List<LocationItem>();
         }
 
     }

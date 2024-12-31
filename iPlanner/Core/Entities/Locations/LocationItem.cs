@@ -1,6 +1,4 @@
-﻿using System.Collections.ObjectModel;
-
-namespace iPlanner.Core.Entities.Locations
+﻿namespace iPlanner.Core.Entities.Locations
 {
     public class LocationItem
     {
@@ -19,7 +17,7 @@ namespace iPlanner.Core.Entities.Locations
 
 
 
-        public ObservableCollection<LocationItem> Children { get; set; } = new ObservableCollection<LocationItem>();
+        public ICollection<LocationItem> Children { get; set; } = new List<LocationItem>();
 
     }
 }

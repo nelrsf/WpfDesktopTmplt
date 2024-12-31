@@ -1,6 +1,7 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+﻿using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using iPlanner.Presentation.ViewModels.Reports;
 using System.Windows.Forms;
 

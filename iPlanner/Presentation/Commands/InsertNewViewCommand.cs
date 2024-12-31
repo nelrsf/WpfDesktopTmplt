@@ -1,6 +1,7 @@
-﻿using iPlanner.Core.Application.AppMediator.Base;
-using iPlanner.Core.Application.Interfaces;
-using iPlanner.Presentation.Services.MediatorMessages;
+﻿using iPlanner.Presentation.Controls.Sidebar;
+using iPlanner.Presentation.Interfaces;
+using iPlanner.Presentation.Services.AppMediator.Base;
+using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 using iPlanner.Presentation.ViewModels.Layout;
 
 namespace iPlanner.Presentation.Commands

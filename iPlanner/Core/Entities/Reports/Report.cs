@@ -5,10 +5,24 @@ namespace iPlanner.Core.Entities.Reports
 {
     public class Report
     {
+        private double _totalHours;
         public string? ReportId { get; set; }
         public Team? Team { get; set; }
 
         private DateTime? _date;
+
+        public double TotalHours
+        {
+            get
+            {
+                if (TimeInit.HasValue && TimeEnd.HasValue)
+                {
+                    return (TimeEnd.Value - TimeInit.Value).TotalHours;
+                }
+                return 0;
+            }
+        }
+
         public DateTime? Date
         {
             get
@@ -18,7 +32,7 @@ namespace iPlanner.Core.Entities.Reports
             set
             {
                 _date = value;
-                UpdateScheduleByDate();
+                ReportScheduleUpdater.UpdateScheduleByDate(this);
             }
         }
 
@@ -29,35 +43,6 @@ namespace iPlanner.Core.Entities.Reports
         public ICollection<Activity>? Activities { get; set; }
 
         public Report() { }
-
-        private void UpdateScheduleByDate()
-        {
-            if (Date == null) return;
-            switch (Date.Value.DayOfWeek)
-            {
-                case DayOfWeek.Monday:
-                    TimeInit = TimeSpan.FromHours(8);
-                    TimeEnd = TimeSpan.FromHours(17);
-                    break;
-                case DayOfWeek.Tuesday:
-                    TimeInit = TimeSpan.FromHours(8);
-                    TimeEnd = TimeSpan.FromHours(17);
-                    break;
-                case DayOfWeek.Wednesday:
-                    TimeInit = TimeSpan.FromHours(7);
-                    TimeEnd = TimeSpan.FromHours(17);
-                    break;
-                case DayOfWeek.Thursday:
-                    TimeInit = TimeSpan.FromHours(7);
-                    TimeEnd = TimeSpan.FromHours(17);
-                    break;
-                case DayOfWeek.Friday:
-                    TimeInit = TimeSpan.FromHours(7);
-                    TimeEnd = TimeSpan.FromHours(15);
-                    break;
-
-            }
-        }
     }
 
     public class Activity
@@ -68,7 +53,34 @@ namespace iPlanner.Core.Entities.Reports
         {
             Locations = new List<LocationItem>();
         }
-
     }
 
+    public static class ReportScheduleUpdater
+    {
+        private static readonly Dictionary<DayOfWeek, (TimeSpan Start, TimeSpan End)> Schedule = new()
+        {
+            { DayOfWeek.Monday, (TimeSpan.FromHours(8), TimeSpan.FromHours(17)) },
+            { DayOfWeek.Tuesday, (TimeSpan.FromHours(8), TimeSpan.FromHours(17)) },
+            { DayOfWeek.Wednesday, (TimeSpan.FromHours(7), TimeSpan.FromHours(17)) },
+            { DayOfWeek.Thursday, (TimeSpan.FromHours(7), TimeSpan.FromHours(17)) },
+            { DayOfWeek.Friday, (TimeSpan.FromHours(7), TimeSpan.FromHours(15)) }
+        };
+
+        public static double GetRequieredTotalHours()
+        {
+            return Schedule.Sum(day => (day.Value.End - day.Value.Start).TotalHours);
+        }
+
+        public static void UpdateScheduleByDate(Report report)
+        {
+            if (report.Date == null) return;
+
+            var dayOfWeek = report.Date.Value.DayOfWeek;
+            if (Schedule.ContainsKey(dayOfWeek))
+            {
+                report.TimeInit = Schedule[dayOfWeek].Start;
+                report.TimeEnd = Schedule[dayOfWeek].End;
+            }
+        }
+    }
 }

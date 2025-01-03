@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services.AppMediator.Base;
 using iPlanner.Presentation.Services.AppMediator.MediatorMessages;

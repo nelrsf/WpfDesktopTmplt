@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO.Teams;
 
 namespace iPlanner.Core.Application.Interfaces.Repository
 {

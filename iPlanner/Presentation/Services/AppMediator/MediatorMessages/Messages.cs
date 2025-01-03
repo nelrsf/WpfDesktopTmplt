@@ -1,5 +1,6 @@
 ﻿using AvalonDock.Layout;
 using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services.AppMediator.Base;

@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Core.Application.Mappers;
@@ -44,7 +45,6 @@ namespace iPlanner
             services.AddSingleton<CreateReportCommand>();
 
             //Factories and Mediator
-            //services.AddSingleton<ICommandFactory, CommandFactory>();
             services.AddSingleton<IControlAbstractFactory, ControlFactory>();
             services.AddSingleton<IMediator, AppMediatorService>();
 
@@ -59,13 +59,16 @@ namespace iPlanner
             services.AddSingleton<IMapper<LocationItemDTO, LocationItem>, LocationItemMapper>();
             services.AddSingleton<IMapper<TeamDTO, Team>, TeamMapper>();
             services.AddSingleton<IMapper<TeamMemberDTO, TeamMember>, TeamMemberMapper>();
+            services.AddSingleton<IMapper<ScheduleTeamDataDTO, ScheduleTeamData>, ScheduleTeamDataMapper>();
 
 
             //Services
             services.AddSingleton<ILocationService, LocationService>();
             services.AddSingleton<IReportService, ReportService>();
             services.AddSingleton<ITeamService, TeamsService>();
+            services.AddSingleton<ITeamScheduleService, TeamScheduleService>();
             services.AddSingleton<FileService>();
+            services.AddSingleton<IConflictValidationService, ConflictValidationService>();
 
             //ViewModells
             services.AddSingleton<RibbonViewModel>();

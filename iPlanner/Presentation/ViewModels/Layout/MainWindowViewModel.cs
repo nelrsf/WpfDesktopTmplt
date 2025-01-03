@@ -70,15 +70,6 @@ namespace iPlanner.Presentation.ViewModels.Layout
             };
             home.Closed += DeleteDocument;
             Documents.Add(home);
-
-            LayoutDocument? reportList = new LayoutDocument
-            {
-                CanClose = true,
-                Title = "Reportes",
-                Content = _controlAbstractFactory.CreateControl(typeof(ReportListControl))
-            };
-            reportList.Closed += DeleteDocument;
-            Documents.Add(reportList);
         }
 
 

@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Controls.Teams;
 using iPlanner.Presentation.Interfaces;

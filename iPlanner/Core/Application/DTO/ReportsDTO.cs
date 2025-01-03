@@ -1,4 +1,5 @@
-﻿using iPlanner.Core.Entities.Locations;
+﻿using iPlanner.Core.Application.DTO.Teams;
+using iPlanner.Core.Entities.Locations;
 
 
 namespace iPlanner.Core.Application.DTO

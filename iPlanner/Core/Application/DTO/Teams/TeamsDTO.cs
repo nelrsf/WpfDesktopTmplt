@@ -1,4 +1,4 @@
-﻿namespace iPlanner.Core.Application.DTO
+﻿namespace iPlanner.Core.Application.DTO.Teams
 {
     public class TeamBaseDTO
     {

@@ -1,0 +1,170 @@
+﻿<UserControl x:Class="iPlanner.Presentation.Controls.TeamScheduleControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:converters="clr-namespace:iPlanner.Presentation.Converters"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <converters:WeekNumberConverter x:Key="WeekNumberConverter"/>
+    </UserControl.Resources>
+
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Panel Superior -->
+            <Border Grid.Row="0" 
+                Background="White" 
+                BorderBrush="#E0E0E0" 
+                BorderThickness="0,0,0,1" 
+                Padding="15">
+                <DockPanel>
+                    <ComboBox DockPanel.Dock="Right" 
+                         Width="120" 
+                         Margin="10,0,0,0"
+                         x:Name="WeekSelector"
+                         ItemsSource="{Binding Weeks}"
+                         SelectedItem="{Binding DataContext.SelectedWeek, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                         SelectionChanged="WeekSelector_SelectionChanged">
+                    </ComboBox>
+
+                    <ComboBox DockPanel.Dock="Right" 
+                         Width="100"
+                         x:Name="YearSelector" 
+                         ItemsSource="{Binding Years}"
+                         SelectedItem="{Binding SelectedYear}"
+                         SelectionChanged="YearSelector_SelectionChanged"/>
+
+                    <TextBlock Text="Control de tiempo frentes de trabajo" 
+                         FontSize="16" 
+                         FontWeight="SemiBold" 
+                         VerticalAlignment="Center"/>
+                </DockPanel>
+            </Border>
+
+            <!-- Contenido Principal -->
+            <Grid Grid.Row="1" Margin="15">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Lista de Equipos -->
+                <ItemsControl x:Name="TeamList" Grid.Column="0" ItemsSource="{Binding TeamItems}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Border Margin="0,0,0,8" 
+                                BorderBrush="#E0E0E0" 
+                                BorderThickness="1" 
+                                CornerRadius="4">
+                                <Grid Margin="10">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- Info del Equipo -->
+                                    <StackPanel Grid.Column="0" 
+                                          Margin="0,0,10,0">
+                                        <TextBlock Text="{Binding Name}" 
+                                             FontWeight="SemiBold"/>
+                                    </StackPanel>
+
+                                    <!-- Horas -->
+                                    <TextBlock Grid.Column="1" 
+                                         Text="{Binding TotalHours, StringFormat={}{0} hrs}"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         FontWeight="Medium"/>
+
+                                    <!-- Mini Barra de Progreso -->
+                                    <Grid Grid.Column="2" VerticalAlignment="Center">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <ProgressBar Grid.Column="0"
+                                                Value="{Binding CompletionPercentage, Mode=OneWay}" 
+                                               Maximum="100"
+                                               Height="8"                                               
+                                               Margin="0,0,8,0">
+                                            <ProgressBar.Style>
+                                                <Style TargetType="ProgressBar">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HasConflicts}" Value="True">
+                                                            <Setter Property="Foreground" Value="#FFA07A"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding HasConflicts}" Value="False">
+                                                            <Setter Property="Foreground" Value="#4CAF50"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ProgressBar.Style>
+                                        </ProgressBar>
+                                        <TextBlock Grid.Column="1"
+                                             Text="{Binding CompletionPercentage, StringFormat={}{0:F0}%}"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Center"
+                                             FontSize="12"/>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Panel de Conflictos -->
+                <Border Grid.Column="1" 
+                    Width="250"
+                    Margin="15,0,0,0"
+                    BorderBrush="#FFE0E0" 
+                    BorderThickness="1"
+                    CornerRadius="4"
+                    Background="#FFF8F8">
+                    <DockPanel>
+                        <TextBlock DockPanel.Dock="Top" 
+                             Text="Conflictos" 
+                             FontWeight="SemiBold" 
+                             Padding="10"
+                             Background="#FFE0E0"/>
+                        <ItemsControl x:Name="ConflictsList" ItemsSource="{Binding ConflictItems}"
+                                Margin="10">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Border Margin="0,0,0,8" 
+                                        Padding="8"
+                                        Background="White"
+                                        BorderBrush="#FFE0E0" 
+                                        BorderThickness="1" 
+                                        CornerRadius="4">
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding TeamName}" 
+                                                 FontWeight="Medium"/>
+                                            <TextBlock Text="{Binding Date, StringFormat=dd/MM/yyyy}"
+                                                 Foreground="#666666"
+                                                 FontSize="12"/>
+                                            <TextBlock Text="{Binding Description}" 
+                                                 Foreground="#666666"
+                                                 TextWrapping="Wrap"
+                                                 Margin="0,4,0,0"
+                                                 FontSize="12"/>
+                                        </StackPanel>
+                                    </Border>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </DockPanel>
+                </Border>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

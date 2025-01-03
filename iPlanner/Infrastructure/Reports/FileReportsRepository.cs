@@ -1,6 +1,7 @@
 ﻿using iPlanner.Core.Application.DTO;
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Infrastructure.Common;
+using System.Diagnostics;
 
 namespace iPlanner.Infrastructure.Reports
 {
@@ -16,12 +17,16 @@ namespace iPlanner.Infrastructure.Reports
             _fileService.EnsureDirectoryExists(_reportsFilePath);
         }
 
+
+
         public async Task<List<ReportDTO>> GetReports()
         {
             try
             {
+                var tbefore = Thread.CurrentThread.ManagedThreadId;
                 return await Task.Run(() =>
                 {
+                    var tafter = Thread.CurrentThread.ManagedThreadId;
                     return _fileService.LoadJsonData<List<ReportDTO>>(_reportsFilePath)
                         ?? new List<ReportDTO>();
                 });
@@ -31,6 +36,7 @@ namespace iPlanner.Infrastructure.Reports
                 throw new Exception("Error loading reports", ex);
             }
         }
+
 
         public async Task AddReport(ReportDTO report)
         {

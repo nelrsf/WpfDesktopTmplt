@@ -35,6 +35,7 @@ namespace iPlanner.Presentation.Services
             CustomControlDictionary.Add(typeof(WelcomeControl), () => new WelcomeControl());
             CustomControlDictionary.Add(typeof(TeamFormControl), () => new TeamFormControl());
             CustomControlDictionary.Add(typeof(ReportListControl), () => new ReportListControl());
+            CustomControlDictionary.Add(typeof(TeamScheduleControl), () => new TeamScheduleControl());
         }
 
         public UserControl CreateControl(Type type)

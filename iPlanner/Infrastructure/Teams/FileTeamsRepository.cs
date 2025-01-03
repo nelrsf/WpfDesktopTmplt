@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.DTO;
+﻿using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Infrastructure.Common;
 using System.Collections.ObjectModel;

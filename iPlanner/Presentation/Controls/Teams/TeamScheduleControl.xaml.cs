@@ -25,7 +25,10 @@ namespace iPlanner.Presentation.Controls
 
         private void YearSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // Event handling is done through bindings
+            if (sender is ComboBox comboBox && comboBox.SelectedItem is int selectedYear)
+            {
+                _viewModel.ChangeYear(selectedYear);
+            }
         }
 
         private void WeekSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)

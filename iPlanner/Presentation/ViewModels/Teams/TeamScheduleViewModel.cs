@@ -107,7 +107,7 @@ namespace iPlanner.Presentation.ViewModels
                 TeamItems = new ObservableCollection<ScheduleTeamItemDTO>();
                 ConflictItems = new ObservableCollection<ConflictItemDTO>();
                 Years = new ObservableCollection<int>(await _teamScheduleService.GetAvailableYears().ConfigureAwait(false));
-                Weeks = new ObservableCollection<int>(await _teamScheduleService.GetAvailableWeeks().ConfigureAwait(false));
+                Weeks = new ObservableCollection<int>(await _teamScheduleService.GetAvailableWeeks(Years.Max()).ConfigureAwait(false));
                 Dispatcher.CurrentDispatcher.Invoke(() =>
                 {
                     SelectedYear = Years.Max();
@@ -130,6 +130,12 @@ namespace iPlanner.Presentation.ViewModels
             var scheduleData = await _teamScheduleService.GetScheduleData(SelectedYear, SelectedWeek);
             TeamItems = new ObservableCollection<ScheduleTeamItemDTO>(scheduleData.TeamItems);
             ConflictItems = new ObservableCollection<ConflictItemDTO>(scheduleData.ConflictItems);
+        }
+
+        public async void ChangeYear(int year)
+        {
+            Weeks = new ObservableCollection<int>(await _teamScheduleService.GetAvailableWeeks(year).ConfigureAwait(false));
+            SelectedWeek = Weeks.Max();
         }
     }
 }

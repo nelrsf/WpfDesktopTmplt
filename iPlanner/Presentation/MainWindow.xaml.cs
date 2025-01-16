@@ -10,19 +10,20 @@ namespace iPlanner
         private IMediator _appMediator;
         private MainWindowViewModel _viewModel;
 
+        public MainWindowViewModel ViewModel { get { return _viewModel; } }
+
         public MainWindow()
         {
             InitializeComponent();
             _appMediator = AppServices.GetService<IMediator>();
             _appMediator.RegisterMainWindow(this);
 
-            _viewModel = new MainWindowViewModel();
-            _viewModel.mainWindow = this;
+            _viewModel = new MainWindowViewModel(this);
             DataContext = _viewModel;
 
             Loaded += (s, e) =>
             {
-                _viewModel.IntializeDockingManager(dockingManager);
+                _viewModel.IntializeDockingManager();
                 _viewModel.InitializeSidePanel();
             };
         }

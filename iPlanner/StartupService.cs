@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Reports;
 using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Core.Application.Interfaces.Repository;
@@ -55,6 +56,7 @@ namespace iPlanner
 
             //Mappers
             services.AddSingleton<IMapper<ReportDTO, Report>, ReportMapper>();
+            services.AddSingleton<IMapper<ReportFilterDTO, ReportFilter>, ReportFilterMapper>();
             services.AddSingleton<IMapper<ActivityDTO, Activity>, ActivityMapper>();
             services.AddSingleton<IMapper<LocationItemDTO, LocationItem>, LocationItemMapper>();
             services.AddSingleton<IMapper<TeamDTO, Team>, TeamMapper>();

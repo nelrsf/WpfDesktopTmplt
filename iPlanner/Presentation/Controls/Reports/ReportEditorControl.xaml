@@ -43,6 +43,7 @@
 
         <!-- Estilo para Botón Principal -->
         <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Cursor" Value="Hand"></Setter>
             <Setter Property="Background" Value="#3182CE"/>
             <Setter Property="Foreground" Value="White"/>
             <Setter Property="Padding" Value="24,12"/>
@@ -143,11 +144,14 @@
                         <TextBlock Text="Actividades" 
                                  Style="{StaticResource LabelStyle}"
                                  FontSize="18"/>
-                        <Button Content="Agregar Actividad"
+                        <DockPanel HorizontalAlignment="Right">
+                            <Button Content="Agregar Actividad"
                                 Click="OnAddActivity"
                                 Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
                                 Style="{StaticResource PrimaryButtonStyle}"
                                 HorizontalAlignment="Right"/>
+                        </DockPanel>
+
                     </DockPanel>
 
                     <ItemsControl ItemsSource="{Binding CurrentReport.Activities, UpdateSourceTrigger=PropertyChanged}">
@@ -164,20 +168,37 @@
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
                                             <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
 
-                                        <TextBlock Text="Descripción" 
+                                        <TextBlock Grid.Row="0" Text="Descripción" 
                                                  Style="{StaticResource LabelStyle}"/>
+                                        <Button Grid.Row="0"  Content="X"
+                                                Visibility="{Binding IsEditable, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                BorderBrush="Transparent"
+                                                Background="Transparent"
+                                                Click="OnDeleteActivity"
+                                                Width="18"
+                                                Height="18"   
+                                                Margin="5"
+                                                HorizontalAlignment="Right"/>
+
                                         <TextBox Grid.Row="1"
                                                 Text="{Binding Description}"
-                                                Height="80"
                                                 HorizontalAlignment="Stretch"
                                                 IsEnabled="{Binding DataContext.IsEditable, RelativeSource={RelativeSource AncestorType=UserControl}}"
                                                 AcceptsReturn="True"
                                                 TextWrapping="Wrap"
+                                                MinHeight="80"
+                                                 Height="Auto"
                                                 Margin="0,0,0,16"/>
+                                        <GridSplitter Grid.Row="2" 
+                                                Height="5" 
+                                                HorizontalAlignment="Stretch" 
+                                                VerticalAlignment="Center"
+                                                ResizeDirection="Rows"/>
 
-                                        <Grid Grid.Row="2" AllowDrop="True"
+                                        <Grid Grid.Row="3" AllowDrop="True"
                                                            DragEnter="OnDragEnter"
                                                            DragOver="OnDragOver"
                                                            Drop="OnDrop" MinHeight="70">

@@ -26,7 +26,7 @@ namespace iPlanner.Presentation.Commands
 
             UserControl? userControl = message?.sender?.GetUserControl();
             if (userControl == null) return;
-            MainWindowViewModel? mainWindowViewModel = (MainWindowViewModel)((MainWindow)message.window).DataContext;
+            MainWindowViewModel? mainWindowViewModel = ((MainWindow)message.window).ViewModel;
             if (mainWindowViewModel == null) return;
             ObservableCollection<LayoutDocument> documents = mainWindowViewModel.Documents;
             LayoutDocument layoutToRemove = null;

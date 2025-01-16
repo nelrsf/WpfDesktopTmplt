@@ -8,14 +8,14 @@
              mc:Ignorable="d" 
              d:DesignHeight="150" d:DesignWidth="800">
 
-      <ribbon:Ribbon Background="#FFF0F0F0">
+    <ribbon:Ribbon Background="#FFF0F0F0">
         <Ribbon.ApplicationMenu>
             <RibbonApplicationMenu Visibility="Hidden" Width="0"/>
         </Ribbon.ApplicationMenu>
 
-        
+
         <ribbon:RibbonTab Header="Inicio">
-        
+
             <ribbon:RibbonGroup Header="Archivo" >
                 <!-- Nuevo -->
                 <ribbon:RibbonButton Click="NewButton_Click">
@@ -81,5 +81,76 @@
             </ribbon:RibbonGroup>
         </ribbon:RibbonTab>
 
+
+        <ribbon:RibbonTab Header="Reportes">
+            <ribbon:RibbonGroup Header="Filtros">
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <!-- Combobox Frente de Trabajo -->
+                    <DockPanel Margin="3,0,10,0" VerticalAlignment="Top">
+                        <TextBlock Text="Frente de Trabajo:" 
+                                 DockPanel.Dock="Top" 
+                                 Margin="0,0,0,2"/>
+                        <ComboBox Width="150" Height="26">
+                            <ComboBoxItem Content="Frente 1"/>
+                            <ComboBoxItem Content="Frente 2"/>
+                            <ComboBoxItem Content="Frente 3"/>
+                        </ComboBox>
+                    </DockPanel>
+
+                    <!-- Fecha Inicial -->
+                    <DockPanel Margin="3,0,10,0" VerticalAlignment="Top">
+                        <TextBlock Text="Fecha Inicial:" 
+                                 DockPanel.Dock="Top" 
+                                 Margin="0,0,0,2"/>
+                        <DatePicker Width="120" Height="26" SelectedDate="{Binding ReportFilterDTO.Date}"/>
+                    </DockPanel>
+
+                    <!-- Fecha Final -->
+                    <DockPanel Margin="3,0,10,0" VerticalAlignment="Top">
+                        <TextBlock Text="Fecha Final:" 
+                                 DockPanel.Dock="Top" 
+                                 Margin="0,0,0,2"/>
+                        <DatePicker Width="120" Height="26"/>
+                    </DockPanel>
+
+                    <ribbon:RibbonButton Width="28" Height="28" BorderBrush="Gray" Margin="0,5,5,4" Padding="3">
+                        <ribbon:RibbonButton.SmallImageSource>
+                            <StaticResource ResourceKey="refresh"/>
+                        </ribbon:RibbonButton.SmallImageSource>
+                    </ribbon:RibbonButton>
+
+                    <StackPanel Orientation="Horizontal" Height="60">
+                        <ToggleButton x:Name="PopupButton" BorderThickness="0.8"
+                                      Background="#FFF6F6F6"
+                                        Width="15" 
+                                        Height="15"
+                                        Padding="3" VerticalAlignment="Bottom">
+                            <Image Source="{StaticResource drop-down}"/>
+                        </ToggleButton>
+
+                        <Popup IsOpen="{Binding IsChecked, ElementName=PopupButton}" 
+                                PlacementTarget="{Binding ElementName=PopupButton}" 
+                                Placement="Bottom" 
+                                StaysOpen="False">
+                            <Border Background="White" 
+                                BorderBrush="Gray" 
+                                BorderThickness="1" 
+                                Padding="5">
+                                <StackPanel>
+                                    <Button Height="30" Margin="2" HorizontalAlignment="Left">
+                                        <StackPanel Orientation="Horizontal" Margin="5,5,5,5">
+                                            <Image Source="{StaticResource delete-filter}" Width="20" Height="20"/>
+                                            <TextBlock Text="Borrar filtros" Margin="5,0,5,0" VerticalAlignment="Center"/>
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>
+                            </Border>
+                        </Popup>
+                    </StackPanel>
+                </StackPanel>
+
+
+            </ribbon:RibbonGroup>
+        </ribbon:RibbonTab>
     </ribbon:Ribbon>
 </UserControl>

@@ -68,8 +68,8 @@
                 <ItemsControl ItemsSource="{Binding Reports}" Margin="20,0,20,20">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Border Style="{StaticResource ReportCardStyle}">
-                                <Grid>
+                        <Border Style="{StaticResource ReportCardStyle}" Height="105">
+                            <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
@@ -93,13 +93,14 @@
                                     </StackPanel>
 
                                     <!-- Activities Summary -->
-                                    <ItemsControl Grid.Column="1" ItemsSource="{Binding Activities}">
-                                        <ItemsControl.ItemTemplate>
+                                <ItemsControl Grid.Column="1" ItemsSource="{Binding Activities}">
+                                    <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-
                                                 <TextBlock Text="{Binding Description}" 
                                                          MaxWidth="500"
-                                                         TextWrapping="Wrap" 
+                                                           Height="Auto"
+                                                           TextWrapping="Wrap" 
+                                                           TextTrimming="CharacterEllipsis"
                                                          Margin="0,8,0,0"/>
 
                                             </DataTemplate>

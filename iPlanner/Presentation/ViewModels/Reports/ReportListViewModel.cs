@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Reports;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Reports;
@@ -12,6 +13,8 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
     public class ReportListViewModel : ViewModelBase
     {
+        public ReportFilterDTO ReportsFilter { get; set; }
+
         private readonly IReportService _reportService;
         private ObservableCollection<ReportDTO> _reports;
         private ReportDTO? _selectedReport;
@@ -43,8 +46,9 @@ namespace iPlanner.Presentation.ViewModels.Reports
             _reportService = reportService;
             _reports = new ObservableCollection<ReportDTO>();
             _mediatorService = mediatorService;
-            _controlAbstractFactory = abstractFactory;
-
+            _controlAbstractFactory = abstractFactory;            
+            ReportsFilter = new ReportFilterDTO();
+            ReportsFilter.Date = DateTime.Now;
         }
 
         public void ViewDetails(ReportDTO report)

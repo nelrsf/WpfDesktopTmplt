@@ -141,5 +141,16 @@ namespace iPlanner.Presentation.Controls
         {
             ViewModel.CloseForm();
         }
+
+        private void OnDeleteActivity(object sender, EventArgs e)
+        {
+            if (sender is not Button) return;
+            var button = (Button)sender;
+            if (button.DataContext is not ActivityDTO activityDTO) return;
+
+            MessageBoxResult messageBoxResult = MessageBox.Show("¿Esta seguro que desea eliminar esta actividad?", "Eliminar actividad", MessageBoxButton.YesNo);
+            if (messageBoxResult == MessageBoxResult.No) return;
+            ViewModel.DelecteActivity(activityDTO);
+        }
     }
 }

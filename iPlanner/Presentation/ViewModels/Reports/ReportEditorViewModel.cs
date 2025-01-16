@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Reports;
 using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Presentation.Commands.Reports;
@@ -21,6 +22,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
         private readonly IMediator _mediator;
         private readonly IReportService _reportService;
 
+        public ReportFilterDTO ReportFilterDTO { get; set; }
         public ReportEditorControl _reportEditorControl;
         private ReportDTO _currentReport;
         private TeamDTO _selectedTeam;
@@ -120,6 +122,7 @@ namespace iPlanner.Presentation.ViewModels.Reports
             _teamService = teamService;
             _reportService = reportService;
             Teams = new ObservableCollection<TeamDTO>();
+            ReportFilterDTO = new ReportFilterDTO();
 
             // Cargar frentes de trabajo
             LoadTeamsAsync();
@@ -202,8 +205,10 @@ namespace iPlanner.Presentation.ViewModels.Reports
 
             ActivityDTO activityDTO = new ActivityDTO();
             CurrentReport.Activities.Add(activityDTO);
+            var UpdatedReport = CurrentReport;
+            CurrentReport = null;
+            CurrentReport = UpdatedReport;
             OnPropertyChanged(nameof(CurrentReport));
-            OnPropertyChanged($"{nameof(CurrentReport)}.{nameof(CurrentReport.Activities)}");
         }
 
         public async void AddLocations(List<LocationItemDTO> locations, ActivityDTO activity)
@@ -306,6 +311,15 @@ namespace iPlanner.Presentation.ViewModels.Reports
             closeFormMessage.sender = this;
             reportMessage.innerMessages = new List<MessageBase> { closeFormMessage };
             _mediator.Notify(reportMessage);
+        }
+
+        internal void DelecteActivity(ActivityDTO activity)
+        {
+            var updateReport = CurrentReport;
+            updateReport.Activities.Remove(activity);
+            CurrentReport = null;
+            CurrentReport = updateReport;
+            OnPropertyChanged(nameof(CurrentReport));
         }
     }
 }

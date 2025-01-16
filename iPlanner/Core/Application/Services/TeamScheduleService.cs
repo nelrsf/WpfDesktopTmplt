@@ -25,11 +25,11 @@ namespace iPlanner.Core.Application.Services
             _reportMapper = reportMapper;
         }
 
-        public async Task<IEnumerable<int>> GetAvailableWeeks()
+        public async Task<IEnumerable<int>> GetAvailableWeeks(int year)
         {
             var reports = await _reportRepository.GetReports();
             var availableWeeks = reports
-                .Where(report => report.Date.HasValue)
+                .Where(report => report.Date.HasValue && report.Date.Value.Year == year)
                 .Select(report => System.Globalization.CultureInfo.CurrentCulture.Calendar.GetWeekOfYear(
                     report.Date.Value,
                     System.Globalization.CultureInfo.CurrentCulture.DateTimeFormat.CalendarWeekRule,

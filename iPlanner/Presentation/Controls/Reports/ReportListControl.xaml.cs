@@ -13,7 +13,7 @@ namespace iPlanner.Presentation.Controls
 
     public partial class ReportListControl : UserControl
     {
-        ReportListViewModel ReportListViewModel { get; set; }
+        public ReportListViewModel ReportListViewModel { get; set; }
         public ReportListControl()
         {
             InitializeComponent();

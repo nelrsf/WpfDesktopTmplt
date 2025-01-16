@@ -44,20 +44,26 @@ namespace iPlanner.Infrastructure.Locations
             if (network.Substations != null && network.Substations.Count > 0)
             {
                 LocationItemDTO substationsNode = new LocationItemDTO(-1, "Subestaciones", "home-bolt");
+                substationsNode.Parent = locationItem;
                 locationItem.Children.Add(substationsNode);
                 foreach (Substation substation in network.Substations)
                 {
-                    substationsNode.Children.Add(GetLocationItemByType(substation));
+                    LocationItemDTO substationNode = GetLocationItemByType(substation);
+                    substationNode.Parent = substationsNode;
+                    substationsNode.Children.Add(substationNode);
                 }
             }
 
             if (network.Structures != null && network.Structures.Count > 0)
             {
                 LocationItemDTO structuresNode = new LocationItemDTO(-1, "Estructuras", "transmission");
+                structuresNode.Parent = locationItem;
                 locationItem.Children.Add(structuresNode);
                 foreach (Structure structure in network.Structures)
                 {
-                    structuresNode.Children.Add(GetLocationItemByType(structure));
+                    LocationItemDTO structureNode = GetLocationItemByType(structure);
+                    structureNode.Parent = structuresNode;
+                    structuresNode.Children.Add(structureNode);
                 }
             }
 
@@ -71,11 +77,14 @@ namespace iPlanner.Infrastructure.Locations
                 return null;
             }
             LocationItemDTO locationItem = new LocationItemDTO(substation.id, substation.description, "home-bolt");
+
             if (substation.Equipments != null && substation.Equipments.Count > 0)
             {
                 foreach (Equipment equipment in substation.Equipments)
                 {
-                    locationItem.Children.Add(GetLocationItemByType(equipment));
+                    LocationItemDTO equipmentNode = GetLocationItemByType(equipment);
+                    equipmentNode.Parent = locationItem;
+                    locationItem.Children.Add(equipmentNode);
                 }
             }
             return locationItem;
@@ -92,7 +101,9 @@ namespace iPlanner.Infrastructure.Locations
             {
                 foreach (Equipment equipment in structure.Equipments)
                 {
-                    locationItem.Children.Add(GetLocationItemByType(equipment));
+                    LocationItemDTO equipmentNode = GetLocationItemByType(equipment);
+                    equipmentNode.Parent = locationItem;
+                    locationItem.Children.Add(equipmentNode);
                 }
             }
             return locationItem;
@@ -109,7 +120,9 @@ namespace iPlanner.Infrastructure.Locations
             {
                 foreach (Equipment equipment1 in equipment.InnerEquipments)
                 {
-                    locationItem.Children.Add(GetLocationItemByType(equipment1));
+                    LocationItemDTO equipmentNode1 = GetLocationItemByType(equipment1);
+                    equipmentNode1.Parent = locationItem;
+                    locationItem.Children.Add(equipmentNode1);
                 }
             }
             return locationItem;

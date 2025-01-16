@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iPlanner", "iPlanner\iPlann
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LocationsTools", "C:\Users\usuario\source\repos\LocationsTools\LocationsTools.csproj", "{EC6570B1-1AA8-4192-A7E2-C5FF4C7AFA05}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "iPlanerInst", "iPlanerInst\iPlanerInst.vdproj", "{A35394E0-8C22-4637-A21B-BFF1B9D10155}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,8 @@ Global
 		{EC6570B1-1AA8-4192-A7E2-C5FF4C7AFA05}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EC6570B1-1AA8-4192-A7E2-C5FF4C7AFA05}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EC6570B1-1AA8-4192-A7E2-C5FF4C7AFA05}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A35394E0-8C22-4637-A21B-BFF1B9D10155}.Debug|Any CPU.ActiveCfg = Debug
+		{A35394E0-8C22-4637-A21B-BFF1B9D10155}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

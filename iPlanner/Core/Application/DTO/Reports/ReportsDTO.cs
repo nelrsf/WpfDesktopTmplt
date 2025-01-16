@@ -105,7 +105,18 @@ namespace iPlanner.Core.Application.DTO
         private int _id;
         private string _name;
         private string _icon;
+        private LocationItemDTO? _parent;
         private ICollection<LocationItemDTO> _children;
+
+
+        public LocationItemDTO? Parent
+        {
+            get => _parent;
+            set
+            {
+                _parent = value;
+            }
+        }
 
         public int Id
         {

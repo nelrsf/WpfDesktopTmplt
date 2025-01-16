@@ -97,8 +97,11 @@
     <DockPanel>
         <!-- Barra de herramientas -->
         <ToolBar Style="{StaticResource ToolbarStyle}">
-            
-            <TextBox Style="{StaticResource SearchBox}"/>
+
+
+            <TextBox Style="{StaticResource SearchBox}" 
+                     IsReadOnly="{Binding IsLoading}"
+                 TextChanged="OnSearchTextChanged"/>
             <Button Click="OnAddLocation"
             Style="{StaticResource ToolbarButton}" 
             ToolTip="Nueva ubicación">
@@ -129,7 +132,8 @@
 
         <!-- TreeView principal -->
         <TreeView x:Name="LocationsTreeView"
-                  ItemsSource="{Binding Locations}"
+                  ContextMenuOpening="TreeView_ContextMenuOpening"
+                  ItemsSource="{Binding FilteredLocations}"
                   Background="Transparent" 
                   BorderThickness="0">
             <TreeView.Style>
@@ -139,13 +143,22 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <TextBlock Text="Cargando..." 
-                                     HorizontalAlignment="Center" 
-                                     VerticalAlignment="Center"/>
+                                        <Grid VerticalAlignment="Center">
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"></RowDefinition>
+                                                <RowDefinition Height="auto"></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Text="Cargando..." 
+                                                        HorizontalAlignment="Center" 
+                                                        VerticalAlignment="Center"/>
+                                            <ProgressBar Grid.Row="1" IsIndeterminate="True" Width="100" Height="10"></ProgressBar>
+                                        </Grid>
+
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </DataTrigger>
+
                     </Style.Triggers>
                 </Style>
             </TreeView.Style>

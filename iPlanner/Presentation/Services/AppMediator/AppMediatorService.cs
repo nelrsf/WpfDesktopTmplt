@@ -1,4 +1,5 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using iPlanner;
+using iPlanner.Presentation;
 using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services.AppMediator.Base;
@@ -8,12 +9,14 @@ using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
 
 public class AppMediatorService : IMediator
 {
-    private IMainWindow? _window;
+    private MainWindow? _window;
     private readonly Dictionary<Type, object> _handlers;
 
     public AppMediatorService()
     {
+        InitializeMainWindow();
         _handlers = new Dictionary<Type, object>();
+        InitializeHandlers();
     }
 
     private void InitializeHandlers()
@@ -23,6 +26,7 @@ public class AppMediatorService : IMediator
         var teamHandler = new TeamMessageHandler();
         var genericHandler = new CommandMessageHandler();
         var reportHandler = new ReportMessageHandler();
+        var syncFilterReportHandler = new SyncReportFilterHandler();
         var closeFormMessageHandler = new CloseFormMessageHandler(new CloseFormCommand());
 
         // Registramos los handlers
@@ -32,6 +36,7 @@ public class AppMediatorService : IMediator
         RegisterHandler<CommandMessage>(genericHandler);
         RegisterHandler<ReportMessage>(reportHandler);
         RegisterHandler<CloseFormMessage>(closeFormMessageHandler);
+        RegisterHandler<SyncReportFilterMessage>(syncFilterReportHandler);
     }
 
     public void RegisterHandler<TMessage>(IMessageHandler<TMessage> handler)
@@ -68,10 +73,9 @@ public class AppMediatorService : IMediator
         }
     }
 
-    public void RegisterMainWindow(IMainWindow mainWindow)
+    private void InitializeMainWindow()
     {
-        _window = _window ?? mainWindow;
-        InitializeHandlers();
+        _window = MainWindowProvider.GetMainWindow();
     }
 
 }

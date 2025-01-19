@@ -1,4 +1,4 @@
-﻿using iPlanner.Core.Application.Interfaces;
+﻿using System.Windows;
 
 namespace iPlanner.Presentation.Services.AppMediator.Base
 {
@@ -6,7 +6,7 @@ namespace iPlanner.Presentation.Services.AppMediator.Base
     {
         public object? sender;
         public Type CommandType { get; set; }
-        public IMainWindow? window { get; set; }
+        public MainWindow? window { get; set; }
 
         public ICollection<MessageBase>? innerMessages { get; set; }
 

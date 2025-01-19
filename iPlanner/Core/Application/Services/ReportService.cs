@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Reports;
 using iPlanner.Core.Application.Interfaces;
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Core.Entities.Reports;
@@ -9,11 +10,16 @@ namespace iPlanner.Core.Application.Services
     {
         private readonly IReportRepository _reportsRepository;
         private readonly IMapper<ReportDTO, Report> _reportMapper;
+        private readonly IMapper<ReportFilterDTO, ReportFilter> _filterMapper;
 
-        public ReportService(IReportRepository repository, IMapper<ReportDTO, Report> reportMapper)
+        public ReportService(
+                IReportRepository repository, 
+                IMapper<ReportDTO, Report> reportMapper,
+                IMapper<ReportFilterDTO, ReportFilter> reportFilterMapper)
         {
             _reportsRepository = repository;
             _reportMapper = reportMapper;
+            _filterMapper = reportFilterMapper;
         }
 
         public async Task<List<ReportDTO>> GetReportsAsync()
@@ -47,6 +53,23 @@ namespace iPlanner.Core.Application.Services
             report.Date = dto.Date;
             dto = _reportMapper.ToDTO(report);
             return dto;
+        }
+
+        public async Task<List<ReportDTO>> GetReportsAsyncByFilter(ReportFilterDTO filterDTO)
+        {
+            ReportFilter filter = _filterMapper.ToEntity(filterDTO);
+            if (filter.CheckTime())
+            {
+                List<ReportDTO> reportsDTO = await GetReportsAsync();
+                List<Report> reports = reportsDTO.Select(r => _reportMapper.ToEntity(r)).ToList();
+                List<Report> filteredReports = filter.FilterReports(reports);
+                return filteredReports.Select(fr=>_reportMapper.ToDTO(fr)).ToList();
+            }
+            else
+            {
+                throw new Exception("Error, la fehc de inicio debe ser menor a la fecha fin");
+            }
+
         }
     }
 }

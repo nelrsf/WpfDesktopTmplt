@@ -59,7 +59,7 @@ namespace iPlanner.Core.Application.Mappers
         {
             if (dto == null)
             {
-                throw new ArgumentNullException("Error al mapear, DTO no puede ser null");
+                return null;
             }
 
             Team entity = new Team()

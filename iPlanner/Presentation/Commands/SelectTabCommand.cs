@@ -1,5 +1,6 @@
 ﻿using AvalonDock.Layout;
 using iPlanner.Presentation.Interfaces;
+using System.Windows;
 
 namespace iPlanner.Presentation.Commands
 {
@@ -40,7 +41,10 @@ namespace iPlanner.Presentation.Commands
                 return;
             }
 
-            _document.IsActive = true;
+            Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                _document.IsActive = true;
+            }));
 
         }
     }

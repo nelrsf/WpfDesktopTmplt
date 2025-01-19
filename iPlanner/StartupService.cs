@@ -16,9 +16,11 @@ using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Commands.Teams;
 using iPlanner.Presentation.Commands.Window;
+using iPlanner.Presentation.Controls.Layout.RibbonTools;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services;
 using iPlanner.Presentation.ViewModels.Layout;
+using iPlanner.Presentation.ViewModels.Reports;
 using iPlanner.Presentation.ViewModels.Teams;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -43,7 +45,8 @@ namespace iPlanner
             services.AddSingleton<CloseFormCommand>();
             services.AddSingleton<RemoveLocationReportCommand>();
             services.AddSingleton<AddLocationReportCommand>();
-            services.AddSingleton<CreateReportCommand>();
+            services.AddSingleton<CreateReportCommand>();            
+            services.AddSingleton<SyncReportFilterCommand>();
 
             //Factories and Mediator
             services.AddSingleton<IControlAbstractFactory, ControlFactory>();
@@ -74,13 +77,20 @@ namespace iPlanner
 
             //ViewModells
             services.AddSingleton<RibbonViewModel>();
-            services.AddSingleton<CalendarService>();
-            services.AddSingleton<DashboardService>();
-            services.AddSingleton<TeamFormViewModel>();
-            services.AddSingleton<TeamsViewModel>();
+            services.AddSingleton<ReportsFilterViewmodel>();
+            services.AddTransient<CalendarService>();
+            services.AddTransient<DashboardService>();
+            services.AddTransient<TeamFormViewModel>();
+            services.AddTransient<TeamsViewModel>();
+            services.AddTransient<ReportListViewModel>();
+
+            //View Helpers
+            services.AddSingleton<DockingManagerEventsHandler>();
+            services.AddSingleton<DockingManagerUpdater>();
+            services.AddSingleton<SidePanelManager>();
 
             //View
-            services.AddSingleton<IMainWindow, MainWindow>();
+            services.AddSingleton<MainWindow>();
         }
     }
 }

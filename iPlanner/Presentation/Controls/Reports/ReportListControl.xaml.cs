@@ -7,10 +7,6 @@ using System.Windows.Controls;
 
 namespace iPlanner.Presentation.Controls
 {
-    /// <summary>
-    /// Lógica de interacción para ReportListControl.xaml
-    /// </summary>
-
     public partial class ReportListControl : UserControl
     {
         public ReportListViewModel ReportListViewModel { get; set; }
@@ -18,9 +14,8 @@ namespace iPlanner.Presentation.Controls
         {
             InitializeComponent();
             IReportService reportService = AppServices.GetService<IReportService>();
-            IMediator mediator = AppServices.GetService<IMediator>();
             IControlAbstractFactory abstractFactory = AppServices.GetService<IControlAbstractFactory>();
-            ReportListViewModel = new ReportListViewModel(reportService, mediator, abstractFactory);
+            ReportListViewModel = AppServices.GetService<ReportListViewModel>();
             DataContext = ReportListViewModel;
             Loaded += ReportListControl_Loaded;
         }
@@ -33,12 +28,11 @@ namespace iPlanner.Presentation.Controls
         public void OnCreateReport(object sender, EventArgs e)
         {
             ReportListViewModel.OpenCreateReportForm();
-
         }
 
         public void OnDeleteReport(object sender, EventArgs e)
         {
-            if(sender is Button button && button.DataContext is ReportDTO report)
+            if (sender is Button button && button.DataContext is ReportDTO report)
             {
                 ReportListViewModel.DeleteReport(report);
             }
@@ -69,6 +63,7 @@ namespace iPlanner.Presentation.Controls
                 }
             }
         }
+
     }
 
 }

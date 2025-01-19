@@ -1,7 +1,6 @@
 ﻿using iPlanner.Core.Application.DTO.Teams;
 using iPlanner.Core.Application.Interfaces.Repository;
 using iPlanner.Infrastructure.Common;
-using System.Collections.ObjectModel;
 
 namespace iPlanner.Infrastructure.Teams
 {
@@ -10,9 +9,6 @@ namespace iPlanner.Infrastructure.Teams
         private FileService _fileService;
         private readonly string _teamsFilePath;
         private ICollection<TeamDTO>? _teams;
-
-
-
 
         public FileTeamsRepository(FileService fileService)
         {
@@ -79,7 +75,7 @@ namespace iPlanner.Infrastructure.Teams
             {
                 return await Task.Run(() =>
                 {
-                    return _fileService.LoadJsonData<ObservableCollection<TeamDTO>>(_teamsFilePath) ?? new ObservableCollection<TeamDTO>();
+                    return _fileService.LoadJsonData<List<TeamDTO>>(_teamsFilePath) ?? new List<TeamDTO>();
                 });
             }
             catch (Exception ex)

@@ -1,5 +1,4 @@
-﻿using iPlanner.Core.Application.DTO.Reports;
-using iPlanner.Presentation.Commands;
+﻿using iPlanner.Presentation.Commands;
 using iPlanner.Presentation.Commands.Window;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
@@ -11,28 +10,12 @@ namespace iPlanner.Presentation.ViewModels.Layout
     {
         IMediator _mediator;
 
-        public ReportFilterDTO ReportFilterDTO { get; set; }
-        private RibbonFilterReportTools _filterReportTools;
-
-        public RibbonFilterReportTools FilterReportTools
-        {
-            get { return _filterReportTools; }
-            set { _filterReportTools = value; }
-        }
 
 
-        public RibbonViewModel(IMediator mediator, RibbonFilterReportTools filterReportTools)
+
+        public RibbonViewModel(IMediator mediator)
         {
             _mediator = mediator;
-            _filterReportTools = filterReportTools;
-            _filterReportTools.ReportFilterChanged += _filterReportTools_ReportFilterChanged;
-        }
-
-        private void _filterReportTools_ReportFilterChanged(object? sender, ReportFilterDTO e)
-        {
-            ReportFilterDTO = null;
-            ReportFilterDTO = e;
-            OnPropertyChanged(nameof(ReportFilterDTO));
         }
 
         public void ArrangeVertical_Click(object sender, EventArgs e)

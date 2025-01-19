@@ -1,12 +1,14 @@
-﻿namespace iPlanner.Core.Application.DTO.Reports
+﻿using iPlanner.Core.Application.DTO.Teams;
+
+namespace iPlanner.Core.Application.DTO.Reports
 {
     public class ReportFilterDTO
     {
-        public DateTime? Date { get; set; }
+        public DateTime? DateInit { get; set; }
 
-        public TimeSpan? TimeInit { get; set; }
+        public DateTime? DateEnd { get; set; }
 
-        public TimeSpan? TimeEnd { get; set; }
+        public TeamDTO? Team { get; set; }
 
     }
 }

@@ -1,19 +1,29 @@
-﻿namespace iPlanner.Core.Entities.Reports
+﻿using iPlanner.Core.Entities.Teams;
+
+namespace iPlanner.Core.Entities.Reports
 {
     public class ReportFilter
     {
-        public DateTime? Date {  get; set; }
+        public DateTime? DateInit { get; set; }
 
-        public TimeSpan? TimeInit { get; set; }
+        public DateTime? DateEnd { get; set; }
 
-        public TimeSpan? TimeEnd { get; set; }
+        public Team? Team { get; set; }
 
         public bool CheckTime()
         {
-            if(TimeEnd == null) return false;
-            if(TimeInit ==  null) return false;
-            return TimeInit < TimeEnd;
+            if (DateInit == null) return true;
+            if (DateEnd == null) return true;
+            return DateInit < DateEnd;
         }
 
+        internal List<Report> FilterReports(List<Report> reports)
+        {
+            return reports
+                .Where(r => r.Date >= DateInit || DateInit == null)
+                .Where(r => r.Date <= DateEnd || DateEnd == null)
+                .Where(r => Team == null ||  r?.Team?.Id == Team?.Id )
+                .ToList();
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using iPlanner.Core.Application.Interfaces;
+using iPlanner.Presentation;
+using iPlanner.Presentation.ViewModels.Layout;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
 
@@ -17,7 +19,9 @@ namespace iPlanner
             ServiceCollection services = new ServiceCollection();
             StartupService.ConfigureServices(services);
             AppServices.ServiceProvider = services.BuildServiceProvider();
-            IMainWindow mainWindow = AppServices.GetService<IMainWindow>();
+
+            MainWindow mainWindow = AppServices.GetService<MainWindow>();
+
             mainWindow.Show();
         }
     }

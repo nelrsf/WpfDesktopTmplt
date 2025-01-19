@@ -8,7 +8,7 @@ namespace iPlanner.Presentation.ViewModels.Layout
 {
     public class SidePanelManager
     {
-        private readonly MainWindow _mainWindow;
+        private readonly MainWindow? _mainWindow;
         private RadioButton? _lastCheckedButton = null;
         private LayoutAnchorable? _currentPanel;
         private SidebarControl? SidebarPanel;
@@ -16,9 +16,9 @@ namespace iPlanner.Presentation.ViewModels.Layout
         private TeamsControl? TeamsControl;
         private LayoutAnchorable? explorerPanel;
 
-        public SidePanelManager(MainWindow mainWindow)
+        public SidePanelManager()
         {
-            _mainWindow = mainWindow;
+            _mainWindow = MainWindowProvider.GetMainWindow();
         }
 
         public void InitializeSidePanel()

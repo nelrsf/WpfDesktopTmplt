@@ -52,7 +52,7 @@
     
 
     <DockPanel>
-        <controls:RibbonControl DockPanel.Dock="Top"/>
+        <controls:RibbonControl x:Name="Ribbon" DockPanel.Dock="Top"/>
 
         <Grid>
             <Grid.ColumnDefinitions>

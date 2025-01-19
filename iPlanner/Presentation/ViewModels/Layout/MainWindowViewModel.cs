@@ -1,12 +1,15 @@
 ﻿using AvalonDock.Layout;
-using iPlanner.Presentation.Commands;
+using iPlanner.Core.Application.DTO.Reports;
+using iPlanner.Presentation.Commands.Reports;
 using iPlanner.Presentation.Controls;
 using iPlanner.Presentation.Interfaces;
 using iPlanner.Presentation.Services.AppMediator.MediatorMessages;
+using iPlanner.Presentation.ViewModels.Reports;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace iPlanner.Presentation.ViewModels.Layout
 {
@@ -20,16 +23,17 @@ namespace iPlanner.Presentation.ViewModels.Layout
 
         private SidePanelManager _sidePanelManager;
         private DockingManagerUpdater _dockingManagerUpdater;
+        private DocumentManager _documentManager;
 
         public MainWindowViewModel(MainWindow mainWindow)
         {
             this.mainWindow = mainWindow;
             _mediator = AppServices.GetService<IMediator>();
             _controlAbstractFactory = AppServices.GetService<IControlAbstractFactory>();
-            Documents = new ObservableCollection<LayoutDocument>();
-            InitializeViews();
-            _dockingManagerUpdater = new DockingManagerUpdater(this.mainWindow);
-            _sidePanelManager = new SidePanelManager(this.mainWindow);
+            _dockingManagerUpdater = AppServices.GetService<DockingManagerUpdater>();
+            _sidePanelManager = AppServices.GetService<SidePanelManager>();
+            _documentManager = new DocumentManager(_mediator, _controlAbstractFactory);
+            Documents = _documentManager.Documents;
         }
 
         public void IntializeDockingManager()
@@ -42,41 +46,16 @@ namespace iPlanner.Presentation.ViewModels.Layout
             _sidePanelManager.InitializeSidePanel();
         }
 
-        private void InitializeViews()
-        {
-            LayoutDocument? home = new LayoutDocument
-            {
-                Title = "Bienvenido",
-                Content = _controlAbstractFactory.CreateControl(typeof(WelcomeControl)),
-                CanClose = true,
-            };
-            home.Closed += DeleteDocument;
-            Documents.Add(home);
-        }
 
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void DeleteDocument(object? sender, EventArgs e)
-        {
-            if (sender == null) return;
-            Documents.Remove((LayoutDocument)sender);
-        }
-
         public void AddView(object content, string viewName)
         {
-            LayoutDocument? newDocument = new LayoutDocument
-            {
-                CanClose = true,
-                Title = viewName,
-                Content = content
-            };
-            newDocument.Closed += DeleteDocument;
-            Documents.Add(newDocument);
+            _documentManager.AddView(content, viewName);
             _dockingManagerUpdater.UpdateDockingManager();
-            _mediator?.Notify(new TabMessage(typeof(SelectTabCommand), newDocument));
         }
 
         public void TabButton_Click(object sender, RoutedEventArgs e)
@@ -87,6 +66,16 @@ namespace iPlanner.Presentation.ViewModels.Layout
         public void UpdateDockingManager()
         {
             _dockingManagerUpdater.UpdateDockingManager();
+        }
+
+        public void OnDockingManagerContentChange(UserControl control)
+        {
+            ReportFilterManager.SyncReportsFilterTools(control);
+        }
+
+        internal void OnDockingManagerActiveContentNotFound(object? sender, EventArgs e)
+        {
+            ReportFilterManager.SyncReportsFilterTools(null);
         }
     }
 }

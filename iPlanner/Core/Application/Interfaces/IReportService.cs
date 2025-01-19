@@ -1,4 +1,5 @@
 ﻿using iPlanner.Core.Application.DTO;
+using iPlanner.Core.Application.DTO.Reports;
 
 namespace iPlanner.Core.Application.Interfaces
 {
@@ -7,6 +8,7 @@ namespace iPlanner.Core.Application.Interfaces
 
         Task<List<ReportDTO>> GetReportsAsync();
 
+        Task<List<ReportDTO>> GetReportsAsyncByFilter(ReportFilterDTO filterDTO);
 
         Task AddReportAsync(ReportDTO report);
 
